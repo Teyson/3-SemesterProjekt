@@ -1,5 +1,0 @@
-﻿  Source.cpp
-c:\users\aalbaek-nt\onedrive\dokumenter\skole\sdu\3. semester\projekt\billedebehandling - projekt\billedebehandling - projekt\source.cpp(32): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\aalbaek-nt\onedrive\dokumenter\skole\sdu\3. semester\projekt\billedebehandling - projekt\billedebehandling - projekt\source.cpp(33): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\aalbaek-nt\onedrive\dokumenter\skole\sdu\3. semester\projekt\billedebehandling - projekt\billedebehandling - projekt\source.cpp(34): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  Billedebehandling - projekt.vcxproj -> C:\Users\aalbaek-nt\OneDrive\Dokumenter\Skole\SDU\3. semester\Projekt\Billedebehandling - projekt\Debug\Billedebehandling - projekt.exe
