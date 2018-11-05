@@ -131,12 +131,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Behandling.cpp" />
     <ClCompile Include="customRecorder.cpp" />
     <ClCompile Include="PictureProcessing.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h" />
+    <ClInclude Include="Behandling.h" />
     <ClInclude Include="customRecorder.h" />
     <ClInclude Include="PictureProcessing.h" />
   </ItemGroup>

@@ -24,6 +24,9 @@
     <ClCompile Include="customRecorder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Behandling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h">
@@ -33,6 +36,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="customRecorder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Behandling.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
