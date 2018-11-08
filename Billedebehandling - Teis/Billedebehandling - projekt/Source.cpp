@@ -21,7 +21,7 @@ std::vector<DTMFToner> dtmfToner;
 std::vector<sf::Int16> sampleToner;
 
 int main() {
-	const unsigned SAMPLES = 44100;
+	/*const unsigned SAMPLES = 44100;
 	const unsigned SAMPLE_RATE = 44100;
 	const unsigned AMPLITUDE = 10000;
 
@@ -59,7 +59,7 @@ int main() {
 	Sound.play();
 	while (1) {
 		sf::sleep(sf::milliseconds(100));
-	}
+	}*/
 
 
 	//Custom recorder
@@ -76,10 +76,23 @@ int main() {
 
 	while (!_kbhit())
 	{
+		std::cout << recorder.getVectorSize() << std::endl;
 	}
 
 	recorder.stop();						//Stop recording
 	std::cout << "end recording" << std::endl;
+
+
+	/*for (int i = 0; i < recorder.getVectorSize(); i++)
+	{
+		std::cout << recorder.getVector(i) << std::endl;
+	}*/
+
+	
+
+
+	int c;
+	std::cin >> c;
 
 	return 0;
 }

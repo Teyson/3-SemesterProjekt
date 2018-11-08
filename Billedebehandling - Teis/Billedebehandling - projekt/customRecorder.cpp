@@ -26,7 +26,8 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
 			//cout << samples[i];
 		}
 	
-	return false;
+	setProcessingInterval(sf::milliseconds(10));
+	
 	// do something useful with the new chunk of samples
 	//...
 	//sf::SoundBuffer buffer;	

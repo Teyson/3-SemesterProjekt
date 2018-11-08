@@ -20,21 +20,12 @@ public:
 
 	int getVector(int k);
 
-	//const sf::Int16 * getVector(int k);
-
 	int getVectorSize();
-
-	//const sf::Int16* returnBuffer();
 
 
 	~customRecorder();
 
 protected:
-	//vector <double> sampleVector;
-	//vector <const sf::Int16*> sampleVector;
 	vector <int> sampleVector;
-	//int sampleArray[5000];
-	//sf::SoundBuffer buffer;
-	//const sf::Int16* testBit;
 
 };
