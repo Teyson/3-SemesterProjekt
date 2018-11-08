@@ -6,12 +6,12 @@ class Behandling
 {
 public:
 	Behandling();
-	int goertzler(int fs, int f, std::vector<int> sampels);
-	int bestLowDTMF(int fs, std::vector<int>sampels);
-	int bestHighDTMF(int fs, std::vector<int>sampels);
+	int goertzler(int fs, int f, std::vector<float> sampels);
+	int bestLowDTMF(int fs, std::vector<float>sampels);
+	int bestHighDTMF(int fs, std::vector<float>sampels);
 	~Behandling();
 protected:
 	int samplingFrekvens;
-	std::vector<int> maalinger;
+	std::vector<float> maalinger;
 };
 
