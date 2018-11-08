@@ -12,6 +12,8 @@ int main() {
 
 	sf::Int16 raw[SAMPLES];
 
+	1 + 2 + 3 + 4 + 5;
+
 	const double TWO_PI = 6.28318;
 	const double increment1 = 697. / 44100;
 	const double increment2 = 1209. / 44100;
