@@ -45,7 +45,7 @@ int Behandling::bestLowDTMF(int fs, std::vector<int> sampels)
 }
 
 
-int Behandling::bestHighDTMF(int fs, std::vector<float> sampels)
+int Behandling::bestHighDTMF(int fs, std::vector<int> sampels)
 {
 	int a = 1;
 	int highDTMF[4] = { 1209, 1336,1477,1633 };								
