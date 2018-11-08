@@ -8,44 +8,49 @@
 
 #include "CImg.h"
 #include "PictureProcessing.h"
-#include "customRecorder.h"
+//#include "customRecorder.h"
 #include "Protokol.h"
 #include "BitDTMF.h"
+#include "DTMFToner.h"
 
 
 std::vector<Protokol> protokoller;
 
 std::vector<DTMFToner> dtmfToner;
-//Husk at sætte samplerate og antal samples inde i klassen
+//Husk at sï¿½tte samplerate og antal samples inde i klassen
 
-std::vector<sf::Int16> sampleToner;
+std::vector<float> sampleToner;
 
 int main() {
-	/*const unsigned SAMPLES = 44100;
-	const unsigned SAMPLE_RATE = 44100;
-	const unsigned AMPLITUDE = 10000;
+	const unsigned SAMPLES = 16000;
+	const unsigned HEY = 80000;
+	const unsigned SAMPLE_RATE = 8000;
+	sf::Int16 raw[HEY];
 
-	sf::Int16 raw[SAMPLES];
-
-	BitDTMF sekvens("1010100100100101", 44100, 41000, 5);
+	BitDTMF sekvens("10101101000110110101", 44100, 41000, 20);
+	//Format ( string, samples, samplefrekvens, protokolOpdelingsstÃ¸rrelse)
+	
 	sekvens.toProtokol(protokoller);
 	sekvens.toDTMF(protokoller, dtmfToner);
-
-
-	1 + 2 + 3 + 4 + 5;
-
-	const double TWO_PI = 6.28318;
-	const double increment1 = 697. / 44100;
-	const double increment2 = 1209. / 44100;
-	double x1 = 0;
-	double x2 = 0;
-	for (unsigned i = 0; i < SAMPLES; i++) {
-		raw[i] = AMPLITUDE * (sin(x1*TWO_PI) + sin(x2*TWO_PI));
-		x1 += increment1;
-		x2 += increment2;
-
-
+	int antalToner = dtmfToner.size();
+	
+	std::vector<float> tone;
+	tone = dtmfToner[2].createTone();
+	for (size_t i = 0; i < SAMPLES; i++)
+	{
+		raw[i] = tone[i];
 	}
+
+	/*for (int j = 0; j < antalToner; j++)
+	{
+		tone = dtmfToner[j].createTone();
+		for (int i = 0; i < SAMPLES; i++)
+		{
+			raw[((SAMPLES*(j+1))-SAMPLES)+i] = tone[i];
+		}
+	}*/
+	std::cout << raw[1100] << std::endl;
+
 
 	sf::SoundBuffer Buffer;
 	if (!Buffer.loadFromSamples(raw, SAMPLES, 1, SAMPLE_RATE)) {
@@ -55,40 +60,40 @@ int main() {
 
 	sf::Sound Sound;
 	Sound.setBuffer(Buffer);
-	Sound.setLoop(true);
+	Sound.setLoop(false);
 	Sound.play();
 	while (1) {
 		sf::sleep(sf::milliseconds(100));
-	}*/
+	}
 
 
 	//Custom recorder
-	if (!customRecorder::isAvailable())
-	{
-		std::cout << "Audio capture not available";
-		return 0;
-	}
+	//if (!customRecorder::isAvailable())
+	//{
+	//	std::cout << "Audio capture not available";
+	//	return 0;
+	//}
 
-	customRecorder recorder;
+	//customRecorder recorder;
 
-	recorder.start(8000);					//Start recording
-	std::cout << "Recording...." << std::endl;
+	//recorder.start(8000);					//Start recording
+	//std::cout << "Recording...." << std::endl;
 
-	while (!_kbhit())
-	{
-		std::cout << recorder.getVectorSize() << std::endl;
-	}
+	//while (!_kbhit())
+	//{
+	//	std::cout << recorder.getVectorSize() << std::endl;
+	//}
 
-	recorder.stop();						//Stop recording
-	std::cout << "end recording" << std::endl;
+	//recorder.stop();						//Stop recording
+	//std::cout << "end recording" << std::endl;
 
 
-	/*for (int i = 0; i < recorder.getVectorSize(); i++)
-	{
-		std::cout << recorder.getVector(i) << std::endl;
-	}*/
+	///*for (int i = 0; i < recorder.getVectorSize(); i++)
+	//{
+	//	std::cout << recorder.getVector(i) << std::endl;
+	//}*/
 
-	
+	//
 
 
 	int c;

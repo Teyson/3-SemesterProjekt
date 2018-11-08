@@ -11,6 +11,8 @@ Protokol::Protokol(std::string s)
 	endString = startString;
 }
 
+
+
 void Protokol::setToneStart(int s)
 {
 	toneNrStart = s;

@@ -10,7 +10,7 @@ bool customRecorder::onStart()
 {
 	// initialize whatever has to be done before the capture starts
 
-	setProcessingInterval(sf::milliseconds(5)); //Sætter intervallerne som onProcessSamples() arbejder på
+	setProcessingInterval(sf::milliseconds(5)); //Sï¿½tter intervallerne som onProcessSamples() arbejder pï¿½
 
 
 												   // return true to start the capture, or false to cancel it
@@ -21,7 +21,6 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
 {
 	for (int i = 0; i < sampleCount; i++)
 		{
-			
 			sampleVector.push_back(samples[i]);
 			//cout << samples[i];
 		}
@@ -54,6 +53,12 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
 	// return true to continue the capture, or false to stop it
 	return true;
 }
+
+vector<sf::Int16> customRecorder::sampleToner()
+{
+	return sampleVector;
+}
+
 
 void customRecorder::onStop()
 {

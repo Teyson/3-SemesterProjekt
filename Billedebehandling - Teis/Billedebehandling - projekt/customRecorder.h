@@ -16,6 +16,8 @@ public:
 
 	virtual bool onProcessSamples(const sf::Int16* samples, std::size_t sampleCount);
 
+	vector<sf::Int16> sampleToner();
+
 	virtual void onStop();
 
 	int getVector(int k);
@@ -26,6 +28,6 @@ public:
 	~customRecorder();
 
 protected:
-	vector <int> sampleVector;
+	vector <sf::Int16> sampleVector;
 
 };

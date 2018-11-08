@@ -65,7 +65,9 @@ void BitDTMF::toDTMF(std::vector<Protokol>& prot, std::vector<DTMFToner>& dtmfVe
 
 		//Opdeler strengen i bidder af bitPrTone
 		stringLength = bitHold.length();			//Længden af den protkolstrengen
+		
 		antalOpdelinger = stringLength / bitPrTone; //Antal muligeopdelinger uden padding
+		
 		divisionsrest = stringLength % bitPrTone;	//Mulige opdelinger med padding
 		if (divisionsrest > 0)
 		{
@@ -79,12 +81,14 @@ void BitDTMF::toDTMF(std::vector<Protokol>& prot, std::vector<DTMFToner>& dtmfVe
 		/*Pusher hver enkel tone som objekt og sætter tonestart og -slut*/
 		std::string acc;
 		prot[i].setToneStart(toneNr); //Første tonenr gemmes for protokollen
+		
 		for (int i = 1; i < antalOpdelinger + 1; i++)
 		{
 			acc = startString.substr((i * bitPrTone) - bitPrTone, bitPrTone);
-
 			//Strengen pushes som objekt til klassen protokol 
+			
 			DTMFToner nyTone(acc);
+			nyTone.setToneNumber();
 			dtmfVec.push_back(nyTone);
 			toneNr++;
 		}
@@ -102,7 +106,7 @@ void BitDTMF::toDTMF(std::vector<Protokol>& prot, std::vector<DTMFToner>& dtmfVe
 	
 
 	bitHold = prot[0].getString();
-	std::cout << bitHold << std::endl;
+	//std::cout << bitHold << std::endl;
 
 }
 

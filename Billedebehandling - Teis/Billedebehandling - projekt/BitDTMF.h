@@ -36,9 +36,7 @@ protected:
 
 public:
 	int antalProtokolStrings;
-
-
-	//Returnerning af array https://stackoverflow.com/questions/3473438/return-array-in-a-function
+	
 };
 
 #endif
