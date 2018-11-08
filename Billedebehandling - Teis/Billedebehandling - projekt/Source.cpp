@@ -1,9 +1,24 @@
+#include <SFML/Audio.hpp>
 #include <iostream>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <bitset>
+#include <conio.h>  //kbhit
+
 #include "CImg.h"
 #include "PictureProcessing.h"
-#include <cmath>
-#include <iostream>
 #include "customRecorder.h"
+#include "Protokol.h"
+#include "BitDTMF.h"
+
+
+std::vector<Protokol> protokoller;
+
+std::vector<DTMFToner> dtmfToner;
+//Husk at sætte samplerate og antal samples inde i klassen
+
+std::vector<sf::Int16> sampleToner;
 
 int main() {
 	const unsigned SAMPLES = 44100;
@@ -11,6 +26,11 @@ int main() {
 	const unsigned AMPLITUDE = 10000;
 
 	sf::Int16 raw[SAMPLES];
+
+	BitDTMF sekvens("1010100100100101", 44100, 41000, 5);
+	sekvens.toProtokol(protokoller);
+	sekvens.toDTMF(protokoller, dtmfToner);
+
 
 	1 + 2 + 3 + 4 + 5;
 
@@ -40,5 +60,26 @@ int main() {
 	while (1) {
 		sf::sleep(sf::milliseconds(100));
 	}
+
+
+	//Custom recorder
+	if (!customRecorder::isAvailable())
+	{
+		std::cout << "Audio capture not available";
+		return 0;
+	}
+
+	customRecorder recorder;
+
+	recorder.start(8000);					//Start recording
+	std::cout << "Recording...." << std::endl;
+
+	while (!_kbhit())
+	{
+	}
+
+	recorder.stop();						//Stop recording
+	std::cout << "end recording" << std::endl;
+
 	return 0;
 }

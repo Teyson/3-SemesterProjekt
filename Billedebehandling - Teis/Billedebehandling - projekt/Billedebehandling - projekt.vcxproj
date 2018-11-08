@@ -132,15 +132,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Behandling.cpp" />
+    <ClCompile Include="BitDTMF.cpp" />
     <ClCompile Include="customRecorder.cpp" />
+    <ClCompile Include="DTMFToner.cpp" />
     <ClCompile Include="PictureProcessing.cpp" />
+    <ClCompile Include="Protokol.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h" />
     <ClInclude Include="Behandling.h" />
+    <ClInclude Include="BitDTMF.h" />
     <ClInclude Include="customRecorder.h" />
+    <ClInclude Include="DTMFToner.h" />
     <ClInclude Include="PictureProcessing.h" />
+    <ClInclude Include="Protokol.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

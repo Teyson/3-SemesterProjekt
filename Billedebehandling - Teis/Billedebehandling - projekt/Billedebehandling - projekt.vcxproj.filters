@@ -27,6 +27,15 @@
     <ClCompile Include="Behandling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BitDTMF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DTMFToner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Protokol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h">
@@ -39,6 +48,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Behandling.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BitDTMF.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DTMFToner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Protokol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
