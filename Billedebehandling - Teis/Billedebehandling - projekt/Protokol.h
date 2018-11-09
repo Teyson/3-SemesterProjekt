@@ -16,6 +16,8 @@ public:
 
 	void setToneStart(int);
 	void setToneSlut(int);
+	int getToneStart();
+	int getToneSlut();
 	std::string getString();
 	~Protokol();
 

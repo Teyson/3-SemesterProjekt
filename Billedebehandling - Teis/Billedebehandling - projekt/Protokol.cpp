@@ -23,6 +23,16 @@ void Protokol::setToneSlut(int s)
 	toneNrSlut = s;
 }
 
+int Protokol::getToneStart()
+{
+	return toneNrStart;
+}
+
+int Protokol::getToneSlut()
+{
+	return toneNrSlut;
+}
+
 std::string Protokol::getString()
 {
 	return endString;

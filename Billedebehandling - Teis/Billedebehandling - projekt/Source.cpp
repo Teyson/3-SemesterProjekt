@@ -23,44 +23,56 @@ std::vector<float> sampleToner;
 
 int main() {
 	const unsigned SAMPLES = 16000;
-	const unsigned HEY = 80000;
 	const unsigned SAMPLE_RATE = 8000;
-	sf::Int16 raw[HEY];
 
-	BitDTMF sekvens("10101101000110110101", 44100, 41000, 20);
+	//Fra antagelsen om at en protokol indeholder 4 byte
+	// sættes raw til 4bytes*2toner*SAMPLES * 2 protokoller
+	const unsigned arraySize = 256000;
+	sf::Int16 raw1[arraySize];
+	sf::Int16 raw2[arraySize];
+	sf::Int16 raw3[arraySize];
+	sf::Int16 raw4[arraySize];
+
+	BitDTMF sekvens("101011010001101100110100010110101100001101101", 44100, 41000, 32);
 	//Format ( string, samples, samplefrekvens, protokolOpdelingsstørrelse)
 	
 	sekvens.toProtokol(protokoller);
 	sekvens.toDTMF(protokoller, dtmfToner);
-	int antalToner = dtmfToner.size();
+	int protStart = protokoller[1].getToneStart();
+	int protSlut = protokoller[1].getToneSlut();
+	
 	
 	std::vector<float> tone;
-	tone = dtmfToner[2].createTone();
-	for (size_t i = 0; i < SAMPLES; i++)
+
+	for (int i = protStart; i < protSlut; i++)
 	{
-		raw[i] = tone[i];
+		tone = dtmfToner[i].createTone();
+		for (size_t j = 1; j < SAMPLES + 1; j++) {
+			raw1[(j * SAMPLES) - SAMPLES] = tone[j];
+		}
 	}
 
-	/*for (int j = 0; j < antalToner; j++)
+
+	/*tone = dtmfToner[0].createTone();
+	for (size_t i = 0; i < SAMPLES; i++)
 	{
-		tone = dtmfToner[j].createTone();
-		for (int i = 0; i < SAMPLES; i++)
-		{
-			raw[((SAMPLES*(j+1))-SAMPLES)+i] = tone[i];
-		}
+		raw1[i] = tone[i];	
 	}*/
-	std::cout << raw[1100] << std::endl;
+
+	//Overwriter raw igen og igen og tildeler 
+	//Laver en stor array pr. protokol objekt eller pr 
+	//Predefineret antal protokoller
+	//Så skal der sendes et ack hver efter et forudbestemt antal prot
+	//Så behøves kun 2 arrays til at indeholde tonedata
+	
+
+	std::cout << raw1[1100] << std::endl;
 
 
 	sf::SoundBuffer Buffer;
-	if (!Buffer.loadFromSamples(raw, SAMPLES, 1, SAMPLE_RATE)) {
-		std::cerr << "Loading failed!" << std::endl;
-		return 1;
-	}
-
+	Buffer.loadFromSamples(raw1, SAMPLES, 1, SAMPLE_RATE);
 	sf::Sound Sound;
 	Sound.setBuffer(Buffer);
-	Sound.setLoop(false);
 	Sound.play();
 	while (1) {
 		sf::sleep(sf::milliseconds(100));
@@ -101,3 +113,15 @@ int main() {
 
 	return 0;
 }
+
+
+
+
+
+
+
+//sf::SoundBuffer Buffer;
+//if (!Buffer.loadFromSamples(raw, SAMPLES, 1, SAMPLE_RATE)) {
+//	std::cerr << "Loading failed!" << std::endl;
+//	return 1;
+//}
