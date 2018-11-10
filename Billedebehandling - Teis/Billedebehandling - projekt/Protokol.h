@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 //#include "BitDTMF.h" SKAL IKKE INKLUDERES
 
 

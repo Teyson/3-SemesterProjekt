@@ -92,7 +92,7 @@ void BitDTMF::toDTMF(std::vector<Protokol>& prot, std::vector<DTMFToner>& dtmfVe
 			dtmfVec.push_back(nyTone);
 			toneNr++;
 		}
-		prot[i].setToneSlut(toneNr); //Sidste tonenr gemmes for protokollen
+		prot[i].setToneSlut(toneNr - 1); //Sidste tonenr gemmes for protokollen
 	}
 		//Dette loop skal opdele strengen af bits i dele af 4 eller 5
 		//Pushe hver opdeling som et objekt, sådan at hvert objekt er én tone
