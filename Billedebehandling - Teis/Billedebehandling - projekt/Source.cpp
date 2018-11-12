@@ -26,28 +26,15 @@ std::vector<sf::Int16> sampleToner;
 
 
 int main() {
-	/*const unsigned SAMPLES = 44100;
-	const unsigned SAMPLE_RATE = 44100;
+	const unsigned SAMPLES = 32000;
+	const unsigned SAMPLE_RATE = 8000;
 	const unsigned AMPLITUDE = 10000;
 
 	sf::Int16 raw[SAMPLES];
-
+	/*
 	BitDTMF sekvens("1010100100100101", 44100, 41000, 5);
 	sekvens.toProtokol(protokoller);
 	sekvens.toDTMF(protokoller, dtmfToner);
-
-
-	1 + 2 + 3 + 4 + 5;
-
-	const double TWO_PI = 6.28318;
-	const double increment1 = 697. / 44100;
-	const double increment2 = 1209. / 44100;
-	double x1 = 0;
-	double x2 = 0;
-	for (unsigned i = 0; i < SAMPLES; i++) {
-		raw[i] = AMPLITUDE * (sin(x1*TWO_PI) + sin(x2*TWO_PI));
-		x1 += increment1;
-		x2 += increment2;
 
 
 	}
@@ -75,7 +62,6 @@ int main() {
 	}
 
 	customRecorder recorder;
-
 	recorder.start(8000);					//Start recording
 	std::cout << "Recording...." << std::endl;
 
@@ -85,18 +71,40 @@ int main() {
 	}
 
 	recorder.stop();						//Stop recording
-
 	std::cout << "end recording" << std::endl;
 
 
-	ofstream outdata;
+
+	/*std::vector<sf::Int16> a;
+	for (int i = 0; i < recorder.getVectorSize(); i++)
+	{
+		a.push_back(recorder.getVector(i));
+	}
+
+	for (int i = 0; i < SAMPLES; i < i++)
+	{
+		raw[i] = a[i];
+	}
+
+	sf::SoundBuffer Buffer;
+	Buffer.loadFromSamples(raw, SAMPLES, 1, SAMPLE_RATE);
+	sf::Sound Sound;
+	Sound.setBuffer(Buffer);
+	Sound.setLoop(true);
+	Sound.play();
+	while (1) {
+		sf::sleep(sf::milliseconds(100));
+	}*/
+
+
+	/*ofstream outdata;
 	outdata.open("komnumand.csv");
 
 	for (int i = 0; i < recorder.getVectorSize(); i++)
 	{
 	outdata << recorder.getVector(i) << endl;
 	}
-	outdata.close();
+	outdata.close();*/
 
 	/*for (int i = 0; i < recorder.getVectorSize(); i++)
 	{
@@ -106,8 +114,8 @@ int main() {
 
 	 
 	
-	/*int c;
-	std::cin >> c;*/
+	int c;
+	std::cin >> c;
 
 	return 0;
 }

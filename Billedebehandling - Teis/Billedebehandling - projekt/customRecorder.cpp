@@ -11,7 +11,7 @@ bool customRecorder::onStart()
 {
 	// initialize whatever has to be done before the capture starts
 
-	setProcessingInterval(sf::milliseconds(5000)); //Sætter intervallerne som onProcessSamples() arbejder på
+	setProcessingInterval(sf::milliseconds(200)); //Sætter intervallerne som onProcessSamples() arbejder på
 	
 												   // return true to start the capture, or false to cancel it
 	return true;
@@ -19,7 +19,7 @@ bool customRecorder::onStart()
 
 bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t sampleCount)
 {
-	
+	sampleVector.clear();
 	//std::cout << sampleCount << std::endl;
 	for (int i = 0; i < sampleCount; i++)
 		{	
@@ -31,7 +31,7 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
 
 	Behandling komnumand;
 
-	std::cout << komnumand.bestHighDTMF(8000, sampleVector) << " + " << komnumand.bestLowDTMF(8000, sampleVector) << std::endl;
+	std::cout << komnumand.bestHigh(8000, sampleVector) << " + " << komnumand.bestLow(8000, sampleVector) << std::endl;
 
 	
 	// return true to continue the capture, or false to stop it
