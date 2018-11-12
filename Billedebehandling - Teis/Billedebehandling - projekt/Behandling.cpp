@@ -32,11 +32,11 @@ int Behandling::goertzler(int fs, int f, std::vector<int> sampels)
 
 int Behandling::bestLowDTMF(int fs, std::vector<int> sampels)
 {
-	int a = 1;
+	int a = 941;
 	int lowDTMF[4] = { 697, 770, 852, 941 };
 	
 	for (int i = 0; i < 4; i++) {											// Finder den frekvens med højest værdi blandt de lave DTMF toner
-		if (goertzler(samplingFrekvens, lowDTMF[i], maalinger) > goertzler(samplingFrekvens, a, maalinger)) {
+		if (goertzler(fs, lowDTMF[i], sampels) > goertzler(fs, a, sampels)) {
 			a = lowDTMF[i];
 		}
 	}
@@ -47,10 +47,10 @@ int Behandling::bestLowDTMF(int fs, std::vector<int> sampels)
 
 int Behandling::bestHighDTMF(int fs, std::vector<int> sampels)
 {
-	int a = 1;
+	int a = 1633;
 	int highDTMF[4] = { 1209, 1336,1477,1633 };								
 	for (int i = 0; i < 4; i++) {											// Finder den frekvens med den højeste værdi blandt de høje DTMF toner
-		if (goertzler(samplingFrekvens, highDTMF[i], maalinger) > goertzler(samplingFrekvens, a, maalinger)) {			// måskke kan denne optimeres så gørtzler ikke bliver kaldt to gange
+		if (goertzler(fs, highDTMF[i], sampels) > goertzler(fs, a, sampels)) {			// måskke kan denne optimeres så gørtzler ikke bliver kaldt to gange
 			a = highDTMF[i];																							// EVT. at den husker den forrige værdi
 
 		}

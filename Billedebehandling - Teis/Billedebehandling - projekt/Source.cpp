@@ -5,12 +5,16 @@
 #include <string>
 #include <bitset>
 #include <conio.h>  //kbhit
+#include <fstream> //Gem til fil
 
 #include "CImg.h"
 #include "PictureProcessing.h"
 #include "customRecorder.h"
 #include "Protokol.h"
 #include "BitDTMF.h"
+
+//#include "Behandling.h"
+
 
 
 std::vector<Protokol> protokoller;
@@ -19,6 +23,7 @@ std::vector<DTMFToner> dtmfToner;
 //Husk at sætte samplerate og antal samples inde i klassen
 
 std::vector<sf::Int16> sampleToner;
+
 
 int main() {
 	/*const unsigned SAMPLES = 44100;
@@ -76,23 +81,33 @@ int main() {
 
 	while (!_kbhit())
 	{
-		std::cout << recorder.getVectorSize() << std::endl;
+		//std::cout << recorder.getVectorSize() << std::endl;
 	}
 
 	recorder.stop();						//Stop recording
+
 	std::cout << "end recording" << std::endl;
 
+
+	ofstream outdata;
+	outdata.open("komnumand.csv");
+
+	for (int i = 0; i < recorder.getVectorSize(); i++)
+	{
+	outdata << recorder.getVector(i) << endl;
+	}
+	outdata.close();
 
 	/*for (int i = 0; i < recorder.getVectorSize(); i++)
 	{
 		std::cout << recorder.getVector(i) << std::endl;
+	
 	}*/
 
+	 
 	
-
-
-	int c;
-	std::cin >> c;
+	/*int c;
+	std::cin >> c;*/
 
 	return 0;
 }

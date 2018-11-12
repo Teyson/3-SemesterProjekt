@@ -3,7 +3,7 @@
 #include <vector>
 #include <array>
 
-//#include <iostream>
+
 using namespace std;
 
 #pragma once
@@ -26,6 +26,6 @@ public:
 	~customRecorder();
 
 protected:
-	vector <int> sampleVector;
+	std::vector <int> sampleVector;
 
 };
