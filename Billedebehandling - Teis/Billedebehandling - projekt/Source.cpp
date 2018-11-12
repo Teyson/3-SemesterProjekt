@@ -8,84 +8,87 @@
 
 //#include "CImg.h"
 #include "PictureProcessing.h"
-#include "customRecorder.h"
+//#include "customRecorder.h"
 #include "Protokol.h"
 #include "BitDTMF.h"
 #include "TextProcessing.h"
+#include "DTMFToner.h"
 
 
 std::vector<Protokol> protokoller;
 
 std::vector<DTMFToner> dtmfToner;
-//Husk at sætte samplerate og antal samples inde i klassen
+//Husk at sï¿½tte samplerate og antal samples inde i klassen
 
-std::vector<sf::Int16> sampleToner;
+std::vector<float> sampleToner;
 
 int main() {
-	std::string newString = "Hej mit navn er Teis, jeg bor i Danmark.";
+	const unsigned SAMPLES = 48000;
+	const unsigned SAMPLE_RATE = 8000;
 
-	TextProcessing TextProcesser(newString);
+	//Fra antagelsen om at en protokol indeholder 4 byte
+	// sÃ¦ttes raw til 4bytes*2toner*SAMPLES * 2 protokoller
+	const unsigned arraySize = 128000;
+	sf::Int16 raw1[arraySize];
 
-	std::cout << "den inputtede string er: " << TextProcesser.getInputString() << std::endl;
-
-	std::cout << std::endl << "Bogstavernes binære værdier: " << std::endl;
-	std::vector<std::bitset<8>> bitVector = TextProcesser.stringToBits();
-
-	for (int i = 0; i < newString[i]; i++)
+	BitDTMF sekvens("00011101000110110011010001011010", 44100, 41000, 32);
+	//Format ( string, samples, samplefrekvens, protokolOpdelingsstÃ¸rrelse)
+	
+	sekvens.toProtokol(protokoller);
+	sekvens.toDTMF(protokoller, dtmfToner);
+	int protStart = protokoller[0].getToneStart();
+	int protSlut = protokoller[0].getToneSlut();
+	
+	//Enkel Tone
+	std::vector<float> tone;
+	tone = dtmfToner[0].createTone();
+	std::cout << dtmfToner[0].getToneNumber() << std::endl;
+	for (size_t i = 0; i < SAMPLES; i++)
 	{
-		std::cout << bitVector[i] << std::endl;
+		raw1[i] = tone[i];
 	}
 
-	TextProcesser.bitsetsVectorToString(bitVector);
+	//Flere toner:
+	/*std::vector<float> tone;
+	for (int i = protStart + 1; i < protSlut + 1; i++)
+	{
+		tone = dtmfToner[i - 1].createTone();
 
-	std::cout << std::endl << "Den lange outputString bliver så: " << std::endl 
-		<< TextProcesser.getOutputString() << std::endl;
+		for (int k = 0, j = ((SAMPLES * i) - SAMPLES); j < (i* SAMPLES + 1); j++, k++) {
+			raw1[j] = tone[k];
+		}
+	}*/
+	//j-loopet appender alle toner i en protokol til raw1 array. k-loopet kÃ¸rer
+	//alle elementer igennem i tone-vektoren.
 
-	int a = 0;
+	//Overwriter raw igen og igen og tildeler 
+	//Laver en stor array pr. protokol objekt eller pr 
+	//Predefineret antal protokoller
+	//SÃ¥ skal der sendes et ack hver efter et forudbestemt antal prot
+	//SÃ¥ behÃ¸ves kun 2 arrays til at indeholde tonedata
 	
 
-	//const unsigned SAMPLES = 44100;
-	//const unsigned SAMPLE_RATE = 44100;
-	//const unsigned AMPLITUDE = 10000;
+	std::cout << std::endl << "Den lange outputString bliver sï¿½: " << std::endl 
+		<< TextProcesser.getOutputString() << std::endl;
 
-	//sf::Int16 raw[SAMPLES];
+
+	sf::SoundBuffer Buffer;
+	if (!Buffer.loadFromSamples(raw1, SAMPLES, 1, SAMPLE_RATE)) {
+		std::cerr << "Loading failed!" << std::endl;
+		return 1;
+	}
+	sf::Sound Sound;
+	Sound.setBuffer(Buffer);
+	Sound.play();
+	while (1) {
+		sf::sleep(sf::milliseconds(100));
+	}
 
 	//BitDTMF sekvens("1010100100100101", 44100, 41000, 5);
 	//sekvens.toProtokol(protokoller);
 	//sekvens.toDTMF(protokoller, dtmfToner);
 
-
-	//1 + 2 + 3 + 4 + 5;
-
-	//const double TWO_PI = 6.28318;
-	//const double increment1 = 697. / 44100;
-	//const double increment2 = 1209. / 44100;
-	//double x1 = 0;
-	//double x2 = 0;
-	//for (unsigned i = 0; i < SAMPLES; i++) {
-	//	raw[i] = AMPLITUDE * (sin(x1*TWO_PI) + sin(x2*TWO_PI));
-	//	x1 += increment1;
-	//	x2 += increment2;
-
-
-	//}
-
-	//sf::SoundBuffer Buffer;
-	//if (!Buffer.loadFromSamples(raw, SAMPLES, 1, SAMPLE_RATE)) {
-	//	std::cerr << "Loading failed!" << std::endl;
-	//	return 1;
-	//}
-
-	//sf::Sound Sound;
-	//Sound.setBuffer(Buffer);
-	//Sound.setLoop(true);
-	//Sound.play();
-	//while (1) {
-	//	sf::sleep(sf::milliseconds(100));
-	//}
-
-
-	////Custom recorder
+	//Custom recorder
 	//if (!customRecorder::isAvailable())
 	//{
 	//	std::cout << "Audio capture not available";
@@ -99,10 +102,35 @@ int main() {
 
 	//while (!_kbhit())
 	//{
+	//	std::cout << recorder.getVectorSize() << std::endl;
 	//}
 
 	//recorder.stop();						//Stop recording
 	//std::cout << "end recording" << std::endl;
 
+
+	///*for (int i = 0; i < recorder.getVectorSize(); i++)
+	//{
+	//	std::cout << recorder.getVector(i) << std::endl;
+	//}*/
+
+	//
+
+
+	int c;
+	std::cin >> c;
+
 	return 0;
 }
+
+
+
+
+
+
+
+//sf::SoundBuffer Buffer;
+//if (!Buffer.loadFromSamples(raw, SAMPLES, 1, SAMPLE_RATE)) {
+//	std::cerr << "Loading failed!" << std::endl;
+//	return 1;
+//}

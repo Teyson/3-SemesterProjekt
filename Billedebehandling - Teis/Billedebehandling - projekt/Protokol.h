@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 //#include "BitDTMF.h" SKAL IKKE INKLUDERES
 
 
@@ -16,6 +17,8 @@ public:
 
 	void setToneStart(int);
 	void setToneSlut(int);
+	int getToneStart();
+	int getToneSlut();
 	std::string getString();
 	~Protokol();
 
