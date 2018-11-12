@@ -26,7 +26,6 @@ std::string CRC::crcCheck()
 		remainder.append("0");
 	}
 
-	std::cout << "couter remainder: " << remainder << std::endl;
 	//nu skal beskeden XOR'es med dividenten det antal gange der er bitstrengen er lang
 
 	
@@ -45,14 +44,10 @@ std::string CRC::crcCheck()
 			{
 				//vi finder det m'te ellement for dividenten 
 				char divM = divident[m];
-
-				std::cout << "divM: " << divM << std::endl;
 				
 
 				//finder det m'te element af J i remainderen
 				char remainM = remainder[j + m];
-				
-				std::cout << "remainM: " << remainM << std::endl;
 
 				//Der XOR'es med bit by bit
 
@@ -64,13 +59,6 @@ std::string CRC::crcCheck()
 					std::string sDel = remainder.substr(j + m + 1, remainder.length());
 					// her indsættes et ettal på det j+m'te element
 					remainder = fDel + "1" + sDel;
-					std::cout << "vi finder ud af hvornaar der XOR'es" << std::endl;
-					std::cout << "1 er der forskel paa remainderen?: " << remainder << std::endl;
-					std::cout << "printer m: " << m << std::endl;
-					std::cout << "printer j+m: " << j+m << std::endl;
-
-					std::cout << "couter dividenten: " << divident << std::endl;
-
 				}
 				else
 				{
@@ -80,7 +68,6 @@ std::string CRC::crcCheck()
 					std::string sDel = remainder.substr(j + m + 1, remainder.length());
 					// her indsættes et ettal på det j+m'te element
 					remainder = fDel + "0" + sDel;
-					std::cout << "2 er der forskel paa remainderen?: " << remainder << std::endl;
 				}
 
 			}
@@ -88,15 +75,9 @@ std::string CRC::crcCheck()
 		}
 	}
 
-	std::cout << "Dette er den fulde remainder: " << remainder << std::endl;
-
 	std::string checksum = remainder.substr(remainder.length() - divident.length() + 1, remainder.length());
 	return checksum;
 }
-
-
-
-
 
 CRC::~CRC()
 {
