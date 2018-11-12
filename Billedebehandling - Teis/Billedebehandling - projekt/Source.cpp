@@ -8,54 +8,74 @@
 
 #include "CImg.h"
 #include "PictureProcessing.h"
-#include "customRecorder.h"
+//#include "customRecorder.h"
 #include "Protokol.h"
 #include "BitDTMF.h"
+#include "DTMFToner.h"
 
 
 std::vector<Protokol> protokoller;
 
 std::vector<DTMFToner> dtmfToner;
-//Husk at s�tte samplerate og antal samples inde i klassen
+//Husk at s�tte samplerate og antal samples inde i klassen
 
-std::vector<sf::Int16> sampleToner;
+std::vector<float> sampleToner;
 
 int main() {
-	const unsigned SAMPLES = 44100;
-	const unsigned SAMPLE_RATE = 44100;
-	const unsigned AMPLITUDE = 10000;
+	const unsigned SAMPLES = 48000;
+	const unsigned SAMPLE_RATE = 8000;
 
-	sf::Int16 raw[SAMPLES];
+	//Fra antagelsen om at en protokol indeholder 4 byte
+	// sættes raw til 4bytes*2toner*SAMPLES * 2 protokoller
+	const unsigned arraySize = 128000;
+	sf::Int16 raw1[arraySize];
 
-	BitDTMF sekvens("1010100100100101", 44100, 41000, 5);
+	BitDTMF sekvens("00011101000110110011010001011010", 44100, 41000, 32);
+	//Format ( string, samples, samplefrekvens, protokolOpdelingsstørrelse)
+	
 	sekvens.toProtokol(protokoller);
 	sekvens.toDTMF(protokoller, dtmfToner);
-
-
-	1 + 2 + 3 + 4 + 5;
-
-	const double TWO_PI = 6.28318;
-	const double increment1 = 697. / 44100;
-	const double increment2 = 1209. / 44100;
-	double x1 = 0;
-	double x2 = 0;
-	for (unsigned i = 0; i < SAMPLES; i++) {
-		raw[i] = AMPLITUDE * (sin(x1*TWO_PI) + sin(x2*TWO_PI));
-		x1 += increment1;
-		x2 += increment2;
-
-
+	int protStart = protokoller[0].getToneStart();
+	int protSlut = protokoller[0].getToneSlut();
+	
+	//Enkel Tone
+	std::vector<float> tone;
+	tone = dtmfToner[0].createTone();
+	std::cout << dtmfToner[0].getToneNumber() << std::endl;
+	for (size_t i = 0; i < SAMPLES; i++)
+	{
+		raw1[i] = tone[i];
 	}
 
+	//Flere toner:
+	/*std::vector<float> tone;
+	for (int i = protStart + 1; i < protSlut + 1; i++)
+	{
+		tone = dtmfToner[i - 1].createTone();
+
+		for (int k = 0, j = ((SAMPLES * i) - SAMPLES); j < (i* SAMPLES + 1); j++, k++) {
+			raw1[j] = tone[k];
+		}
+	}*/
+	//j-loopet appender alle toner i en protokol til raw1 array. k-loopet kører
+	//alle elementer igennem i tone-vektoren.
+
+	//Overwriter raw igen og igen og tildeler 
+	//Laver en stor array pr. protokol objekt eller pr 
+	//Predefineret antal protokoller
+	//Så skal der sendes et ack hver efter et forudbestemt antal prot
+	//Så behøves kun 2 arrays til at indeholde tonedata
+	
+
+
+
 	sf::SoundBuffer Buffer;
-	if (!Buffer.loadFromSamples(raw, SAMPLES, 1, SAMPLE_RATE)) {
+	if (!Buffer.loadFromSamples(raw1, SAMPLES, 1, SAMPLE_RATE)) {
 		std::cerr << "Loading failed!" << std::endl;
 		return 1;
 	}
-
 	sf::Sound Sound;
 	Sound.setBuffer(Buffer);
-	Sound.setLoop(true);
 	Sound.play();
 	while (1) {
 		sf::sleep(sf::milliseconds(100));
@@ -63,23 +83,48 @@ int main() {
 
 
 	//Custom recorder
-	if (!customRecorder::isAvailable())
-	{
-		std::cout << "Audio capture not available";
-		return 0;
-	}
+	//if (!customRecorder::isAvailable())
+	//{
+	//	std::cout << "Audio capture not available";
+	//	return 0;
+	//}
 
-	customRecorder recorder;
+	//customRecorder recorder;
 
-	recorder.start(8000);					//Start recording
-	std::cout << "Recording...." << std::endl;
+	//recorder.start(8000);					//Start recording
+	//std::cout << "Recording...." << std::endl;
 
-	while (!_kbhit())
-	{
-	}
+	//while (!_kbhit())
+	//{
+	//	std::cout << recorder.getVectorSize() << std::endl;
+	//}
 
-	recorder.stop();						//Stop recording
-	std::cout << "end recording" << std::endl;
+	//recorder.stop();						//Stop recording
+	//std::cout << "end recording" << std::endl;
+
+
+	///*for (int i = 0; i < recorder.getVectorSize(); i++)
+	//{
+	//	std::cout << recorder.getVector(i) << std::endl;
+	//}*/
+
+	//
+
+
+	int c;
+	std::cin >> c;
 
 	return 0;
 }
+
+
+
+
+
+
+
+//sf::SoundBuffer Buffer;
+//if (!Buffer.loadFromSamples(raw, SAMPLES, 1, SAMPLE_RATE)) {
+//	std::cerr << "Loading failed!" << std::endl;
+//	return 1;
+//}
