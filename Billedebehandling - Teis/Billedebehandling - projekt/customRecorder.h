@@ -4,7 +4,7 @@
 #include <array>
 
 //#include <iostream>
-using namespace std;
+
 
 #pragma once
 class customRecorder : public sf::SoundRecorder
@@ -32,7 +32,7 @@ public:
 protected:
 	//vector <double> sampleVector;
 	//vector <const sf::Int16*> sampleVector;
-	vector <int> sampleVector;
+	std::vector <int> sampleVector;
 	//int sampleArray[5000];
 	//sf::SoundBuffer buffer;
 	//const sf::Int16* testBit;
