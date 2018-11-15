@@ -6,7 +6,7 @@
 #include <bitset>
 #include <conio.h>  //kbhit
 
-//#include "CImg.h"
+#include "CImg.h"
 #include "PictureProcessing.h"
 //#include "customRecorder.h"
 #include "Protokol.h"
@@ -67,9 +67,9 @@ int main() {
 	//Så skal der sendes et ack hver efter et forudbestemt antal prot
 	//Så behøves kun 2 arrays til at indeholde tonedata
 	
-
-	std::cout << std::endl << "Den lange outputString bliver s�: " << std::endl 
-		<< TextProcesser.getOutputString() << std::endl;
+	
+	
+	
 
 
 	sf::SoundBuffer Buffer;

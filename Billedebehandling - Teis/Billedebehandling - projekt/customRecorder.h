@@ -16,7 +16,7 @@ public:
 
 	virtual bool onProcessSamples(const sf::Int16* samples, std::size_t sampleCount);
 
-	vector<sf::Int16> sampleToner();
+	std::vector<sf::Int16> sampleToner();
 
 	virtual void onStop();
 
