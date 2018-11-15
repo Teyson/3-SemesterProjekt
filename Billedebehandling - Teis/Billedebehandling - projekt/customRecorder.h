@@ -29,5 +29,7 @@ public:
 
 protected:
 	std::vector <int> sampleVector;
+	std::vector <int> testVector;
 	int counter;
+	int filter;
 };

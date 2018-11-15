@@ -12,14 +12,37 @@ bool customRecorder::onStart()
 	// initialize whatever has to be done before the capture starts
 
 	setProcessingInterval(sf::milliseconds(100)); //Sætter intervallerne som onProcessSamples() arbejder på
-	
+
+	int pointerStart = 0;
+	int pointerSlut = 100;
+	filter = 0;
 												   // return true to start the capture, or false to cancel it
 	return true;
 }
 
 bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t sampleCount)
 {
-	
+	while (filter == 0)
+	{
+		std::cout << "filter" << endl;
+		for (int i = 0; i < sampleCount; i + 100)
+		{
+			for (int j = 0; j < 100; j++)
+			{
+				testVector.push_back(samples[j]);
+			}
+
+			Behandling blbla;
+			if (blbla.goertzler(8000, 697, testVector) > 10000)
+			{
+				filter = 1;
+				return true;
+			}
+		}
+		break;
+	}
+
+
 	
 	mainBuffer;
 
