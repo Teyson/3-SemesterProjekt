@@ -21,7 +21,7 @@ int Behandling::goertzler(int fs, int f, std::vector<int> *samples, int pStart, 
 	//float sine = sin(omega);
 	float coeff = 2. * cosine;
 
-	for (int i = 0; i < n; i++) {
+	for (int i = pStart; i < pStart+sampleSize; i++) {
 		w0 = (coeff * w1) - w2 + (*samples)[i];
 		w2 = w1;
 		w1 = w0;

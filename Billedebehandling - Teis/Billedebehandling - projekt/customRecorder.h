@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <fstream>
 
 #include "Synkronisering.h"
 
@@ -13,15 +14,10 @@ class customRecorder : public sf::SoundRecorder, Synkronisering
 {
 public:
 	customRecorder();
-
 	virtual bool onStart();
-
 	virtual bool onProcessSamples(const sf::Int16* samples, std::size_t sampleCount);
-
 	virtual void onStop();
-
 	int getVector(int k);
-
 	int getVectorSize();
 
 
@@ -33,4 +29,5 @@ protected:
 	int counter;
 	int filter;
 	int startPointer;
+	int a;
 };

@@ -4,14 +4,14 @@
 
 customRecorder::customRecorder()
 {
-
+	a = 0;
 }
 
 bool customRecorder::onStart()
 {
 	// initialize whatever has to be done before the capture starts
 
-	setProcessingInterval(sf::milliseconds(20)); //Sætter intervallerne som onProcessSamples() arbejder på
+	setProcessingInterval(sf::milliseconds(50)); //Sætter intervallerne som onProcessSamples() arbejder på
 	startPointer = 0;
 	
 	filter = 0;
@@ -21,49 +21,68 @@ bool customRecorder::onStart()
 
 bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t sampleCount)
 {
-	/*while (filter == 0)
+	while (filter == 0)
 	{
-		std::cout << "filter" << endl;
-		for (int i = 0; i < sampleCount; i + 100)
+		testVector.clear();
+		for (int i = 0; i < sampleCount; i++)
 		{
-			for (int j = 0; j < 100; j++)
-			{
-				testVector.push_back(samples[j]);
-			}
+			testVector.push_back(samples[i]);
+		}
 
-			Behandling blbla;
-			if (blbla.goertzler(8000, 697, testVector) > 10000)
-			{
+		int amplitudeLow;
+		int amplitudeHigh;
+		int size = sampleCount / 5;
+		Behandling test;
+
+		for (size_t i = 1; i < 6; i++)
+		{
+			amplitudeLow = test.goertzler(8000, 697, &testVector, (i*size) - size, size);
+			amplitudeHigh = test.goertzler(8000, 1209, &testVector, (i*size) - size, size);
+			
+
+			if (amplitudeHigh > 2500 && amplitudeLow > 4000){
 				filter = 1;
 				return true;
 			}
 		}
-		break;
-	}*/
-	for (int i = 0; i < sampleCount; i++)
-	{
-		sampleVector.push_back(samples[i]);
-		//std::cout << sampleVector[i] << std::endl;
+		return true;
 	}
-	
 
-	Behandling blabla;
-	std::cout << blabla.goertzler(8000, 697, &sampleVector, startPointer, sampleCount) << std::endl;
-
-	sampleVector.clear();
-
-	
-	//mainBuffer;
+	std::cout << "YOU DID IT BABY" << std::endl;
 
 
-	//std::cout << sampleCount << std::endl;
-	//	sampleVector.clear();
-	//std::cout << sampleCount << std::endl;
 	//for (int i = 0; i < sampleCount; i++)
-	//	{	
+	//{
 	//	sampleVector.push_back(samples[i]);
 	//	//std::cout << sampleVector[i] << std::endl;
-	//	}
+	//}
+	//
+	//Behandling blabla;
+	////Vindue på 50/10 = 5ms
+	//
+
+	//for (size_t i = 1; i < 4; i++)
+	//{
+	//	//std::cout << blabla.goertzler(8000, 697, &sampleVector, (i*sampleCount / 3) - sampleCount / 3, sampleCount / 3) << std::endl;
+	//	std::cout << blabla.goertzler(8000, 1209, &sampleVector, (i*sampleCount / 3) - sampleCount /3 , sampleCount / 3) << std::endl;
+	//}
+	//
+	//
+
+	//sampleVector.clear();
+
+	//
+	////mainBuffer;
+
+
+	////std::cout << sampleCount << std::endl;
+	////	sampleVector.clear();
+	////std::cout << sampleCount << std::endl;
+	////for (int i = 0; i < sampleCount; i++)
+	////	{	
+	////	sampleVector.push_back(samples[i]);
+	////	//std::cout << sampleVector[i] << std::endl;
+	////	}
 
 
 	
