@@ -36,6 +36,9 @@
     <ClCompile Include="Protokol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DTMF2Bit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h">
@@ -50,13 +53,13 @@
     <ClInclude Include="Behandling.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BitDTMF.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DTMFToner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Protokol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DTMF2Bit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
