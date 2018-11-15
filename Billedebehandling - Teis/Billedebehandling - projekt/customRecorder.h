@@ -3,11 +3,13 @@
 #include <vector>
 #include <array>
 
+#include "Synkronisering.h"
+
 
 using namespace std;
 
 #pragma once
-class customRecorder : public sf::SoundRecorder
+class customRecorder : public sf::SoundRecorder, Synkronisering
 {
 public:
 	customRecorder();
@@ -27,5 +29,5 @@ public:
 
 protected:
 	std::vector <int> sampleVector;
-
+	int counter;
 };
