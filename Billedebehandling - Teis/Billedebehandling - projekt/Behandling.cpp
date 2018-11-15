@@ -6,9 +6,9 @@ Behandling::Behandling()
 {
 }
 
-int Behandling::goertzler(int fs, int f, std::vector<int> samples)
+int Behandling::goertzler(int fs, int f, std::vector<int> *samples, int pStart, int sampleSize)
 {
-	float n = samples.size();
+	float n = sampleSize;
 	int magnitude = 0;
 	float w0 = 0.;
 	float w1 = 0.;
@@ -22,7 +22,7 @@ int Behandling::goertzler(int fs, int f, std::vector<int> samples)
 	float coeff = 2. * cosine;
 
 	for (int i = 0; i < n; i++) {
-		w0 = (coeff * w1) - w2 + samples[i];
+		w0 = (coeff * w1) - w2 + (*samples)[i];
 		w2 = w1;
 		w1 = w0;
 	}
@@ -32,12 +32,12 @@ int Behandling::goertzler(int fs, int f, std::vector<int> samples)
 
 }
 
-int Behandling::bestLow(int fs, std::vector<int> samples)
+int Behandling::bestLow(int fs, std::vector<int> *samples, int pStart, int sampleSize)
 {
-	int a = goertzler(fs, 697, samples);
-	int b = goertzler(fs, 770, samples);
-	int c = goertzler(fs, 852, samples);
-	int d = goertzler(fs, 941, samples);
+	int a = goertzler(fs, 697, samples, pStart, sampleSize);
+	int b = goertzler(fs, 770, samples, pStart, sampleSize);
+	int c = goertzler(fs, 852, samples, pStart, sampleSize);
+	int d = goertzler(fs, 941, samples, pStart, sampleSize);
 	int test[4] = { a,b,c,d };
 	int max = 0;
 	for (int i = 0; i < 4; i++) {
@@ -56,12 +56,12 @@ int Behandling::bestLow(int fs, std::vector<int> samples)
 		return 0;
 }
 
-int Behandling::bestHigh(int fs, std::vector<int> samples)
+int Behandling::bestHigh(int fs, std::vector<int> *samples, int pStart, int sampleSize)
 {
-	int a = goertzler(fs, 1209, samples);
-	int b = goertzler(fs, 1336, samples);
-	int c = goertzler(fs, 1477, samples);
-	int d = goertzler(fs, 1633, samples);
+	int a = goertzler(fs, 1209, samples, pStart, sampleSize);
+	int b = goertzler(fs, 1336, samples, pStart, sampleSize);
+	int c = goertzler(fs, 1477, samples, pStart, sampleSize);
+	int d = goertzler(fs, 1633, samples, pStart, sampleSize);
 	int test[4] = { d,b,c,a };
 	int max = 0;
 	for (int i = 0; i < 4; i++) {
