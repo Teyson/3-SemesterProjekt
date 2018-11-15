@@ -32,4 +32,5 @@ protected:
 	std::vector <int> testVector;
 	int counter;
 	int filter;
+	int startPointer;
 };

@@ -11,10 +11,9 @@ bool customRecorder::onStart()
 {
 	// initialize whatever has to be done before the capture starts
 
-	setProcessingInterval(sf::milliseconds(100)); //Sætter intervallerne som onProcessSamples() arbejder på
-
-	int pointerStart = 0;
-	int pointerSlut = 100;
+	setProcessingInterval(sf::milliseconds(20)); //Sætter intervallerne som onProcessSamples() arbejder på
+	startPointer = 0;
+	
 	filter = 0;
 												   // return true to start the capture, or false to cancel it
 	return true;
@@ -22,7 +21,7 @@ bool customRecorder::onStart()
 
 bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t sampleCount)
 {
-	while (filter == 0)
+	/*while (filter == 0)
 	{
 		std::cout << "filter" << endl;
 		for (int i = 0; i < sampleCount; i + 100)
@@ -40,21 +39,31 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
 			}
 		}
 		break;
-	}
-
-
-	
-	mainBuffer;
-
-
-	std::cout << sampleCount << std::endl;
-	//	sampleVector.clear();
-	//std::cout << sampleCount << std::endl;
+	}*/
 	for (int i = 0; i < sampleCount; i++)
-		{	
+	{
 		sampleVector.push_back(samples[i]);
 		//std::cout << sampleVector[i] << std::endl;
-		}
+	}
+	
+
+	Behandling blabla;
+	std::cout << blabla.goertzler(8000, 697, &sampleVector, startPointer, sampleCount) << std::endl;
+
+	sampleVector.clear();
+
+	
+	//mainBuffer;
+
+
+	//std::cout << sampleCount << std::endl;
+	//	sampleVector.clear();
+	//std::cout << sampleCount << std::endl;
+	//for (int i = 0; i < sampleCount; i++)
+	//	{	
+	//	sampleVector.push_back(samples[i]);
+	//	//std::cout << sampleVector[i] << std::endl;
+	//	}
 
 
 	
