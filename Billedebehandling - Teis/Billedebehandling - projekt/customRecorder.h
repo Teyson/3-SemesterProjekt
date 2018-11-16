@@ -24,10 +24,7 @@ public:
 	~customRecorder();
 
 protected:
-	std::vector <int> sampleVector;
 	std::vector <int> testVector;
-	int counter;
+	std::vector <int> mainBuffer;
 	int filter;
-	int startPointer;
-	int a;
 };

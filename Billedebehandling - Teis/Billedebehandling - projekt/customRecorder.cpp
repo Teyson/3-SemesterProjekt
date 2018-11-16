@@ -4,7 +4,6 @@
 
 customRecorder::customRecorder()
 {
-	a = 0;
 }
 
 bool customRecorder::onStart()
@@ -12,7 +11,6 @@ bool customRecorder::onStart()
 	// initialize whatever has to be done before the capture starts
 
 	setProcessingInterval(sf::milliseconds(50)); //S�tter intervallerne som onProcessSamples() arbejder p�
-	startPointer = 0;
 	
 	filter = 0;
 												   // return true to start the capture, or false to cancel it
@@ -34,13 +32,19 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
 		int size = sampleCount / 10;
 		Behandling test;
 
-		for (size_t i = 1; i < 11; i++)
+		for (size_t i = 0; i < 10; i++)
 		{
-			amplitudeLow = test.goertzler(8000, 697, &testVector, (i*size) - size, size);
-			amplitudeHigh = test.goertzler(8000, 1209, &testVector, (i*size) - size, size);
+			amplitudeLow = test.goertzler(8000, 697, &testVector, (i*size), size);
+			amplitudeHigh = test.goertzler(8000, 1209, &testVector, (i*size), size);
 			
 
 			if (amplitudeHigh > 1500 && amplitudeLow > 1100){
+				if (i != 0) 
+					i--;
+				for (int j = i*size; j < 10*size; j++)
+				{
+					mainBuffer.push_back(testVector[j]);
+				}
 				filter = 1;
 				return true;
 			}
@@ -48,42 +52,10 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
 		return true;
 	}
 
-	std::cout << "YOU DID IT BABY" << std::endl;
-
-
-	//for (int i = 0; i < sampleCount; i++)
-	//{
-	//	sampleVector.push_back(samples[i]);
-	//	//std::cout << sampleVector[i] << std::endl;
-	//}
-	//
-	//Behandling blabla;
-	////Vindue p� 50/10 = 5ms
-	//
-
-	//for (size_t i = 1; i < 4; i++)
-	//{
-	//	//std::cout << blabla.goertzler(8000, 697, &sampleVector, (i*sampleCount / 3) - sampleCount / 3, sampleCount / 3) << std::endl;
-	//	std::cout << blabla.goertzler(8000, 1209, &sampleVector, (i*sampleCount / 3) - sampleCount /3 , sampleCount / 3) << std::endl;
-	//}
-	//
-	//
-
-	//sampleVector.clear();
-
-	//
-	////mainBuffer;
-
-
-	////std::cout << sampleCount << std::endl;
-	////	sampleVector.clear();
-	////std::cout << sampleCount << std::endl;
-	////for (int i = 0; i < sampleCount; i++)
-	////	{	
-	////	sampleVector.push_back(samples[i]);
-	////	//std::cout << sampleVector[i] << std::endl;
-	////	}
-
+	for (int i = 0; i < sampleCount; i++)
+	{
+		mainBuffer.push_back(samples[i]);
+	}
 
 	
 
@@ -105,12 +77,12 @@ void customRecorder::onStop()
 
 int customRecorder::getVector(int k)
 {
-	return sampleVector[k];
+	return mainBuffer[k];
 }
 
 int customRecorder::getVectorSize()
 {
-	return sampleVector.size();
+	return mainBuffer.size();
 
 }
 
