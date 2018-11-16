@@ -6,31 +6,34 @@ Behandling::Behandling()
 {
 }
 
-int Behandling::goertzler(int fs, int f, std::vector<int> samples)
+int Behandling::goertzler(int fs, int f, std::vector<int> *samples, int pStart, int sampleSize)
 {
-	float n = (float)samples.size();
-	float k = floor((n*f) / fs);
-	float omega = ((2.*3.14159265) / n)*k;
-	float cosine = cos(omega);
-	float coeff = 2 * cosine;
-
+	float pi = 3.141592;
 	float w1 = 0., w2 = 0., w0 = 0.;
-	for (int i = 0; i < n - 1; i++)
+
+	float n = (float)sampleSize;
+	float k = floor((n*f) / fs);
+	float omega = (float)(2 * (pi / n))*k;
+	float cosine = (float)cos(omega);
+	float coeff = 2 * cosine;
+	
+
+	for (int i = pStart; i < pStart+sampleSize; i++)
 	{
-		w0 = coeff * w1 - w2 + samples[i];
+		w0 = coeff * w1 - w2 + (*samples)[i];
 		w2 = w1;
 		w1 = w0;
 	}
-	int magnetude = sqrt(w1*w1 + w2 * w2 - w1 * w2*coeff);
-	return magnetude;
+	int magnitude = sqrt(w1*w1 + w2 * w2 - w1 * w2*coeff);
+	return magnitude;
 }
 
-int Behandling::bestLow(int fs, std::vector<int> samples)
+int Behandling::bestLow(int fs, std::vector<int> *samples, int pStart, int sampleSize)
 {
-	int a = goertzler(fs, 697, samples);
-	int b = goertzler(fs, 770, samples);
-	int c = goertzler(fs, 852, samples);
-	int d = goertzler(fs, 941, samples);
+	int a = goertzler(fs, 697, samples, pStart, sampleSize);
+	int b = goertzler(fs, 770, samples, pStart, sampleSize);
+	int c = goertzler(fs, 852, samples, pStart, sampleSize);
+	int d = goertzler(fs, 941, samples, pStart, sampleSize);
 	int test[4] = { a,b,c,d };
 	int max = 0;
 	for (int i = 0; i < 4; i++) {
@@ -49,12 +52,12 @@ int Behandling::bestLow(int fs, std::vector<int> samples)
 		return 0;
 }
 
-int Behandling::bestHigh(int fs, std::vector<int> samples)
+int Behandling::bestHigh(int fs, std::vector<int> *samples, int pStart, int sampleSize)
 {
-	int a = goertzler(fs, 1209, samples);
-	int b = goertzler(fs, 1336, samples);
-	int c = goertzler(fs, 1477, samples);
-	int d = goertzler(fs, 1633, samples);
+	int a = goertzler(fs, 1209, samples, pStart, sampleSize);
+	int b = goertzler(fs, 1336, samples, pStart, sampleSize);
+	int c = goertzler(fs, 1477, samples, pStart, sampleSize);
+	int d = goertzler(fs, 1633, samples, pStart, sampleSize);
 	int test[4] = { a,b,c,d };
 	int max = 0;
 	for (int i = 0; i < 4; i++) {
