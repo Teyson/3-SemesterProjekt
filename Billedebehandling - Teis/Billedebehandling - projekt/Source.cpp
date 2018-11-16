@@ -6,6 +6,8 @@
 #include <bitset>
 #include <conio.h>  //kbhit
 #include <fstream> //Gem til fil
+#include <mutex>
+#include <thread>
 
 #include "CImg.h"
 #include "PictureProcessing.h"
@@ -13,6 +15,7 @@
 #include "Protokol.h"
 #include "BitDTMF.h"
 #include "DTMFToner.h"
+#include "Synkronisering.h"
 
 //#include "Behandling.h"
 
@@ -43,6 +46,10 @@ int main() {
 	int protStart = protokoller[0].getToneStart();
 	int protSlut = protokoller[0].getToneSlut();
 	
+    std::thread syncLoader(&Synkronisering::startSync, Synkronisering());
+    syncLoader.join();
+    
+
 	//Enkel Tone
 	std::vector<float> tone;
 	tone = dtmfToner[0].createTone();
@@ -101,7 +108,8 @@ int main() {
 
 	//customRecorder recorder;
 
-	//recorder.start(8000);					//Start recording
+	//recorder.start(8000);					//Start recording  
+ 
 	//std::cout << "Recording...." << std::endl;
 
 	//while (!_kbhit())

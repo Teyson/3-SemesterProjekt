@@ -25,6 +25,5 @@ public:
 
 protected:
 	std::vector <int> testVector;
-	std::vector <int> mainBuffer;
 	int filter;
 };

@@ -8,8 +8,8 @@ DTMF2Bit::DTMF2Bit()
 
 std::string DTMF2Bit::convertDTMF2Nibble(int fs, std::vector<int> sampels) {
 	Behandling b;
-	int high = b.bestHigh(fs, sampels);
-	int low = b.bestLow(fs, sampels);
+	int high = b.bestHigh(fs, &sampels,2,2);
+	int low = b.bestLow(fs, &sampels,2,2);
 	std::string out;
 	switch (low + high)
 	{
