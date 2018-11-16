@@ -36,7 +36,11 @@
     <ClCompile Include="Protokol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="DTMF2Bit.cpp">
+=======
+    <ClCompile Include="Synkronisering.cpp">
+>>>>>>> Recorder
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,7 +63,11 @@
     <ClInclude Include="Protokol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="DTMF2Bit.h">
+=======
+    <ClInclude Include="Synkronisering.h">
+>>>>>>> Recorder
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,6 +5,7 @@
 #include <string>
 #include <bitset>
 #include <conio.h>  //kbhit
+#include <fstream> //Gem til fil
 
 #include "CImg.h"
 #include "PictureProcessing.h"
@@ -13,6 +14,9 @@
 #include "BitDTMF.h"
 #include "DTMFToner.h"
 
+//#include "Behandling.h"
+
+
 
 std::vector<Protokol> protokoller;
 
@@ -20,6 +24,7 @@ std::vector<DTMFToner> dtmfToner;
 //Husk at s�tte samplerate og antal samples inde i klassen
 
 std::vector<float> sampleToner;
+
 
 int main() {
 	const unsigned SAMPLES = 16000;
