@@ -9,13 +9,12 @@ Behandling::Behandling()
 int Behandling::goertzler(int fs, int f, std::vector<int> *samples, int pStart, int sampleSize)
 {
 	float n = sampleSize;
-	int magnitude = 0;
 	float w0 = 0.;
 	float w1 = 0.;
 	float w2 = 0.;
 	float pi = 3.141592;
 
-	float k = floor((0.5 + ((n*f) / fs)));
+	float k = floor((0.5 + ((n*f) / fs))); 
 	float omega = (float)(2 * (pi / n))*k;
 	float cosine = (float)cos(omega);
 	//float sine = sin(omega);

@@ -52,7 +52,6 @@ int main() {
 		raw1[i] = tone[i];
 	}
 
-	std::vector<float> tone;
 	/*tone = dtmfToner[0].createTone();
 	
 	for (int i = 0; i < SAMPLES; i++)
@@ -67,7 +66,7 @@ int main() {
 		for (int k = 0, j = ((SAMPLES * i) - SAMPLES); k < SAMPLES; j++, k++) {
 			raw1[j] = tone[k];
 		}
-	}*/
+	}
 	//j-loopet appender alle toner i en protokol til raw1 array. k-loopet kører
 	//alle elementer igennem i tone-vektoren.
 
