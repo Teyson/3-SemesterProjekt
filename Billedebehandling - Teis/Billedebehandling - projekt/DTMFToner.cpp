@@ -17,37 +17,37 @@ int DTMFToner::getToneNumber()
 
 void DTMFToner::setToneNumber()
 {
-	if (startString == "0000")
+	if (startString == "0000")				//697 & 1209
 		tone = 0; amplitude = 10000;
-	if (startString == "0001")
+	if (startString == "0001")				//697 & 1336
 		tone = 1; amplitude = 10000;
-	if (startString == "0010")
+	if (startString == "0010")				// 697 & 1477
 		tone = 2; amplitude = 10000;
-	if (startString == "0011")
+	if (startString == "0011")				// 697 & 1633
 		tone = 3; amplitude = 10000;
-	if (startString == "0100")
+	if (startString == "0100")				// 770 & 1209
 		tone = 4; amplitude = 10000;
-	if (startString == "0101")
+	if (startString == "0101")				// 770 & 1336
 		tone = 5; amplitude = 10000;
-	if (startString == "0110")
+	if (startString == "0110")				// 770 & 1477
 		tone = 6; amplitude = 10000;
-	if (startString == "0111")
+	if (startString == "0111")				// 770 & 1633
 		tone = 7; amplitude = 10000;
-	if (startString == "1000")
+	if (startString == "1000")				// 852 & 1209
 		tone = 8; amplitude = 10000;
-	if (startString == "1001")
+	if (startString == "1001")				// 852 & 1336
 		tone = 9; amplitude = 10000;
-	if (startString == "1010")
+	if (startString == "1010")				// 852 & 1477
 		tone = 10; amplitude = 10000;
-	if (startString == "1011")
+	if (startString == "1011")				// 852 & 1633
 		tone = 11; amplitude = 10000;
-	if (startString == "1100")
-		tone = 12; amplitude = 10000;
-	if (startString == "1101")
+	if (startString == "1100")				// 941 & 1209
+		tone = 12; amplitude = 10000;		
+	if (startString == "1101")				// 941 & 1336
 		tone = 13; amplitude = 10000;
-	if (startString == "1110")
+	if (startString == "1110")				// 941 & 1477
 		tone = 14; amplitude = 10000;
-	if (startString == "1111")
+	if (startString == "1111")				// 941 & 1633
 		tone = 15; amplitude = 10000;
 }
 
@@ -66,7 +66,7 @@ std::vector<float> DTMFToner::createTone()
 	const float increment2_3 = 1477. / sampleRate;
 	const float increment2_4 = 1633. / sampleRate;
 
-	//De to containere som skal holde de to frekvenser som DTMF-tonen skal bestå af
+	//De to containere som skal holde de to frekvenser som DTMF-tonen skal bestï¿½ af
 	float x1 = 0;
 	float x2 = 0;
 	std::vector<float> toneVals;

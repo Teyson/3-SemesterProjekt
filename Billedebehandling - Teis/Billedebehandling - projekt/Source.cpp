@@ -22,15 +22,15 @@ std::vector<DTMFToner> dtmfToner;
 std::vector<float> sampleToner;
 
 int main() {
-	const unsigned SAMPLES = 48000;
+	const unsigned SAMPLES = 16000;
 	const unsigned SAMPLE_RATE = 8000;
 
 	//Fra antagelsen om at en protokol indeholder 4 byte
 	// sættes raw til 4bytes*2toner*SAMPLES * 2 protokoller
-	const unsigned arraySize = 128000;
+	const unsigned arraySize = 256000;
 	sf::Int16 raw1[arraySize];
 
-	BitDTMF sekvens("00011101000110110011010001011010", 44100, 41000, 32);
+	BitDTMF sekvens("11101111110010101101000110110011010001011010", 44100, 41000, 32);
 	//Format ( string, samples, samplefrekvens, protokolOpdelingsstørrelse)
 	
 	sekvens.toProtokol(protokoller);
@@ -47,13 +47,19 @@ int main() {
 		raw1[i] = tone[i];
 	}
 
-	//Flere toner:
-	/*std::vector<float> tone;
+	std::vector<float> tone;
+	/*tone = dtmfToner[0].createTone();
+	
+	for (int i = 0; i < SAMPLES; i++)
+	{
+		raw1[i] = tone[i];
+	}*/
+
 	for (int i = protStart + 1; i < protSlut + 1; i++)
 	{
 		tone = dtmfToner[i - 1].createTone();
 
-		for (int k = 0, j = ((SAMPLES * i) - SAMPLES); j < (i* SAMPLES + 1); j++, k++) {
+		for (int k = 0, j = ((SAMPLES * i) - SAMPLES); k < SAMPLES; j++, k++) {
 			raw1[j] = tone[k];
 		}
 	}*/
