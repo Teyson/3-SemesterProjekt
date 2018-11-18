@@ -6,7 +6,6 @@
 #include <SFML/Audio.hpp>
 
 #include "Behandling.h"
-#include "DTMF2Bit.h"
 
 class Synkronisering 
 {
@@ -21,7 +20,6 @@ public:
 
 protected:
 	//std::vector<int> mainBuffer;
-    std::string bitstring;
     std::vector<int> syncBuffer;
     std::vector<int> mainBuffer;
     

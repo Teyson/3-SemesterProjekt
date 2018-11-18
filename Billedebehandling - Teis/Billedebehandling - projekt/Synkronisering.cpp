@@ -50,7 +50,6 @@ void Synkronisering::sync()
     syncPtr = 0; //til at holde styr på, hvad der er syncet i mainBuf
     int elementNr = 0; //Til at holde styr på nr element der tages fra mainBuf
 
-    DTMF2Bit d;
     Behandling behandling;
 
     while (keepSyncing == 1)
@@ -103,8 +102,7 @@ void Synkronisering::sync()
             //Outputting to string
             else
             {
-                bitstring.append(d.convertDTMF2Nibble(8000, &mainBuffer, syncPtr, windowSz));
-                syncPtr += windowSz;
+
             }
         }
         
