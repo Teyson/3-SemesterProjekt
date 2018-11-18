@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 class DTMFToner
 {
@@ -12,15 +13,21 @@ public:
 
 	DTMFToner(std::string);
 
+	int getToneNumber();
 
-	int createDtmf();
+	void setToneNumber();
 	//createDTMF - outputter hvilken tone strengen svarer til
+
+	std::vector<float> createTone();
 
 	~DTMFToner();
 
 protected:
 	std::string startString;
 	int tone;
+	float twoPi;
+	int amplitude;
+	
 };
 
 #endif

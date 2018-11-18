@@ -134,6 +134,7 @@
     <ClCompile Include="Behandling.cpp" />
     <ClCompile Include="BitDTMF.cpp" />
     <ClCompile Include="customRecorder.cpp" />
+    <ClCompile Include="DTMF2Bit.cpp" />
     <ClCompile Include="DTMFToner.cpp" />
     <ClCompile Include="PictureProcessing.cpp" />
     <ClCompile Include="Protokol.cpp" />
@@ -143,8 +144,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h" />
     <ClInclude Include="Behandling.h" />
-    <ClInclude Include="BitDTMF.h" />
     <ClInclude Include="customRecorder.h" />
+    <ClInclude Include="DTMF2Bit.h" />
     <ClInclude Include="DTMFToner.h" />
     <ClInclude Include="PictureProcessing.h" />
     <ClInclude Include="Protokol.h" />
