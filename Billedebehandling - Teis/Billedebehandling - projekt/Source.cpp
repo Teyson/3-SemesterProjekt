@@ -68,6 +68,7 @@ int main() {
 	while (!_kbhit())
 	{
 		//std::cout << recorder.getVectorSize() << std::endl;
+       
 	}
 
 	recorder.stop();						//Stop recording
@@ -97,14 +98,14 @@ int main() {
 	}*/
 
 
-	/*ofstream outdata;
+	ofstream outdata;
 	outdata.open("komnumand.csv");
 
 	for (int i = 0; i < recorder.getVectorSize(); i++)
 	{
 	outdata << recorder.getVector(i) << endl;
 	}
-	outdata.close();*/
+	outdata.close();
 
 	/*for (int i = 0; i < recorder.getVectorSize(); i++)
 	{

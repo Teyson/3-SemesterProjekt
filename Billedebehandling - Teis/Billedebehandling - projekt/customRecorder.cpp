@@ -10,7 +10,7 @@ bool customRecorder::onStart()
 {
 	// initialize whatever has to be done before the capture starts
 
-	setProcessingInterval(sf::milliseconds(50)); //Sætter intervallerne som onProcessSamples() arbejder på
+	setProcessingInterval(sf::milliseconds(60)); //Sætter intervallerne som onProcessSamples() arbejder på
 	
 	filter = 0;
 												   // return true to start the capture, or false to cancel it
@@ -29,16 +29,18 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
 
 		int amplitudeLow;
 		int amplitudeHigh;
-		int size = sampleCount / 10;
+		int size = sampleCount /3;
 		Behandling test;
 
-		for (size_t i = 0; i < 10; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
-			amplitudeLow = test.goertzler(8000, 697, &testVector, (i*size), size);
-			amplitudeHigh = test.goertzler(8000, 1209, &testVector, (i*size), size);
+			amplitudeLow = test.goertzler(8000, 941, &testVector, (i*size), size);
+			amplitudeHigh = test.goertzler(8000, 1633, &testVector, (i*size), size);
 			
+            std::cout << amplitudeLow << std::endl;
+          //  std::cout << amplitudeLow << std::endl;
 
-			if (amplitudeHigh > 1500 && amplitudeLow > 1100){
+			/*if (amplitudeHigh > 1500 && amplitudeLow > 1100){
 				if (i != 0) 
 					i--;
 				for (int j = i*size; j < 10*size; j++)
@@ -47,15 +49,15 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
 				}
 				filter = 1;
 				return true;
-			}
+			}*/
 		}
 		return true;
 	}
 
-	for (int i = 0; i < sampleCount; i++)
+	/*for (int i = 0; i < sampleCount; i++)
 	{
 		mainBuffer.push_back(samples[i]);
-	}
+	}*/
 
 	
 
