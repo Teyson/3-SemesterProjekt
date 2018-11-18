@@ -30,6 +30,7 @@ void Synkronisering::addToMainBuffer(const sf::Int16 *samples, int startPtr, int
 
 void Synkronisering::sync()
 {
+
     bool keepSyncing = 1; // skal kunne sættes til 0 et sted for at stoppe tråden!
     bool startOutputting = 0; //Når den er færdig med selve synkroniseringen, kan tonerne blive dekodet til bit
 
@@ -55,11 +56,14 @@ void Synkronisering::sync()
 
     while (keepSyncing == 1)
     {
+	
         //Det tjekkes om mainBufferen har nok elementer til at der kan tages et vindue
         if (syncPtr + windowSz < mainPtr)
         {
-            if (elementNr == 9)
-                startOutputting = 1;
+			if (elementNr == 9)
+			{
+				startOutputting = 1;
+			}
             //Syncing
             if (startOutputting == 0)
             {

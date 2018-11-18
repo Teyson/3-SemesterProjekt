@@ -30,7 +30,7 @@ std::vector<float> sampleToner;
 
 
 int main() {
-	const unsigned SAMPLES = 16000;
+	const unsigned SAMPLES = (8000*20)/1000;
 	const unsigned SAMPLE_RATE = 8000;
 
 	//Fra antagelsen om at en protokol indeholder 4 byte
@@ -38,7 +38,7 @@ int main() {
 	const unsigned arraySize = 256000;
 	sf::Int16 raw1[arraySize];
 
-	BitDTMF sekvens("11101111110010101101000110110011010001011010", 44100, 41000, 32);
+	BitDTMF sekvens("00001111000011110000111100001111000011110000", 44100, 41000, 40);
 	//Format ( string, samples, samplefrekvens, protokolOpdelingsstørrelse)
 	
 	sekvens.toProtokol(protokoller);
@@ -49,7 +49,7 @@ int main() {
     
 
 	////Enkel Tone
-	//std::vector<float> tone;
+	std::vector<float> tone;
 	//tone = dtmfToner[0].createTone();
 	//std::cout << dtmfToner[0].getToneNumber() << std::endl;
 	//for (size_t i = 0; i < SAMPLES; i++)
@@ -64,14 +64,14 @@ int main() {
 		raw1[i] = tone[i];
 	}*/
 
-	/*for (int i = protStart + 1; i < protSlut + 1; i++)
+	for (int i = protStart + 1; i < protSlut + 1; i++)
 	{
 		tone = dtmfToner[i - 1].createTone();
 
 		for (int k = 0, j = ((SAMPLES * i) - SAMPLES); k < SAMPLES; j++, k++) {
 			raw1[j] = tone[k];
 		}
-	}*/
+	}
 	//j-loopet appender alle toner i en protokol til raw1 array. k-loopet kører
 	//alle elementer igennem i tone-vektoren.
 
@@ -85,7 +85,7 @@ int main() {
 
 
 	/*sf::SoundBuffer Buffer;
-	Buffer.loadFromSamples(raw1, SAMPLES, 1, SAMPLE_RATE);
+	Buffer.loadFromSamples(raw1, arraySize, 1, SAMPLE_RATE);
 	
 	sf::Sound Sound;
 	Sound.setBuffer(Buffer);
