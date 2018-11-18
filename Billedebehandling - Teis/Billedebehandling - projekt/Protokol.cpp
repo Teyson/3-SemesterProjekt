@@ -3,7 +3,7 @@
 
 Protokol::Protokol(std::string sr)
 {
-	if (sr.size() != dataSize + 12)
+	if (sr.size() != dataSize + 16)
 	{
 		//Constructor til når vi modtager et NAK. Tager hele den modtagede NAK-sekvens som input.
 		recievedNAK = sr;
@@ -26,10 +26,10 @@ Protokol::Protokol(std::string sr, int plac)
 
 void Protokol::unpacking()
 {
-	checksum = recievedPacket.substr(recievedPacket.size() - 7, 7);
+	checksum = recievedPacket.substr(recievedPacket.length() - 8, 8);
 	lastBit = recievedPacket.substr(4, 1);
 	sequenceNumber = recievedPacket.substr(0, 4);
-	data = recievedPacket.substr(5, dataSize);
+	data = recievedPacket.substr(8, dataSize);
 }
 
 std::string Protokol::header()
@@ -38,7 +38,11 @@ std::string Protokol::header()
 
 	std::string seqNumString = std::bitset<4>(seqNum).to_string();
 
-	std::string header = seqNumString + "0";
+	std::string zeropadding = "000";
+
+	std::string lastB = "0";
+
+	std::string header = seqNumString + lastB + zeropadding;
 
 	endString = header + endString;
 
@@ -70,15 +74,41 @@ void Protokol::setLastBit()
 {
 	//Deler endString op i dets delelementer, og ændrer derefter lastBit, hvorefter den sættes sammen igen.
 
+	endString = startString;
+
+	header();
+
+	std::string lastB = "1";
+
 	std::string seqNum = endString.substr(0, 4);
-	std::string lastB = endString.substr(4, 1);
-	std::string data = endString.substr(5, dataSize);
-	std::string checksum = endString.substr(5 + dataSize, endString.length() - (5 + dataSize));
+	std::string data = endString.substr(8, dataSize);
+	std::string zeropadding = "000";
 
-	lastB = "1";
-
-	endString = seqNum + lastB + data + checksum;
+	endString = seqNum + lastB + zeropadding + data;
+	trailer();
+	endString;
 }
+
+std::string Protokol::getData()
+{
+	return endString.substr(8, 40);
+}
+
+std::string Protokol::getSequenceNumber()
+{
+	return endString.substr(0, 4);
+}
+
+std::string Protokol::getCRCcheck()
+{
+	return endString.substr(endString.length() - 8, 8);
+}
+
+std::string Protokol::getLastBit()
+{
+	return endString.substr(4, 1);
+}
+
 
 bool Protokol::checkNAKChecksum()
 {
@@ -102,7 +132,7 @@ std::vector<std::string> Protokol::getNAKs()
 {
 	std::vector<std::string> NAKs;
 
-	for (int i = 8; i < recievedNAK.size() - 7; i += 4)
+	for (int i = 8; i < recievedNAK.size() - 8; i += 4)
 	{
 		NAKs.push_back(recievedNAK.substr(i, 4));
 	}
@@ -128,11 +158,20 @@ bool Protokol::checkChecksum()
 	}
 }
 
+std::string Protokol::writeChecksum()
+{
+	CRC check(recievedPacket);
+
+	std::string checkedS = check.crcCheckReciever();
+
+	return checkedS;
+}
+
 bool Protokol::checkLastBit()
 {
 	std::string lastB = getRecievedLastBit();
 
-	if (lastB.compare("1"))
+	if (lastB == "1")
 	{
 		return true;
 	}
@@ -155,7 +194,7 @@ std::string Protokol::getRecievedLastBit()
 	return lastBit;
 }
 
-std::string Protokol::getSequenceNumber()
+std::string Protokol::getRecievedSequenceNumber()
 {
 	return sequenceNumber;
 }
@@ -193,6 +232,11 @@ void Protokol::setDataSize(int dataS)
 std::string Protokol::getString()
 {
 	return endString;
+}
+
+std::string Protokol::getRecievedPacket()
+{
+	return recievedPacket;
 }
 
 Protokol::~Protokol()

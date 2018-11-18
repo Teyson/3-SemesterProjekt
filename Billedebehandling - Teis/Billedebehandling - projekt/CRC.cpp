@@ -86,7 +86,7 @@ std::string CRC::crcCheckReciever()
 
 	//nu skal beskeden XOR'es med dividenten det antal gange der er bitstrengen er lang
 
-	for (int j = 0; j < bitStreng.length(); j++)
+	for (int j = 0; j <= bitStreng.length() - divident.length() - 1; j++)
 	{
 
 		for (int m = divident.length() - 1; m >= 0; m--)
@@ -131,8 +131,8 @@ std::string CRC::crcCheckReciever()
 		}
 	}
 
-	std::string checksum = remainder.substr(remainder.length() - divident.length() + 1, remainder.length());
-	return checksum;
+	checkCiffer = remainder.substr(remainder.length() - divident.length() + 1, remainder.length());
+	return checkCiffer;
 }
 
 CRC::~CRC()

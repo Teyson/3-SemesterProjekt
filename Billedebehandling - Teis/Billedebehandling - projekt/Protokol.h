@@ -19,10 +19,11 @@ public:
 	void makeNAK(std::vector<std::string> NAKvec);	//Skal oprette et NAK i den globale NAK-buffer som indeholder sekvensnummeret på pakken. Skal kun kaldes hvis checkCheckSum() returnerer false
 													//Mangler stadig at blive skrevet, men skal bruge en recieve-buffer på for at virke. Denne buffer er ikke lavet endnu.
 	bool checkChecksum();		//Skal checke at checksummen er rigtig, og returnere true i så fald.
+	std::string writeChecksum();
 	bool checkLastBit();		//Skal checke om lastBit er sat højt, og returnere true hvis den er. Dette er for at vi kan vide hvornår der skal sendes NAKs
 	std::string getRecievedChecksum();
 	std::string getRecievedLastBit();
-	std::string getSequenceNumber();
+	std::string getRecievedSequenceNumber();
 	std::string getRecievedData();
 
 	//Afsending af pakker
@@ -30,6 +31,10 @@ public:
 	std::string trailer();		//Skal kalde og lave et CRC-check på data og header.
 	std::string packing();		//Skal kalde header() og trailer(), så de er samlet i et funktions. De skal alligevel altid kaldes sammen
 	void setLastBit();			//Skal gå ind i stringen og sætte det rigtige bit højt.
+	std::string getData();
+	std::string getSequenceNumber();
+	std::string getCRCcheck();
+	std::string getLastBit();
 	
 	//Modtagning af NAK
 	bool checkNAKChecksum();
@@ -42,6 +47,7 @@ public:
 	void setToneStart(int);
 	void setToneSlut(int);
 	std::string getString();
+	std::string getRecievedPacket();
 
 	~Protokol();
 
@@ -50,8 +56,8 @@ protected:
 	std::string endString;
 	int toneNrStart;
 	int toneNrSlut;
-	int dataSize;
-	int placering;
+	int dataSize = 40;
+	int placering = 0;
 
 	//Bruges til når data modtages, skabes af funktionen unpacking()
 	std::string checksum;

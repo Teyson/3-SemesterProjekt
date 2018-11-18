@@ -18,7 +18,8 @@ public:
 protected:
 	std::string bitStreng;
 	std::string bSMCheckC;
-	std::string divident = "11011";
+	std::string divident = "111010101";
+	std::string checkCiffer;
 };
 
 
