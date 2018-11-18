@@ -11,7 +11,7 @@
 
 #include "CImg.h"
 #include "PictureProcessing.h"
-//#include "customRecorder.h"
+#include "customRecorder.h"
 #include "Protokol.h"
 #include "BitDTMF.h"
 #include "DTMFToner.h"
@@ -46,18 +46,16 @@ int main() {
 	int protStart = protokoller[0].getToneStart();
 	int protSlut = protokoller[0].getToneSlut();
 	
-    std::thread syncLoader(&Synkronisering::startSync, Synkronisering());
-    syncLoader.join();
     
 
-	//Enkel Tone
-	std::vector<float> tone;
-	tone = dtmfToner[0].createTone();
-	std::cout << dtmfToner[0].getToneNumber() << std::endl;
-	for (size_t i = 0; i < SAMPLES; i++)
-	{
-		raw1[i] = tone[i];
-	}
+	////Enkel Tone
+	//std::vector<float> tone;
+	//tone = dtmfToner[0].createTone();
+	//std::cout << dtmfToner[0].getToneNumber() << std::endl;
+	//for (size_t i = 0; i < SAMPLES; i++)
+	//{
+	//	raw1[i] = tone[i];
+	//}
 
 	/*tone = dtmfToner[0].createTone();
 	
@@ -66,14 +64,14 @@ int main() {
 		raw1[i] = tone[i];
 	}*/
 
-	for (int i = protStart + 1; i < protSlut + 1; i++)
+	/*for (int i = protStart + 1; i < protSlut + 1; i++)
 	{
 		tone = dtmfToner[i - 1].createTone();
 
 		for (int k = 0, j = ((SAMPLES * i) - SAMPLES); k < SAMPLES; j++, k++) {
 			raw1[j] = tone[k];
 		}
-	}
+	}*/
 	//j-loopet appender alle toner i en protokol til raw1 array. k-loopet kører
 	//alle elementer igennem i tone-vektoren.
 
@@ -86,39 +84,36 @@ int main() {
 
 
 
-	sf::SoundBuffer Buffer;
-	if (!Buffer.loadFromSamples(raw1, SAMPLES, 1, SAMPLE_RATE)) {
-		std::cerr << "Loading failed!" << std::endl;
-		return 1;
-	}
+	/*sf::SoundBuffer Buffer;
+	Buffer.loadFromSamples(raw1, SAMPLES, 1, SAMPLE_RATE);
+	
 	sf::Sound Sound;
 	Sound.setBuffer(Buffer);
 	Sound.play();
 	while (1) {
 		sf::sleep(sf::milliseconds(100));
-	}
+	}*/
 
 
-	//Custom recorder
-	//if (!customRecorder::isAvailable())
-	//{
-	//	std::cout << "Audio capture not available";
-	//	return 0;
-	//}
+	
+	customRecorder recorder;
+    recorder.start(8000);					//Start recording  
+    std::cout << "Recording...." << std::endl;
 
-	//customRecorder recorder;
+    sf::sleep(sf::milliseconds(1000));
 
-	//recorder.start(8000);					//Start recording  
- 
-	//std::cout << "Recording...." << std::endl;
+    recorder.synkronisering(8000,20);
+    //Format: SampleRate, vindue i ms
+    
+	
+    
+   
 
-	//while (!_kbhit())
-	//{
-	//	std::cout << recorder.getVectorSize() << std::endl;
-	//}
+	while (!_kbhit())
+	{}
 
-	//recorder.stop();						//Stop recording
-	//std::cout << "end recording" << std::endl;
+	recorder.stop();						//Stop recording
+	std::cout << "end recording" << std::endl;
 
 
 	///*for (int i = 0; i < recorder.getVectorSize(); i++)

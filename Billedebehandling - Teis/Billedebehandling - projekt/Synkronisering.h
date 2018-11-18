@@ -3,23 +3,28 @@
 #include <string>
 #include <mutex>
 #include <iostream>
+#include <SFML/Audio.hpp>
 
-class Synkronisering
+class Synkronisering 
 {
 public:
 	Synkronisering();
+    void addToMainBuffer(const sf::Int16 *samples, int startPtr, int vectorSize);
+    void clearMainBuffer(bool clear);
     void startSync();
-
+    void setClass();
 
 	~Synkronisering();
 
 protected:
-	std::vector<int> mainBuffer;
+	//std::vector<int> mainBuffer;
     std::vector<int> syncBuffer;
+    std::vector<int> mainBuffer;
     
 
-    int mainPointer;
-    int syncPointer;
+    int a;
+    int mainPtr;
+    int syncPtr;
 
 };
 
