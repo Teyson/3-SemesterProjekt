@@ -14,7 +14,7 @@ class BitDTMF
 {
 public:
 	BitDTMF();
-	BitDTMF(std::string s, int antalSamples, int samplingFrekvens, int opdelingsSize);
+	BitDTMF(std::string, int antalSamples, int samplingFrekvens, int opdelingsSize);
 	
 	void toProtokol(std::vector<Protokol>&);
 	//toProtokol - Del datastringen op i bidder af objekter
@@ -36,9 +36,7 @@ protected:
 
 public:
 	int antalProtokolStrings;
-
-
-	//Returnerning af array https://stackoverflow.com/questions/3473438/return-array-in-a-function
+	
 };
 
 #endif
