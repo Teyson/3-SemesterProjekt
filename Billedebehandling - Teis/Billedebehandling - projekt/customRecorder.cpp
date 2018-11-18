@@ -71,7 +71,7 @@ void customRecorder::onStop()
 void customRecorder::synkronisering(int sampleR, int vinduems)
 {
     int vindue = (sampleR * vinduems) / 1000;
-    std::thread syncLoader(&Synkronisering::startSync, obj);
+    std::thread syncLoader(&Synkronisering::sync, obj);
     syncLoader.join();
 }
 

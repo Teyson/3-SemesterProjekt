@@ -5,13 +5,15 @@
 #include <iostream>
 #include <SFML/Audio.hpp>
 
+#include "Behandling.h"
+
 class Synkronisering 
 {
 public:
 	Synkronisering();
     void addToMainBuffer(const sf::Int16 *samples, int startPtr, int vectorSize);
     void clearMainBuffer(bool clear);
-    void startSync();
+    void sync();
     void setClass();
 
 	~Synkronisering();
