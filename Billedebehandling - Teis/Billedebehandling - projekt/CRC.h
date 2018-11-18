@@ -10,10 +10,12 @@ public:
 	std::string getbitstreng();
 	
 	std::string crcCheck();
+
+	std::string crcCheckReciever();
 	
 
 	~CRC();
-private:
+protected:
 	std::string bitStreng;
 	std::string bSMCheckC;
 	std::string divident = "11011";

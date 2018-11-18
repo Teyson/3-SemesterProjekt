@@ -22,6 +22,8 @@ std::vector<DTMFToner> dtmfToner;
 
 std::vector<float> sampleToner;
 
+std::vector<std::string> NAKvector;
+
 int main() {
 	const unsigned SAMPLES = 48000;
 	const unsigned SAMPLE_RATE = 8000;
