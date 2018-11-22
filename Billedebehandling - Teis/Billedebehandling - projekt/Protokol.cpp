@@ -81,10 +81,11 @@ void Protokol::setLastBit()
 	std::string lastB = "1";
 
 	std::string seqNum = endString.substr(0, 4);
+	std::string resendBit = endString.substr(6, 1);
 	std::string data = endString.substr(8, dataSize);
-	std::string zeropadding = "000";
+	std::string zeropadding = "00";
 
-	endString = seqNum + lastB + zeropadding + data;
+	endString = seqNum + lastB + resendBit + zeropadding + data;
 	trailer();
 	endString;
 }
@@ -97,6 +98,26 @@ std::string Protokol::getData()
 std::string Protokol::getSequenceNumber()
 {
 	return endString.substr(0, 4);
+}
+
+void Protokol::setResendBit()
+{
+	//Deler endString op i dets delelementer, og ændrer derefter lastBit, hvorefter den sættes sammen igen.
+
+	endString = startString;
+
+	header();
+
+	std::string resendBit = "1";
+
+	std::string seqNum = endString.substr(0, 4);
+	std::string lastB = endString.substr(5, 1);
+	std::string data = endString.substr(8, dataSize);
+	std::string zeropadding = "00";
+
+	endString = seqNum + lastB + resendBit + zeropadding + data;
+	trailer();
+	endString;
 }
 
 std::string Protokol::getCRCcheck()
