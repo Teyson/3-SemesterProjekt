@@ -83,8 +83,8 @@ int main() {
 
 
 
-
-	/*sf::SoundBuffer Buffer;
+/*
+	sf::SoundBuffer Buffer;
 	Buffer.loadFromSamples(raw1, arraySize, 1, SAMPLE_RATE);
 
 	sf::Sound Sound;
@@ -106,17 +106,7 @@ int main() {
 	recorder.startThread();
 
 
-
-	
-
-  // recorder.synkronisering(8000,20);
-    //Format: SampleRate, vindue i ms
-    
-	
-    
-   
-
-	while (!_kbhit())
+   	while (!_kbhit())
 	{}
 
 	recorder.stop();						//Stop recording
