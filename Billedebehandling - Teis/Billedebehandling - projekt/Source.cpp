@@ -22,11 +22,17 @@ std::vector<DTMFToner> dtmfToner;
 
 std::vector<float> sampleToner;
 
-std::vector<std::string> NAKvector;
 
 int main()
 {
-	std::string data = "1001011010101001001001001101011101010101";
+	int pointerNotRecieved = 10;
+	int pointerMax = (pointerNotRecieved + 10) % 16;
+
+	int hej = std::stoi("1111", nullptr, 2);
+
+	std::cout << pointerMax << std::endl;
+
+	/*std::string data = "1001011010101001001001001101011101010101";
 
 	Protokol ProtToSend(data, 0);
 
@@ -59,7 +65,7 @@ int main()
 	std::cout << "om last bittet er sat eller ej: " << ProtRecieved.checkLastBit() << std::endl;
 	std::cout << "Sekvensnummeret: " << ProtRecieved.getRecievedSequenceNumber() << std::endl;
 	std::cout << std::endl << "Den fulde protokol er: " << ProtRecieved.getRecievedPacket();
-
+*/
 	int c;
 	std::cin >> c;
 

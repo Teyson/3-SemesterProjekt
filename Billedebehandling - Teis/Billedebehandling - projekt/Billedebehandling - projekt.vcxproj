@@ -138,6 +138,7 @@
     <ClCompile Include="CRC.cpp" />
     <ClCompile Include="customRecorder.cpp" />
     <ClCompile Include="DTMFToner.cpp" />
+    <ClCompile Include="NAK.cpp" />
     <ClCompile Include="PictureProcessing.cpp" />
     <ClCompile Include="Protokol.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="CRC.h" />
     <ClInclude Include="customRecorder.h" />
     <ClInclude Include="DTMFToner.h" />
+    <ClInclude Include="NAK.h" />
     <ClInclude Include="PictureProcessing.h" />
     <ClInclude Include="Protokol.h" />
     <ClInclude Include="TextProcessing.h" />
