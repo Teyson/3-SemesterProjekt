@@ -30,7 +30,7 @@ std::vector<float> sampleToner;
 
 
 int main() {
-	const unsigned SAMPLES = (8000*20)/1000;
+	const unsigned SAMPLES = (8000 * 20) / 1000;
 	const unsigned SAMPLE_RATE = 8000;
 
 	//Fra antagelsen om at en protokol indeholder 4 byte
@@ -40,13 +40,13 @@ int main() {
 
 	BitDTMF sekvens("00001111000011110000111100001111000011110000", 44100, 41000, 40);
 	//Format ( string, samples, samplefrekvens, protokolOpdelingsstørrelse)
-	
+
 	sekvens.toProtokol(protokoller);
 	sekvens.toDTMF(protokoller, dtmfToner);
 	int protStart = protokoller[0].getToneStart();
 	int protSlut = protokoller[0].getToneSlut();
-	
-    
+
+
 
 	////Enkel Tone
 	std::vector<float> tone;
@@ -58,7 +58,7 @@ int main() {
 	//}
 
 	/*tone = dtmfToner[0].createTone();
-	
+
 	for (int i = 0; i < SAMPLES; i++)
 	{
 		raw1[i] = tone[i];
@@ -80,13 +80,13 @@ int main() {
 	//Predefineret antal protokoller
 	//Så skal der sendes et ack hver efter et forudbestemt antal prot
 	//Så behøves kun 2 arrays til at indeholde tonedata
-	
+
 
 
 
 	/*sf::SoundBuffer Buffer;
 	Buffer.loadFromSamples(raw1, arraySize, 1, SAMPLE_RATE);
-	
+
 	sf::Sound Sound;
 	Sound.setBuffer(Buffer);
 	Sound.play();
@@ -95,14 +95,21 @@ int main() {
 	}*/
 
 
-	
+
 	customRecorder recorder;
-    recorder.start(8000);					//Start recording  
-    std::cout << "Recording...." << std::endl;
+	recorder.start(8000);					//Start recording  
+	std::cout << "Recording...." << std::endl;
 
-    sf::sleep(sf::milliseconds(1000));
+	sf::sleep(sf::milliseconds(100));
 
-    recorder.synkronisering(8000,20);
+	
+	recorder.startThread();
+
+
+
+	
+
+  // recorder.synkronisering(8000,20);
     //Format: SampleRate, vindue i ms
     
 	

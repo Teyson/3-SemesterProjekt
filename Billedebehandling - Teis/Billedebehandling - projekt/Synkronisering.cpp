@@ -14,13 +14,14 @@ void Synkronisering::clearMainBuffer(bool c)
 
 void Synkronisering::addToMainBuffer(const sf::Int16 *samples, int startPtr, int vectorSize)
 {
-    std::mutex mu;
+    //std::mutex mu;
     
     for (int i = startPtr; i < vectorSize; i++)
     {
         mainBuffer.push_back(samples[i]);
     }
     mainPtr = mainBuffer.size();
+	//std::cout << mainPtr << std::endl;
     
     
     
@@ -56,17 +57,20 @@ void Synkronisering::sync()
 
     while (keepSyncing == 1)
     {
-	
+		std::cout << mainPtr << std::endl;
+
         //Det tjekkes om mainBufferen har nok elementer til at der kan tages et vindue
         if (syncPtr + windowSz < mainPtr)
         {
-			if (elementNr == 9)
-			{
-				startOutputting = 1;
-			}
+			
             //Syncing
             if (startOutputting == 0)
             {
+				if (elementNr == 9)
+				{
+					startOutputting = 1;
+				}
+
                 if (elementNr % 2 == 0)
                 {
                     high1 = behandling.goertzler(fs, 1209, &mainBuffer, syncPtr, syncPtr + windowSz);
@@ -100,8 +104,6 @@ void Synkronisering::sync()
                         syncPtr += forskydning;
                     }
                 }
-
-
                 elementNr++;
             }
             //Outputting to string
@@ -112,7 +114,7 @@ void Synkronisering::sync()
             }
         }
         
-       
+		sf::sleep(sf::milliseconds(100));
      }
 
 
@@ -120,6 +122,11 @@ void Synkronisering::sync()
         
 }
 
+void Synkronisering::startThread()
+{
+	std::thread syncLoader(&Synkronisering::sync, this);
+	syncLoader.join();
+}
 
 Synkronisering::~Synkronisering()
 {

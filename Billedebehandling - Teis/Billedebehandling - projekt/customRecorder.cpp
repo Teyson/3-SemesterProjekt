@@ -1,5 +1,6 @@
 #include "customRecorder.h"
 #include "Behandling.h"
+#include <thread>
 
 
 customRecorder::customRecorder()
@@ -18,7 +19,8 @@ bool customRecorder::onStart()
 
 bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t sampleCount)
 {
-    
+	
+
     testVector.clear();
     while (filter == 1)
 	{
@@ -51,9 +53,6 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
 	}
     
     obj.addToMainBuffer(samples, 0, sampleCount);
-	
-
-	//std::cout << komnumand.bestHigh(8000, sampleVector) << " + " << komnumand.bestLow(8000, sampleVector) << std::endl;
 
 	
 	// return true to continue the capture, or false to stop it
@@ -68,28 +67,12 @@ void customRecorder::onStop()
 	//...
 }
 
-void customRecorder::synkronisering(int sampleR, int vinduems)
+
+void customRecorder::startThread()
 {
-    int vindue = (sampleR * vinduems) / 1000;
-    std::thread syncLoader(&Synkronisering::sync, obj);
-    syncLoader.join();
+	
+	obj.startThread();
 }
-
-int customRecorder::getVector(int k)
-{
-	return mainBuffer[k];
-}
-
-int customRecorder::getVectorSize()
-{
-	return mainBuffer.size();
-
-}
-
-
-
-
-
 
 
 customRecorder::~customRecorder()

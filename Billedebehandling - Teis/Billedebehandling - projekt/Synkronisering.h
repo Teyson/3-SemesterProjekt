@@ -15,22 +15,17 @@ public:
     void addToMainBuffer(const sf::Int16 *samples, int startPtr, int vectorSize);
     void clearMainBuffer(bool clear);
     void sync();
-    void setClass();
+	void startThread();
 
 	~Synkronisering();
 
 protected:
-	//std::vector<int> mainBuffer;
     std::vector<int> syncBuffer;
     std::vector<int> mainBuffer;
     std::string bitstring;
-    
-
+  
     int a;
     int mainPtr;
     int syncPtr;
 
 };
-
-//Loader ind i vinduer
-
