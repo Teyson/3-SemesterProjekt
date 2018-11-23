@@ -30,7 +30,7 @@ std::vector<float> sampleToner;
 
 
 int main() {
-	const unsigned SAMPLES = (8000 * 20) / 1000;
+	const unsigned SAMPLES = 8000;
 	const unsigned SAMPLE_RATE = 8000;
 
 	//Fra antagelsen om at en protokol indeholder 4 byte
@@ -38,7 +38,7 @@ int main() {
 	const unsigned arraySize = 256000;
 	sf::Int16 raw1[arraySize];
 
-	BitDTMF sekvens("00001111000011110000111100001111000011110000", 44100, 41000, 40);
+	BitDTMF sekvens("0000", 44100, 41000, 8);
 	//Format ( string, samples, samplefrekvens, protokolOpdelingsstørrelse)
 
 	sekvens.toProtokol(protokoller);
@@ -72,19 +72,12 @@ int main() {
 			raw1[j] = tone[k];
 		}
 	}
-	//j-loopet appender alle toner i en protokol til raw1 array. k-loopet kører
-	//alle elementer igennem i tone-vektoren.
-
-	//Overwriter raw igen og igen og tildeler 
-	//Laver en stor array pr. protokol objekt eller pr 
-	//Predefineret antal protokoller
-	//Så skal der sendes et ack hver efter et forudbestemt antal prot
-	//Så behøves kun 2 arrays til at indeholde tonedata
+	
 
 
 
-/*
-	sf::SoundBuffer Buffer;
+
+	/*sf::SoundBuffer Buffer;
 	Buffer.loadFromSamples(raw1, arraySize, 1, SAMPLE_RATE);
 
 	sf::Sound Sound;

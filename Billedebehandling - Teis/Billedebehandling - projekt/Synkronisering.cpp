@@ -35,7 +35,7 @@ void Synkronisering::sync()
     bool keepSyncing = 1; // skal kunne sættes til 0 et sted for at stoppe tråden!
     bool startOutputting = 0; //Når den er færdig med selve synkroniseringen, kan tonerne blive dekodet til bit
 
-    int ms = 20;    //Vinduesstørrelse i ms
+    int ms = 40;    //Vinduesstørrelse i ms
     int fs = 8000;  
     int windowSz = (fs * ms) / 1000; //vinduesstørrelse i antal samples
     int forskydning = windowSz / 10;
@@ -44,10 +44,10 @@ void Synkronisering::sync()
     int low2;
     int high2;
 
-    int low1Amp = 6000;
-    int high1Amp = 6000;
-    int low2Amp = 6000;
-    int high2Amp = 6000;
+    int low1Amp = 20000;
+    int high1Amp = 20000;
+    int low2Amp = 20000;
+    int high2Amp = 20000;
     int counter = 0;
         
     syncPtr = 0; //til at holde styr på, hvad der er syncet i mainBuf
@@ -67,47 +67,54 @@ void Synkronisering::sync()
             //std::cout << syncPtr + windowSz << std::endl;
             //std::cout << mainPtr << std::endl;
 			
+            float gns1;
+            float gns2;
+            float forhold;
             //Syncing
             if (startOutputting == 0)
             {
 
-				if (elementNr == 9)
+				if (elementNr == 18)
 				{
 					startOutputting = 1;
 				}
-                if (elementNr % 2 == 0)
-                {
-                    high1 = behandling.goertzler(fs, 1209, &mainBuffer, syncPtr, windowSz);
-                    low1 = behandling.goertzler(fs, 697, &mainBuffer, syncPtr, windowSz);
-                  //  std::cout << high1 << std::endl;
-                 //   std::cout << low1 << std::endl;
-                }
-                else
-                {
-                    high2 = behandling.goertzler(fs, 1633, &mainBuffer, syncPtr, windowSz);
-                    low2 = behandling.goertzler(fs, 941, &mainBuffer, syncPtr, windowSz);
-                }
+                high1 = behandling.goertzler(fs, 1209, &mainBuffer, syncPtr, windowSz);
+                low1 = behandling.goertzler(fs, 697, &mainBuffer, syncPtr, windowSz);
+                high2 = behandling.goertzler(fs, 1633, &mainBuffer, syncPtr, windowSz);
+                low2 = behandling.goertzler(fs, 941, &mainBuffer, syncPtr, windowSz);
+                gns1 = ((float)high1 + (float)low1) / 2;
+                gns2 = ((float)high2 + (float)low2) / 2;
+                forhold = gns1 / gns2;
+
+                //std::cout << forhold << std::endl;
+                //std::cout << elementNr << std::endl;
 
                 
                 if (elementNr == 0) //Første gang, er vi interesseret i at første tone er færdig inden tonevinduet slutter
                 {
-                    if (high1 < high1Amp && low1 < low1Amp)
+                    if (forhold < 9)
                     {
                         syncPtr += forskydning - (forskydning / 4) ;
+                        //std::cout << forhold << std::endl;
+                        //std::cout << "forskydning" << std::endl;
                     }
                 }
                 else if (elementNr % 2 == 0 && elementNr != 0)
                 {
-                    if (high1 < high1Amp && low1 < low1Amp)
+                    if (forhold < 9)
                     {
                         syncPtr += forskydning;
+                     //   std::cout << forhold << std::endl;
+                       // std::cout << "forskydning 2" << std::endl;
                     }
                 }
                 else
                 {
-                    if (high2 < high2Amp && low2 < low2Amp)
+                    if (forhold > 0.6)
                     {
                         syncPtr += forskydning;
+                        //std::cout << forhold << std::endl;
+                       // std::cout << "forskydning 3" << std::endl;
                     }
                 }
                 elementNr++;
@@ -116,13 +123,22 @@ void Synkronisering::sync()
             //Outputting to string
             else
             {
+                
                 bitstring.append(d.convertDTMF2Nibble(8000, &mainBuffer, syncPtr, windowSz));
                 syncPtr += windowSz;
-                counter++;
-                if (counter == 5)
+
+                float mistake = 0;
+                std::string check = "0011011111110010100110000001111010110010101001011101011011000000";
+                if (counter == 63)
                 {
-                    std::cout << bitstring << std::endl;
+                    for (size_t i = 0; i < 64; i++)
+                    {
+                        if (bitstring[i] != check[i])
+                           mistake ++;
+                    }
+                    std::cout << mistake / ((float)64) * 100 << std::endl;
                 }
+                counter++;
             }
         }
         
