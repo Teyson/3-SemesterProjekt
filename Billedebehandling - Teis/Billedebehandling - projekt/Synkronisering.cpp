@@ -44,10 +44,10 @@ void Synkronisering::sync()
     int low2;
     int high2;
 
-    int low1Amp = 6000;
-    int high1Amp = 6000;
-    int low2Amp = 6000;
-    int high2Amp = 6000;
+    int low1Amp = 20000;
+    int high1Amp = 20000;
+    int low2Amp = 20000;
+    int high2Amp = 20000;
     int counter = 0;
         
     syncPtr = 0; //til at holde styr på, hvad der er syncet i mainBuf
@@ -67,47 +67,51 @@ void Synkronisering::sync()
             //std::cout << syncPtr + windowSz << std::endl;
             //std::cout << mainPtr << std::endl;
 			
+            float gns1;
+            float gns2;
+            float forhold;
             //Syncing
             if (startOutputting == 0)
             {
 
-				if (elementNr == 9)
+				if (elementNr == 19)
 				{
 					startOutputting = 1;
 				}
-                if (elementNr % 2 == 0)
-                {
-                    high1 = behandling.goertzler(fs, 1209, &mainBuffer, syncPtr, windowSz);
-                    low1 = behandling.goertzler(fs, 697, &mainBuffer, syncPtr, windowSz);
-                  //  std::cout << high1 << std::endl;
-                 //   std::cout << low1 << std::endl;
-                }
-                else
-                {
-                    high2 = behandling.goertzler(fs, 1633, &mainBuffer, syncPtr, windowSz);
-                    low2 = behandling.goertzler(fs, 941, &mainBuffer, syncPtr, windowSz);
-                }
+                high1 = behandling.goertzler(fs, 1209, &mainBuffer, syncPtr, windowSz);
+                low1 = behandling.goertzler(fs, 697, &mainBuffer, syncPtr, windowSz);
+                high2 = behandling.goertzler(fs, 1633, &mainBuffer, syncPtr, windowSz);
+                low2 = behandling.goertzler(fs, 941, &mainBuffer, syncPtr, windowSz);
+                gns1 = ((float)high1 + (float)low1) / 2;
+                gns2 = ((float)high2 + (float)low2) / 2;
+                forhold = gns1 / gns2;
+
+                std::cout << forhold << std::endl;
+
 
                 
                 if (elementNr == 0) //Første gang, er vi interesseret i at første tone er færdig inden tonevinduet slutter
                 {
-                    if (high1 < high1Amp && low1 < low1Amp)
+                    if (forhold < 9)
                     {
                         syncPtr += forskydning - (forskydning / 4) ;
+                        std::cout << "forskydning" << std::endl;
                     }
                 }
                 else if (elementNr % 2 == 0 && elementNr != 0)
                 {
-                    if (high1 < high1Amp && low1 < low1Amp)
+                    if (forhold < 9)
                     {
                         syncPtr += forskydning;
+                        std::cout << "forskydning" << std::endl;
                     }
                 }
                 else
                 {
-                    if (high2 < high2Amp && low2 < low2Amp)
+                    if (forhold > 0.6)
                     {
                         syncPtr += forskydning;
+                        std::cout << "forskydning" << std::endl;
                     }
                 }
                 elementNr++;
@@ -116,6 +120,7 @@ void Synkronisering::sync()
             //Outputting to string
             else
             {
+                
                 bitstring.append(d.convertDTMF2Nibble(8000, &mainBuffer, syncPtr, windowSz));
                 syncPtr += windowSz;
                 counter++;
