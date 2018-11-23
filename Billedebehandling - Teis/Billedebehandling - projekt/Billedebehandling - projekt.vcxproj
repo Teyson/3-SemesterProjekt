@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Afspilning.cpp" />
     <ClCompile Include="Behandling.cpp" />
     <ClCompile Include="BitDTMF.cpp" />
     <ClCompile Include="customRecorder.cpp" />
@@ -142,7 +143,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h" />
+    <ClInclude Include="Afspilning.h" />
     <ClInclude Include="Behandling.h" />
+    <ClInclude Include="BitDTMF.h" />
     <ClInclude Include="customRecorder.h" />
     <ClInclude Include="DTMF2Bit.h" />
     <ClInclude Include="DTMFToner.h" />

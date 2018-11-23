@@ -39,6 +39,9 @@
     <ClCompile Include="DTMF2Bit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Afspilning.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h">
@@ -60,6 +63,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DTMF2Bit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Afspilning.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BitDTMF.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

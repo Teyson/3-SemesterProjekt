@@ -9,9 +9,11 @@
 #include "CImg.h"
 #include "PictureProcessing.h"
 //#include "customRecorder.h"
-#include "Protokol.h"
-#include "BitDTMF.h"
-#include "DTMFToner.h"
+
+#include "Afspilning.h"
+//#include "Protokol.h"
+//#include "BitDTMF.h"
+//#include "DTMFToner.h"
 
 
 std::vector<Protokol> protokoller;
@@ -21,66 +23,44 @@ std::vector<DTMFToner> dtmfToner;
 
 std::vector<float> sampleToner;
 
+int sampelsGlobal = (8000 * 20)/1000;//16000;//44100
+int sampelFreqGlobal = 8000;//41000
+int protokolOpdelingGlobal = 32;
 int main() {
-	const unsigned SAMPLES = 16000;
-	const unsigned SAMPLE_RATE = 8000;
+	char answer;
+label:
+	std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
+	 std::cin >> answer;
 
-	//Fra antagelsen om at en protokol indeholder 4 byte
-	// sættes raw til 4bytes*2toner*SAMPLES * 2 protokoller
-	const unsigned arraySize = 256000;
-	sf::Int16 raw1[arraySize];
+	if (answer == 'a') {						// Afsender
+		Afspilning test("01010101010101010101",sampelsGlobal,sampelFreqGlobal, 0,5);
 
-	BitDTMF sekvens("11101111110010101101000110110011010001011010", 44100, 41000, 32);
-	//Format ( string, samples, samplefrekvens, protokolOpdelingsstørrelse)
-	
-	sekvens.toProtokol(protokoller);
-	sekvens.toDTMF(protokoller, dtmfToner);
-	int protStart = protokoller[0].getToneStart();
-	int protSlut = protokoller[0].getToneSlut();
-	
 
-	std::vector<float> tone;
-	/*tone = dtmfToner[0].createTone();
-	
-	for (int i = 0; i < SAMPLES; i++)
-	{
-		raw1[i] = tone[i];
-	}*/
+		
 
-	for (int i = protStart + 1; i < protSlut + 1; i++)
-	{
-		tone = dtmfToner[i - 1].createTone();
 
-		for (int k = 0, j = ((SAMPLES * i) - SAMPLES); k < SAMPLES; j++, k++) {
-			raw1[j] = tone[k];
+
+
+		
+
+
+
+
+		sf::SoundBuffer Buffer;
+		if (!Buffer.loadFromSamples(test.startplaying(), test.getarraySize(), 1, sampelFreqGlobal)) {
+			std::cerr << "Loading failed!" << std::endl;
+			return 1;
 		}
+		sf::Sound Sound;
+		Sound.setBuffer(Buffer);
+		Sound.play();
+		while (1) {
+			sf::sleep(sf::milliseconds(100));
+		}
+
 	}
-	//j-loopet appender alle toner i en protokol til raw1 array. k-loopet kører
-	//alle elementer igennem i tone-vektoren.
-
-	//Overwriter raw igen og igen og tildeler 
-	//Laver en stor array pr. protokol objekt eller pr 
-	//Predefineret antal protokoller
-	//Så skal der sendes et ack hver efter et forudbestemt antal prot
-	//Så behøves kun 2 arrays til at indeholde tonedata
-	
-
-
-
-	sf::SoundBuffer Buffer;
-	if (!Buffer.loadFromSamples(raw1, arraySize, 1, SAMPLE_RATE)) {
-		std::cerr << "Loading failed!" << std::endl;
-		return 1;
-	}
-	sf::Sound Sound;
-	Sound.setBuffer(Buffer);
-	Sound.play();
-	while (1) {
-		sf::sleep(sf::milliseconds(100));
-	}
-
-
-	//Custom recorder
+	else if (answer == 'm') {					// Modtager
+		//Custom recorder
 	//if (!customRecorder::isAvailable())
 	//{
 	//	std::cout << "Audio capture not available";
@@ -101,12 +81,30 @@ int main() {
 	//std::cout << "end recording" << std::endl;
 
 
-	///*for (int i = 0; i < recorder.getVectorSize(); i++)
+	///*for (int i = 0; i < recorder.getVectorSize(); i++)*/
 	//{
 	//	std::cout << recorder.getVector(i) << std::endl;
 	//}*/
 
 	//
+	}
+
+	//Overwriter raw igen og igen og tildeler 
+	//Laver en stor array pr. protokol objekt eller pr 
+	//Predefineret antal protokoller
+	//Så skal der sendes et ack hver efter et forudbestemt antal prot
+	//Så behøves kun 2 arrays til at indeholde tonedata
+
+
+
+	else {
+		char answer;
+		goto label;
+		
+	}
+
+		
+	
 
 
 	int c;
