@@ -16,7 +16,7 @@ Afspilning::Afspilning(std::string datainput, int sampleInput, int sampleRateInp
 	int j = 0;
 	int abc = 0;
 	std::vector<float> tone;
-
+ 
 	
 	/////	sync begin	///////
 	std::string sync;
@@ -33,8 +33,16 @@ Afspilning::Afspilning(std::string datainput, int sampleInput, int sampleRateInp
 		syncToner.setToneNumber();
 		dtmfToner.push_back(syncToner);
 	}
+    
+    float lastVal = 0;
+    float secondLastVal = 0;
 	for (int i = 0; i < 2 * syncperioder + 1; i++) {
-		tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
+        tone = dtmfToner[i].createTone(samples, sampleFreq, lastVal, secondLastVal);				// Vector af floats der fortløbende beskriver DTMFtonens amplitude
+        if (i > 0)  {
+            lastVal = tone[tone.size() - 1];
+            secondLastVal = tone[tone.size() - 2];
+            std::cout << lastVal << std::endl;
+        }
 		for (int k = 0; k < samples; j++, k++) {
 			raw1[j] = tone[k];
 		}
@@ -48,7 +56,10 @@ Afspilning::Afspilning(std::string datainput, int sampleInput, int sampleRateInp
 	std::vector<float> toner;
 
 	for (int dtmftoneNR = abc; dtmftoneNR < dtmfToner.size(); dtmftoneNR++) {
-		toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);
+		toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq, lastVal, secondLastVal);
+        lastVal = toner[tone.size() - 1];
+        secondLastVal = toner[tone.size() - 2];
+        
 		for (int t = 0; t < samples; t++, j++) {
 			raw1[j] = toner[t];
 		}

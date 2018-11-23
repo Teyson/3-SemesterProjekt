@@ -19,7 +19,6 @@
 std::vector<Protokol> protokoller;
 
 std::vector<DTMFToner> dtmfToner;
-//Husk at s�tte samplerate og antal samples inde i klassen
 
 std::vector<float> sampleToner;
 
