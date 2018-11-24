@@ -34,7 +34,7 @@ void Protokol::unpacking()
 
 std::string Protokol::header()
 {
-	int seqNum = placering % 16;		//Finder sekvensnummeret (decimalt) udfra det inputtede placeringsnummer.
+	int seqNum = placering % 15;		//Finder sekvensnummeret (decimalt) udfra det inputtede placeringsnummer.
 
 	std::string seqNumString = std::bitset<4>(seqNum).to_string();
 

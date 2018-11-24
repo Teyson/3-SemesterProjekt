@@ -16,8 +16,6 @@ public:
 
 	//Modtagning af almindelige pakker
 	void unpacking(); //Skal tage en string der repræsenterer en pakke, og dele den op i checksum, lastbit, sekvensnummer og data.
-	void makeNAK(std::vector<std::string> NAKvec);	//Skal oprette et NAK i den globale NAK-buffer som indeholder sekvensnummeret på pakken. Skal kun kaldes hvis checkCheckSum() returnerer false
-													//Mangler stadig at blive skrevet, men skal bruge en recieve-buffer på for at virke. Denne buffer er ikke lavet endnu.
 	bool checkChecksum();		//Skal checke at checksummen er rigtig, og returnere true i så fald.
 	std::string writeChecksum();
 	bool checkLastBit();		//Skal checke om lastBit er sat højt, og returnere true hvis den er. Dette er for at vi kan vide hvornår der skal sendes NAKs
