@@ -31,6 +31,7 @@ int Protokol::getToneStart()
 
 int Protokol::getToneSlut()
 {
+	std::cout << toneNrSlut << std::endl;
 	return toneNrSlut;
 }
 

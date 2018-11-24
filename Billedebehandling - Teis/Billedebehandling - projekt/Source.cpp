@@ -5,59 +5,80 @@
 #include <string>
 #include <bitset>
 #include <conio.h>  //kbhit
+#include <thread>
+#include <atomic>
 
 #include "CImg.h"
 #include "PictureProcessing.h"
 //#include "customRecorder.h"
 
 #include "Afspilning.h"
+#include "Timer.h"
 //#include "Protokol.h"
 //#include "BitDTMF.h"
 //#include "DTMFToner.h"
 
 
-std::vector<Protokol> protokoller;
-
-std::vector<DTMFToner> dtmfToner;
-//Husk at s�tte samplerate og antal samples inde i klassen
-
-std::vector<float> sampleToner;
-
-int sampelsGlobal = (8000 * 20)/1000;//16000;//44100
+int sampelsGlobal = (8000 * 1000)/1000;//16000;//44100
 int sampelFreqGlobal = 8000;//41000
 int protokolOpdelingGlobal = 32;
+
+
+////////// Timer //////////
+bool torbenTester = true;
+std::chrono::system_clock::time_point start;
+
+void countdown() {
+	
+	while (torbenTester) {
+		std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
+		std::chrono::duration<double> differens = end - start;
+		std::cout << differens.count() << std::endl;
+		if (differens.count() > 1.5) {
+			torbenTester = false;
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	}
+}
+//////////  Timer end //////////////
+
+
 int main() {
 	char answer;
 label:
 	std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
-	 std::cin >> answer;
-
+	std::cin >> answer;
 	if (answer == 'a') {						// Afsender
-		Afspilning test("01010101010101010101",sampelsGlobal,sampelFreqGlobal, 0,5);
-
-
+		Afspilning test("0110110010101001",sampelsGlobal,sampelFreqGlobal);
+					//	0110 1100 1010 1001
 		
 
+		std::vector<int>bla;
+		bla.push_back(0);
+		bla.push_back(2);
+		bla.push_back(0);
 
+		std::cout << bla.size() << std::endl;
 
-
-		
-
-
-
+		start = std::chrono::system_clock::now();
+		std::thread work(countdown);
+		sf::sleep(sf::milliseconds(1600));
+		std::cout << torbenTester << std::endl;
+		work.join();
 
 		sf::SoundBuffer Buffer;
-		if (!Buffer.loadFromSamples(test.startplaying(), test.getarraySize(), 1, sampelFreqGlobal)) {
+		if (!Buffer.loadFromSamples(test.playThis(bla), test.getarraySize(), 1, sampelFreqGlobal)) {
 			std::cerr << "Loading failed!" << std::endl;
 			return 1;
 		}
+		
 		sf::Sound Sound;
 		Sound.setBuffer(Buffer);
 		Sound.play();
 		while (1) {
 			sf::sleep(sf::milliseconds(100));
 		}
-
+		work.join();
 	}
 	else if (answer == 'm') {					// Modtager
 		//Custom recorder
