@@ -32,12 +32,12 @@ void Synkronisering::addToMainBuffer(const sf::Int16 *samples, int startPtr, int
 void Synkronisering::sync()
 {
 
-    bool keepSyncing = 1; // skal kunne sï¿½ttes til 0 et sted for at stoppe trï¿½den!
-    bool startOutputting = 0; //Nï¿½r den er fï¿½rdig med selve synkroniseringen, kan tonerne blive dekodet til bit
+    bool keepSyncing = 1; // skal kunne sættes til 0 et sted for at stoppe tråden!
+    bool startOutputting = 0; //Når den er færdig med selve synkroniseringen, kan tonerne blive dekodet til bit
 
-    int ms = 40;    //Vinduesstï¿½rrelse i ms
+    int ms = 40;    //Vinduesstørrelse i ms
     int fs = 8000;  
-    int windowSz = (fs * ms) / 1000; //vinduesstï¿½rrelse i antal samples
+    int windowSz = (fs * ms) / 1000; //vinduesstørrelse i antal samples
     int forskydning = windowSz / 10;
     int low1;
     int high1;
@@ -50,8 +50,8 @@ void Synkronisering::sync()
     int high2Amp = 20000;
     int counter = 0;
         
-    syncPtr = 0; //til at holde styr pï¿½, hvad der er syncet i mainBuf
-    int elementNr = 0; //Til at holde styr pï¿½ nr element der tages fra mainBuf
+    syncPtr = 0; //til at holde styr på, hvad der er syncet i mainBuf
+    int elementNr = 0; //Til at holde styr på nr element der tages fra mainBuf
 
     Behandling behandling;
     DTMF2Bit d;
@@ -90,7 +90,7 @@ void Synkronisering::sync()
                 //std::cout << elementNr << std::endl;
 
                 
-                if (elementNr == 0) //Fï¿½rste gang, er vi interesseret i at fï¿½rste tone er fï¿½rdig inden tonevinduet slutter
+                if (elementNr == 0) //Første gang, er vi interesseret i at første tone er færdig inden tonevinduet slutter
                 {
                     if (forhold < 9)
                     {
