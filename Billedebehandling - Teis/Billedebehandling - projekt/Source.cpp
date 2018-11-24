@@ -25,20 +25,25 @@ std::vector<float> sampleToner;
 
 int main()
 {
+	/*
 	int pointerNotRecieved = 10;
 	int pointerMax = (pointerNotRecieved + 10) % 16;
 
 	int hej = std::stoi("1111", nullptr, 2);
 
 	std::cout << pointerMax << std::endl;
+	*/
 
-	/*std::string data = "1001011010101001001001001101011101010101";
 
+	std::string data = "1001011010101001001001001101011101010101";
+	
 	Protokol ProtToSend(data, 0);
 
 	ProtToSend.packing();
 
 	ProtToSend.setLastBit();
+
+	ProtToSend.setResendBit();
 
 	Protokol ProtRecieved(ProtToSend.getString());
 
@@ -51,8 +56,14 @@ int main()
 	std::cout << "Sekvensnummeret som taget af protokollen er: " << ProtToSend.getSequenceNumber() << std::endl;
 	std::cout << std::endl << "Den fulde protokol: " << ProtToSend.getString() << std::endl;
 	std::cout << "Længden af protokollen er: " << ProtToSend.getString().length() << std::endl;
+	std::cout << "resendBit: " << ProtToSend.getResendBit() << std::endl;
 
-	
+	ProtToSend.clearLastBit();
+	std::cout << "Lastbit efter clear: " << ProtToSend.getLastBit() << std::endl;
+
+
+
+	/*
 
 	std::cout << std::endl << "Når bittet er sat: " << ProtToSend.getLastBit() << std::endl;
 
@@ -65,7 +76,7 @@ int main()
 	std::cout << "om last bittet er sat eller ej: " << ProtRecieved.checkLastBit() << std::endl;
 	std::cout << "Sekvensnummeret: " << ProtRecieved.getRecievedSequenceNumber() << std::endl;
 	std::cout << std::endl << "Den fulde protokol er: " << ProtRecieved.getRecievedPacket();
-*/
+	*/
 	int c;
 	std::cin >> c;
 

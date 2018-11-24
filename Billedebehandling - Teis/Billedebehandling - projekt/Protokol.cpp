@@ -46,6 +46,8 @@ std::string Protokol::header()
 
 	endString = header + endString;
 
+	beforeTrailer = endString;
+
 	return header;
 }
 
@@ -73,39 +75,31 @@ std::string Protokol::packing()
 void Protokol::setLastBit()
 {
 	//Deler endString op i dets delelementer, og ændrer derefter lastBit, hvorefter den sættes sammen igen.
-
-	endString = startString;
-
-	header();
-
 	std::string lastB = "1";
 
-	std::string seqNum = endString.substr(0, 4);
-	std::string resendBit = endString.substr(6, 1);
-	std::string data = endString.substr(8, dataSize);
+	std::string seqNum = beforeTrailer.substr(0, 4);
+	std::string resendBit = beforeTrailer.substr(5, 1);
+	std::string data = beforeTrailer.substr(8, dataSize);
 	std::string zeropadding = "00";
 
-	endString = seqNum + lastB + resendBit + zeropadding + data;
+	beforeTrailer = seqNum + lastB + resendBit + zeropadding + data;
+	endString = beforeTrailer;
 	trailer();
-	endString;
 }
 
 void Protokol::clearLastBit()
 {
 	//Deler endString op i dets delelementer, og ændrer derefter lastBit, hvorefter den sættes sammen igen.
 
-	endString = startString;
-
-	header();
-
 	std::string lastB = "0";
 
-	std::string seqNum = endString.substr(0, 4);
-	std::string resendBit = endString.substr(6, 1);
-	std::string data = endString.substr(8, dataSize);
+	std::string seqNum = beforeTrailer.substr(0, 4);
+	std::string resendBit = beforeTrailer.substr(5, 1);
+	std::string data = beforeTrailer.substr(8, dataSize);
 	std::string zeropadding = "00";
 
-	endString = seqNum + lastB + resendBit + zeropadding + data;
+	beforeTrailer = seqNum + lastB + resendBit + zeropadding + data;
+	endString = beforeTrailer;
 	trailer();
 	endString;
 }
@@ -124,20 +118,16 @@ void Protokol::setResendBit()
 {
 	//Deler endString op i dets delelementer, og ændrer derefter lastBit, hvorefter den sættes sammen igen.
 
-	endString = startString;
-
-	header();
-
 	std::string resendBit = "1";
 
-	std::string seqNum = endString.substr(0, 4);
-	std::string lastB = endString.substr(5, 1);
-	std::string data = endString.substr(8, dataSize);
+	std::string seqNum = beforeTrailer.substr(0, 4);
+	std::string lastB = beforeTrailer.substr(4, 1);
+	std::string data = beforeTrailer.substr(8, dataSize);
 	std::string zeropadding = "00";
 
-	endString = seqNum + lastB + resendBit + zeropadding + data;
+	beforeTrailer = seqNum + lastB + resendBit + zeropadding + data;
+	endString = beforeTrailer;
 	trailer();
-	endString;
 }
 
 std::string Protokol::getCRCcheck()
@@ -278,6 +268,11 @@ std::string Protokol::getString()
 std::string Protokol::getRecievedPacket()
 {
 	return recievedPacket;
+}
+
+std::string Protokol::getResendBit()
+{
+	return endString.substr(5, 1);
 }
 
 Protokol::~Protokol()

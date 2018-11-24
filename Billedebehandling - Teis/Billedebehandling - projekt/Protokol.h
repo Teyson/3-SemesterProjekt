@@ -49,6 +49,7 @@ public:
 	void setToneSlut(int);
 	std::string getString();
 	std::string getRecievedPacket();
+	std::string getResendBit();
 
 	~Protokol();
 
@@ -59,6 +60,7 @@ protected:
 	int toneNrSlut;
 	int dataSize = 40;
 	int placering = 0;
+	std::string beforeTrailer;
 
 	//Bruges til når data modtages, skabes af funktionen unpacking()
 	std::string checksum;
