@@ -15,23 +15,23 @@ public:
 	Protokol(std::string sr, int plac);
 
 	//Modtagning af almindelige pakker
-	void unpacking(); //Skal tage en string der repræsenterer en pakke, og dele den op i checksum, lastbit, sekvensnummer og data.
+	void unpacking(); //Skal tage en string der reprï¿½senterer en pakke, og dele den op i checksum, lastbit, sekvensnummer og data.
 	
-	bool checkChecksum();		//Skal checke at checksummen er rigtig, og returnere true i så fald.
+	bool checkChecksum();		//Skal checke at checksummen er rigtig, og returnere true i sï¿½ fald.
 	std::string writeChecksum();
-	bool checkLastBit();		//Skal checke om lastBit er sat højt, og returnere true hvis den er. Dette er for at vi kan vide hvornår der skal sendes NAKs
+	bool checkLastBit();		//Skal checke om lastBit er sat hï¿½jt, og returnere true hvis den er. Dette er for at vi kan vide hvornï¿½r der skal sendes NAKs
 	std::string getRecievedChecksum();
 	std::string getRecievedLastBit();
 	std::string getRecievedSequenceNumber();
 	std::string getRecievedData();
 
 	//Afsending af pakker
-	std::string header();		//Skal sørge for at lave headeren. Altså finde ud af sekvensnummeret og checkLastBit'et skal sættes til 0.
-	std::string trailer();		//Skal kalde og lave et CRC-check på data og header.
-	std::string packing();		//Skal kalde header() og trailer(), så de er samlet i et funktions. De skal alligevel altid kaldes sammen
-	void setLastBit();			//Skal gå ind i stringen og sætte det rigtige bit højt.
-	void clearLastBit();		//skal sætte LB til 0, hvis LB har været sat. 
-	void setResendBit();		//Skal sættes bit som fortæller om pakken er bllevet sendt før.
+	std::string header();		//Skal sï¿½rge for at lave headeren. Altsï¿½ finde ud af sekvensnummeret og checkLastBit'et skal sï¿½ttes til 0.
+	std::string trailer();		//Skal kalde og lave et CRC-check pï¿½ data og header.
+	std::string packing();		//Skal kalde header() og trailer(), sï¿½ de er samlet i et funktions. De skal alligevel altid kaldes sammen
+	void setLastBit();			//Skal gï¿½ ind i stringen og sï¿½tte det rigtige bit hï¿½jt.
+	void clearLastBit();		//skal sï¿½tte LB til 0, hvis LB har vï¿½ret sat. 
+	void setResendBit();		//Skal sï¿½ttes bit som fortï¿½ller om pakken er bllevet sendt fï¿½r.
 	std::string getData();
 	std::string getSequenceNumber();
 	std::string getCRCcheck();
@@ -44,7 +44,7 @@ public:
 	//simple get og set metoder
 	int getToneStart();
 	int getToneSlut();
-	void setDataSize(int dataS); //skal bruges hvis vi ønsker at ændre datastørrelsen på en protokol. Som default er datastørrelsen sat til 40.
+	void setDataSize(int dataS); //skal bruges hvis vi ï¿½nsker at ï¿½ndre datastï¿½rrelsen pï¿½ en protokol. Som default er datastï¿½rrelsen sat til 40.
 	void setToneStart(int);
 	void setToneSlut(int);
 	std::string getString();
@@ -62,14 +62,14 @@ protected:
 	int placering = 0;
 	std::string beforeTrailer;
 
-	//Bruges til når data modtages, skabes af funktionen unpacking()
+	//Bruges til nï¿½r data modtages, skabes af funktionen unpacking()
 	std::string checksum;
 	std::string lastBit;
 	std::string sequenceNumber;
 	std::string data;
 	std::string recievedPacket;
 
-	//Bruges når NAK modtages
+	//Bruges nï¿½r NAK modtages
 	std::string recievedNAK;
 	std::vector<std::string> NAKs;
 };

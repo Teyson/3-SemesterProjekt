@@ -13,6 +13,7 @@
 #include "BitDTMF.h"
 #include "TextProcessing.h"
 #include "DTMFToner.h"
+#include "NAK.h"
 
 
 std::vector<Protokol> protokoller;
@@ -25,15 +26,82 @@ std::vector<float> sampleToner;
 
 int main()
 {
-	/*
-	int pointerNotRecieved = 10;
-	int pointerMax = (pointerNotRecieved + 10) % 16;
+	NAK NAKtest;
 
-	int hej = std::stoi("1111", nullptr, 2);
+	std::cout << "Alle pakker går igennem: " << std::endl << std::endl;
+	
+	NAKtest.insertIntoArray("0000");
+	NAKtest.insertIntoArray("0001");
+	NAKtest.insertIntoArray("0010");
 
-	std::cout << pointerMax << std::endl;
-	*/
+	std::cout << "createNAK testes, forventet output: 1111 efterfulgt af crc sum." << std::endl << " Output: " << NAKtest.createNAK() << std::endl;
 
+	NAKtest.reset();
+
+	std::cout << std::endl << "Ikke alle pakker går igennem" << std::endl << std::endl;
+
+	NAKtest.insertIntoArray("0000");
+	NAKtest.insertIntoArray("0010");
+
+	std::cout << "createNAK testes, forventet output: 0001 efterfulgt at crc sum." << std::endl << " Output: " << NAKtest.createNAK() << std::endl;
+
+	std::cout << "pointerNotRecieved: " << NAKtest.getPointerNotRecieved() << std::endl << "pointerMax: " << NAKtest.getPointerMax() << std::endl << "pointerExpected: " << NAKtest.getPointerExpected() << std::endl;
+
+	NAKtest.reset();
+
+	std::cout << std::endl << "Alle pakker går igennem, efterfulgt af at en pakke går tabt" << std::endl << std::endl;
+
+	NAKtest.insertIntoArray("0000");
+	NAKtest.insertIntoArray("0001");
+	NAKtest.insertIntoArray("0010");
+
+	std::cout << NAKtest.getPointerExpected() << std::endl;
+
+	std::cout << "createNAK testes, forventet output: 1111 efterfulgt at crc sum." << std::endl << " Output: " << NAKtest.createNAK() << std::endl;
+
+	std::cout << "pointerNotRecieved: " << NAKtest.getPointerNotRecieved() << std::endl << "pointerMax: " << NAKtest.getPointerMax() << std::endl << "pointerExpected: " << NAKtest.getPointerExpected() << std::endl;
+
+	NAKtest.insertIntoArray("0011");
+	NAKtest.insertIntoArray("0101");
+
+	std::cout << std::endl << "createNAK testes, forventet output: 0100 efterfulgt af crc sum." << std::endl << " Output: " << NAKtest.createNAK() << std::endl;
+
+	std::cout << "pointerNotRecieved: " << NAKtest.getPointerNotRecieved() << std::endl << "pointerMax: " << NAKtest.getPointerMax() << std::endl << "pointerExpected: " << NAKtest.getPointerExpected() << std::endl;
+
+	NAKtest.reset();
+
+	std::cout << std::endl << "En pakke går galt, NAK går galt, derfor kommer de næste 3 pakker, NAK går galt, derfor kommer de samme 3 pakker igen" << std::endl << std::endl;
+
+	NAKtest.insertIntoArray("0000");
+	NAKtest.insertIntoArray("0010");
+
+	std::cout << NAKtest.getPointerExpected() << std::endl;
+
+	std::cout << "createNAK testes, forventet output: 0001 efterfulgt at crc sum." << std::endl << " Output: " << NAKtest.createNAK() << std::endl;
+
+	std::cout << "pointerNotRecieved: " << NAKtest.getPointerNotRecieved() << std::endl << "pointerMax: " << NAKtest.getPointerMax() << std::endl << "pointerExpected: " << NAKtest.getPointerExpected() << std::endl;
+
+	NAKtest.insertIntoArray("0011");
+	NAKtest.insertIntoArray("0100");
+	NAKtest.insertIntoArray("0101");
+
+	std::cout << std::endl << "createNAK testes, forventet output: 0001 efterfulgt af crc sum." << std::endl << " Output: " << NAKtest.createNAK() << std::endl;
+
+	std::cout << "pointerNotRecieved: " << NAKtest.getPointerNotRecieved() << std::endl << "pointerMax: " << NAKtest.getPointerMax() << std::endl << "pointerExpected: " << NAKtest.getPointerExpected() << std::endl;
+
+	NAKtest.insertIntoArray("0011");
+	NAKtest.insertIntoArray("0100");
+	NAKtest.insertIntoArray("0101");
+
+	std::cout << std::endl << "createNAK testes, forventet output: 0001 efterfulgt af crc sum." << std::endl << " Output: " << NAKtest.createNAK() << std::endl;
+
+	std::cout << "pointerNotRecieved: " << NAKtest.getPointerNotRecieved() << std::endl << "pointerMax: " << NAKtest.getPointerMax() << std::endl << "pointerExpected: " << NAKtest.getPointerExpected() << std::endl;
+
+
+
+
+
+	/*std::string data = "1001011010101001001001001101011101010101";
 
 	std::string data = "1001011010101001001001001101011101010101";
 	
