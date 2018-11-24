@@ -54,7 +54,7 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
 	return true;
 }
 
-vector<sf::Int16> customRecorder::sampleToner()
+std::vector<sf::Int16> customRecorder::sampleToner()
 {
 	return sampleVector;
 }
