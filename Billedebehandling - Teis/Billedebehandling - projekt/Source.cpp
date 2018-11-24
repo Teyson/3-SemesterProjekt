@@ -15,6 +15,7 @@
 #include "DTMFToner.h"
 #include "NAK.h"
 #include "PacketSelection.h"
+#include "Bit2Tekst.h"
 
 
 std::vector<Protokol> protokoller;

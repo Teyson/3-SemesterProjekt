@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Behandling.cpp" />
+    <ClCompile Include="Bit2Tekst.cpp" />
     <ClCompile Include="BitDTMF.cpp" />
     <ClCompile Include="CRC.cpp" />
     <ClCompile Include="customRecorder.cpp" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h" />
     <ClInclude Include="Behandling.h" />
+    <ClInclude Include="Bit2Tekst.h" />
     <ClInclude Include="BitDTMF.h" />
     <ClInclude Include="CRC.h" />
     <ClInclude Include="customRecorder.h" />
