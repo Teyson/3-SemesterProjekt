@@ -140,6 +140,7 @@
     <ClCompile Include="DTMF2Bit.cpp" />
     <ClCompile Include="DTMFToner.cpp" />
     <ClCompile Include="NAK.cpp" />
+    <ClCompile Include="PacketSelection.cpp" />
     <ClCompile Include="PictureProcessing.cpp" />
     <ClCompile Include="Protokol.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="DTMF2Bit.h" />
     <ClInclude Include="DTMFToner.h" />
     <ClInclude Include="NAK.h" />
+    <ClInclude Include="PacketSelection.h" />
     <ClInclude Include="PictureProcessing.h" />
     <ClInclude Include="Protokol.h" />
     <ClInclude Include="TextProcessing.h" />

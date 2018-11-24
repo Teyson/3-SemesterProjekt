@@ -42,8 +42,6 @@ public:
 	std::vector<std::string> getNAKs();
 	
 	//simple get og set metoder
-	int getToneStart();
-	int getToneSlut();
 	void setDataSize(int dataS); //skal bruges hvis vi �nsker at �ndre datast�rrelsen p� en protokol. Som default er datast�rrelsen sat til 40.
 	void setToneStart(int);
 	void setToneSlut(int);
