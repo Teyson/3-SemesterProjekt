@@ -74,7 +74,7 @@ void Synkronisering::sync()
             if (startOutputting == 0)
             {
 
-				if (elementNr == 19)
+				if (elementNr == 18)
 				{
 					startOutputting = 1;
 				}

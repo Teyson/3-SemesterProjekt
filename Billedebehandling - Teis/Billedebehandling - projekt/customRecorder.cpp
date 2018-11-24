@@ -11,11 +11,7 @@ bool customRecorder::onStart()
 {
 	// initialize whatever has to be done before the capture starts
 
-<<<<<<< HEAD
 	setProcessingInterval(sf::milliseconds(80)); //S�tter intervallerne som onProcessSamples() arbejder p�
-=======
-	setProcessingInterval(sf::milliseconds(40)); //S�tter intervallerne som onProcessSamples() arbejder p�
->>>>>>> DTMFToner
 	filter = 1;
 												   // return true to start the capture, or false to cancel it
 	return true;
