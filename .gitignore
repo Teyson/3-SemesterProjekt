@@ -20,3 +20,7 @@ Billedebehandling - Teis/\.vs/Billedebehandling - projekt/v15/\.suo
 *.obj
 
 *.xml
+
+*.lastbuildstate
+
+*.exe
