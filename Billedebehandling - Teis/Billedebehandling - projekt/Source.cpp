@@ -12,6 +12,7 @@
 #include "Protokol.h"
 #include "BitDTMF.h"
 #include "DTMFToner.h"
+#include "Bit2Tekst.h"
 
 
 std::vector<Protokol> protokoller;
@@ -22,6 +23,30 @@ std::vector<DTMFToner> dtmfToner;
 std::vector<float> sampleToner;
 
 int main() {
+
+	std::string en8BitS = "01100010"; //b
+	std::string en8BitS2 = "01100001"; //a 
+	std::string en8BitS3 = "01100101"; //e
+
+	std::string en8BitS4 = en8BitS2 + en8BitS + en8BitS3;
+
+
+	Bit2Tekst haha(en8BitS4);
+	std::cout << "laengde: " << en8BitS4.size() / 8 << std::endl;
+
+	std::cout << "skal returnerer et bogstav: " << haha.bitToString() << std::endl;
+
+
+	std::string j = "";
+
+	//char c1 = static_cast<char>(std::stoi(en8BitS, nullptr, 2) + 64);
+	//std::string s = c1;
+	//std::cout << "skal returnerer et bogstav test: " << s << std::endl;
+	char c2 = static_cast<char>(std::bitset<6>(en8BitS2).to_ulong() + 64);;
+	std::cout << "skal returnerer et bogstav test: " << unsigned(c2) << std::endl;
+
+
+	/*
 	const unsigned SAMPLES = 16000;
 	const unsigned SAMPLE_RATE = 8000;
 
@@ -45,7 +70,7 @@ int main() {
 	for (int i = 0; i < SAMPLES; i++)
 	{
 		raw1[i] = tone[i];
-	}*/
+	}
 
 	for (int i = protStart + 1; i < protSlut + 1; i++)
 	{
@@ -55,14 +80,14 @@ int main() {
 			raw1[j] = tone[k];
 		}
 	}
-	//j-loopet appender alle toner i en protokol til raw1 array. k-loopet kører
-	//alle elementer igennem i tone-vektoren.
+	j-loopet appender alle toner i en protokol til raw1 array. k-loopet kører
+	alle elementer igennem i tone-vektoren.
 
-	//Overwriter raw igen og igen og tildeler 
-	//Laver en stor array pr. protokol objekt eller pr 
-	//Predefineret antal protokoller
-	//Så skal der sendes et ack hver efter et forudbestemt antal prot
-	//Så behøves kun 2 arrays til at indeholde tonedata
+	Overwriter raw igen og igen og tildeler 
+	Laver en stor array pr. protokol objekt eller pr 
+	Predefineret antal protokoller
+	Så skal der sendes et ack hver efter et forudbestemt antal prot
+	Så behøves kun 2 arrays til at indeholde tonedata
 	
 
 
@@ -80,33 +105,34 @@ int main() {
 	}
 
 
-	//Custom recorder
-	//if (!customRecorder::isAvailable())
-	//{
-	//	std::cout << "Audio capture not available";
-	//	return 0;
-	//}
+	Custom recorder
+	if (!customRecorder::isAvailable())
+	{
+		std::cout << "Audio capture not available";
+		return 0;
+	}
 
-	//customRecorder recorder;
+	customRecorder recorder;
 
-	//recorder.start(8000);					//Start recording
-	//std::cout << "Recording...." << std::endl;
+	recorder.start(8000);					//Start recording
+	std::cout << "Recording...." << std::endl;
 
-	//while (!_kbhit())
-	//{
-	//	std::cout << recorder.getVectorSize() << std::endl;
-	//}
+	while (!_kbhit())
+	{
+		std::cout << recorder.getVectorSize() << std::endl;
+	}
 
-	//recorder.stop();						//Stop recording
-	//std::cout << "end recording" << std::endl;
+	recorder.stop();						//Stop recording
+	std::cout << "end recording" << std::endl;
 
 
-	///*for (int i = 0; i < recorder.getVectorSize(); i++)
-	//{
-	//	std::cout << recorder.getVector(i) << std::endl;
-	//}*/
+	/*for (int i = 0; i < recorder.getVectorSize(); i++)
+	{
+		std::cout << recorder.getVector(i) << std::endl;
+	}
+	*/
+	
 
-	//
 
 
 	int c;
