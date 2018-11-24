@@ -17,10 +17,10 @@ public:
 	std::string trailer(std::string s);
 	void insertIntoArray(std::string s);
 	void initRecieveArray();
-	void initPointerNotRecieved();
-	void initPointerMax();
-	void initPointerExpected();
-	void initAllPointers();
+	void updatePointerNotRecieved();
+	void updatePointerMax();
+	void updatePointerExpected();
+	void updateAllPointers();
 	void reset(); //Kun til test formål
 	//Simple get-funktioner
 	int getPointerNotRecieved();
