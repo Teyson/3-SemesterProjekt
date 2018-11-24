@@ -26,23 +26,13 @@ std::vector<float> sampleToner;
 
 int main() 
 {
-	PacketSelection PacketSelect;
+	TextProcessing processer("e");
 
-	std::vector<std::string> NAKvector;
-	
-	std::cout << "Første sæt af 3 frames sendes" << std::endl;
+	std::string hej = processer.stringToBitsString();
+		
+	std::cout << hej << std::endl;
 
-	std::vector<int> selection = PacketSelect.selectPackets(NAKvector);
-
-	PacketSelect.print(selection);
-
-	std::cout << "Fejl på første frame" << std::endl;
-
-	NAKvector.push_back("0001");
-
-	selection = PacketSelect.selectPackets(NAKvector);
-
-	PacketSelect.print(selection);
+	std::cout << std::stoi(hej, nullptr, 2) << std::endl;
 
 	int c;
 	std::cin >> c;
