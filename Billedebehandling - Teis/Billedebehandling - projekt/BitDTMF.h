@@ -19,7 +19,7 @@ public:
 	void toProtokol(std::vector<Protokol>&);
 	//toProtokol - Del datastringen op i bidder af objekter
 
-	void toDTMF(std::vector<Protokol>&, std::vector<DTMFToner>&);
+	void toDTMF(std::vector<Protokol>&, std::vector<DTMFToner>&, int begin, int antal);
 	//toDTMF - Deler protokolstrengen op i tonebidder og laver den om til toner
 
 	~BitDTMF();

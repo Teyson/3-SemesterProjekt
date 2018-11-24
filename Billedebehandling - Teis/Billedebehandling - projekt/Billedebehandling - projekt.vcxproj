@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Afspilning.cpp" />
     <ClCompile Include="Behandling.cpp" />
     <ClCompile Include="Bit2Tekst.cpp" />
     <ClCompile Include="BitDTMF.cpp" />
@@ -145,13 +146,15 @@
     <ClCompile Include="PictureProcessing.cpp" />
     <ClCompile Include="Protokol.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TextProcessing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h" />
+    <ClInclude Include="Afspilning.h" />
     <ClInclude Include="Behandling.h" />
-    <ClInclude Include="Bit2Tekst.h" />
     <ClInclude Include="BitDTMF.h" />
+    <ClInclude Include="Bit2Tekst.h" />
     <ClInclude Include="CRC.h" />
     <ClInclude Include="customRecorder.h" />
     <ClInclude Include="DTMF2Bit.h" />
@@ -161,6 +164,7 @@
     <ClInclude Include="PictureProcessing.h" />
     <ClInclude Include="Protokol.h" />
     <ClInclude Include="TextProcessing.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

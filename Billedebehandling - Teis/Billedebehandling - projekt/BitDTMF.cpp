@@ -27,7 +27,7 @@ void BitDTMF::toProtokol(std::vector<Protokol>& p)
 
 	//Hver opdeling skal have opdelingsSize elementer, derfor tages der modulus til længden af stringen
 	divisionsRest = stringLength % opdelingsSize;
-	if (divisionsRest > 0)
+	if (divisionsRest != 0)
 	{
 		antalOpdelinger++;
 
@@ -48,7 +48,7 @@ void BitDTMF::toProtokol(std::vector<Protokol>& p)
 	}
 }
 
-void BitDTMF::toDTMF(std::vector<Protokol>& prot, std::vector<DTMFToner>& dtmfVec)
+void BitDTMF::toDTMF(std::vector<Protokol>& prot, std::vector<DTMFToner>& dtmfVec,int begin, int antal)//start slut
 {
 	int bitPrTone = 4;
 	int antalOpdelinger;
@@ -56,60 +56,46 @@ void BitDTMF::toDTMF(std::vector<Protokol>& prot, std::vector<DTMFToner>& dtmfVe
 	toneNr = 0;
 	std::string bitHold;
 	
-
+	
 	/*Opdeler hver protokol-objekt-streng til valgt tonestørrelse. */
-	const int size = prot.size();
-	for (int i = 0; i < size; i++)
-	{
-		bitHold = prot[i].getString(); //Tager den protokoltilføjede streng.
 
-		//Opdeler strengen i bidder af bitPrTone
-		stringLength = bitHold.length();			//Længden af den protkolstrengen
-		
-		antalOpdelinger = stringLength / bitPrTone; //Antal muligeopdelinger uden padding
-		
-		divisionsrest = stringLength % bitPrTone;	//Mulige opdelinger med padding
-		if (divisionsrest > 0)
-		{
+	for (int i = begin; i < begin + antal; i++)
+	{													//Først finder vi ud af hvor mange toner der er pr datapakke
+		bitHold = prot[i].getString();			//Er der fejl her, så skyldes det ofte at du ønsker et større antal datapakker, end der kan dannes af rådataen. 
+		stringLength = bitHold.length();
+		antalOpdelinger = stringLength / bitPrTone;
+		divisionsrest = stringLength % bitPrTone;
+
+		if (divisionsrest > 0) {						// i de tilfælde hvor det ikke går lige op tilføjes '0' indtil det passer
 			antalOpdelinger++;
 			divisionsrest = bitPrTone - divisionsrest;
-			bitHold = bitHold.append(divisionsrest, '0');//Padding tilføjes så der strengen kan deles en helt antal gange
+			bitHold.append(divisionsrest, '0');
 		}
 
-
-
-		/*Pusher hver enkel tone som objekt og sætter tonestart og -slut*/
+		prot[i].setToneStart(toneNr);					// Angiver datapakkens første tone nr. derved kan man nemmere finde hvilke toner der skal spilles, hvis denne pakke skal gensendes
 		std::string acc;
-		prot[i].setToneStart(toneNr); //Første tonenr gemmes for protokollen
-		
-		for (int i = 1; i < antalOpdelinger + 1; i++)
+
+		for (int t = 0; t < antalOpdelinger; t++)		// Giver hver pakke et tone nr. hvorfra man senere kan generere tonen ud fra tone nr.
 		{
-			acc = startString.substr((i * bitPrTone) - bitPrTone, bitPrTone);
-			//Strengen pushes som objekt til klassen protokol 
-			
+			acc = bitHold.substr(t*bitPrTone, bitPrTone);	// Finder en opdeling
+			std::cout << acc << std::endl;
 			DTMFToner nyTone(acc);
 			nyTone.setToneNumber();
 			dtmfVec.push_back(nyTone);
 			toneNr++;
 		}
-		prot[i].setToneSlut(toneNr - 1); //Sidste tonenr gemmes for protokollen
+
+		prot[i].setToneSlut(toneNr - 1);				// angiver datapakkens sidste tone nr. 
 	}
-		//Dette loop skal opdele strengen af bits i dele af 4 eller 5
-		//Pushe hver opdeling som et objekt, sådan at hvert objekt er én tone
-		//Samtidig vil start- og sluttonenummeret gemmes i hvert objekt af protokollen
-		//sådan at tonerne nemt kan findes ved sendefejl.
-		//DTMFToner klassen indeholder altså alle toner
 
-		//Når strengen af bits er sendt, vil DTMFToner klassen lave en tone.
+		/*Dette loop skal opdele strengen af bits i dele af 4 eller 5
+		Pusher hver opdeling som et objekt, sådan at hvert objekt er én tone
+		Samtidig vil start- og sluttonenummeret gemmes i hvert objekt af protokollen
+		sådan at tonerne nemt kan findes ved sendefejl.
+		DTMFToner klassen indeholder altså alle toner
 
-
-	
-
-	bitHold = prot[0].getString();
-	//std::cout << bitHold << std::endl;
-
+		Når strengen af bits er sendt, vil DTMFToner klassen lave en tone.*/
 }
-
 
 BitDTMF::~BitDTMF()
 {

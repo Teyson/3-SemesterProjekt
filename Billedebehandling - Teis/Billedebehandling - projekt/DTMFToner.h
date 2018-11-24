@@ -18,7 +18,7 @@ public:
 	void setToneNumber();
 	//createDTMF - outputter hvilken tone strengen svarer til
 
-	std::vector<float> createTone();
+	std::vector<float> createTone(int samples, int sampleRate);
 
 	~DTMFToner();
 

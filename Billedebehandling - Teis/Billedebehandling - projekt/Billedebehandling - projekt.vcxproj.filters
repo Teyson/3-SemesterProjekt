@@ -48,6 +48,12 @@
     <ClCompile Include="DTMF2Bit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Afspilning.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Bit2Tekst.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -86,10 +92,16 @@
     <ClInclude Include="DTMF2Bit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bit2Tekst.h">
+    <ClInclude Include="Afspilning.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BitDTMF.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bit2Tekst.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PacketSelection.h">

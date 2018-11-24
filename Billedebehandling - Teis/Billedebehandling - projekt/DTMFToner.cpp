@@ -17,9 +17,9 @@ int DTMFToner::getToneNumber()
 
 void DTMFToner::setToneNumber()
 {
-	if (startString == "0000")				//697 & 1209
+	if (startString == "0000")				// 697 & 1209
 		tone = 0; amplitude = 10000;
-	if (startString == "0001")				//697 & 1336
+	if (startString == "0001")				// 697 & 1336
 		tone = 1; amplitude = 10000;
 	if (startString == "0010")				// 697 & 1477
 		tone = 2; amplitude = 10000;
@@ -51,10 +51,10 @@ void DTMFToner::setToneNumber()
 		tone = 15; amplitude = 10000;
 }
 
-std::vector<float> DTMFToner::createTone()
+std::vector<float> DTMFToner::createTone(int samples, int sampleRate)
 {
-	const unsigned samples = 16000;
-	const unsigned sampleRate = 8000;
+	//const unsigned samples = 16000;
+	//const unsigned sampleRate = 8000;
 
 	const float increment1_1 = 697. / sampleRate;
 	const float increment1_2 = 770. / sampleRate;
