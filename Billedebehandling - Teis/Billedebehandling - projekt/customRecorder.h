@@ -4,7 +4,7 @@
 #include <array>
 
 //#include <iostream>
-using namespace std;
+
 
 #pragma once
 class customRecorder : public sf::SoundRecorder

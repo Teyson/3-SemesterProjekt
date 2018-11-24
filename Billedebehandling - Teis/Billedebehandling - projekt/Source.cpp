@@ -11,7 +11,9 @@
 //#include "customRecorder.h"
 #include "Protokol.h"
 #include "BitDTMF.h"
+#include "TextProcessing.h"
 #include "DTMFToner.h"
+#include "NAK.h"
 
 
 std::vector<Protokol> protokoller;
@@ -79,6 +81,7 @@ int main() {
 		sf::sleep(sf::milliseconds(100));
 	}
 
+	std::cout << std::endl << "Alle pakker går igennem, efterfulgt af at en pakke går tabt" << std::endl << std::endl;
 
 	//Custom recorder
 	//if (!customRecorder::isAvailable())

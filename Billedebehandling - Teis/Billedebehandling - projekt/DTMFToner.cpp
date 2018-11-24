@@ -66,7 +66,7 @@ std::vector<float> DTMFToner::createTone()
 	const float increment2_3 = 1477. / sampleRate;
 	const float increment2_4 = 1633. / sampleRate;
 
-	//De to containere som skal holde de to frekvenser som DTMF-tonen skal bestå af
+	//De to containere som skal holde de to frekvenser som DTMF-tonen skal bestï¿½ af
 	float x1 = 0;
 	float x2 = 0;
 	std::vector<float> toneVals;

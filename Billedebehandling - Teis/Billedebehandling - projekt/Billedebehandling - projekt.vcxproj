@@ -81,6 +81,7 @@
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(SolutionDir)\lib\sfml-graphics.lib;$(SolutionDir)\lib\sfml-graphics-d.lib;$(SolutionDir)\lib\sfml-window.lib;$(SolutionDir)\lib\sfml-window-d.lib;$(SolutionDir)\lib\sfml-audio.lib;$(SolutionDir)\lib\sfml-audio-d.lib;$(SolutionDir)\lib\sfml-network-d.lib;$(SolutionDir)\lib\sfml-network.lib;$(SolutionDir)\lib\sfml-system.lib;$(SolutionDir)\lib\sfml-system-d.lib;$(SolutionDir)\lib\openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -111,6 +112,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(SolutionDir)\lib\sfml-graphics.lib;$(SolutionDir)\lib\sfml-graphics-d.lib;$(SolutionDir)\lib\sfml-window.lib;$(SolutionDir)\lib\sfml-window-d.lib;$(SolutionDir)\lib\sfml-audio.lib;$(SolutionDir)\lib\sfml-audio-d.lib;$(SolutionDir)\lib\sfml-network-d.lib;$(SolutionDir)\lib\sfml-network.lib;$(SolutionDir)\lib\sfml-system.lib;$(SolutionDir)\lib\sfml-system-d.lib;$(SolutionDir)\lib\openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -133,21 +135,28 @@
   <ItemGroup>
     <ClCompile Include="Behandling.cpp" />
     <ClCompile Include="BitDTMF.cpp" />
+    <ClCompile Include="CRC.cpp" />
     <ClCompile Include="customRecorder.cpp" />
     <ClCompile Include="DTMF2Bit.cpp" />
     <ClCompile Include="DTMFToner.cpp" />
+    <ClCompile Include="NAK.cpp" />
     <ClCompile Include="PictureProcessing.cpp" />
     <ClCompile Include="Protokol.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="TextProcessing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h" />
     <ClInclude Include="Behandling.h" />
+    <ClInclude Include="BitDTMF.h" />
+    <ClInclude Include="CRC.h" />
     <ClInclude Include="customRecorder.h" />
     <ClInclude Include="DTMF2Bit.h" />
     <ClInclude Include="DTMFToner.h" />
+    <ClInclude Include="NAK.h" />
     <ClInclude Include="PictureProcessing.h" />
     <ClInclude Include="Protokol.h" />
+    <ClInclude Include="TextProcessing.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

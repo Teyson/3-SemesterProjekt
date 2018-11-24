@@ -36,6 +36,15 @@
     <ClCompile Include="Protokol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextProcessing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CRC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NAK.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="DTMF2Bit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,6 +66,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Protokol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextProcessing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CRC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NAK.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DTMF2Bit.h">
