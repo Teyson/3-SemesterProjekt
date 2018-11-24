@@ -90,6 +90,26 @@ void Protokol::setLastBit()
 	endString;
 }
 
+void Protokol::clearLastBit()
+{
+	//Deler endString op i dets delelementer, og ændrer derefter lastBit, hvorefter den sættes sammen igen.
+
+	endString = startString;
+
+	header();
+
+	std::string lastB = "0";
+
+	std::string seqNum = endString.substr(0, 4);
+	std::string resendBit = endString.substr(6, 1);
+	std::string data = endString.substr(8, dataSize);
+	std::string zeropadding = "00";
+
+	endString = seqNum + lastB + resendBit + zeropadding + data;
+	trailer();
+	endString;
+}
+
 std::string Protokol::getData()
 {
 	return endString.substr(8, 40);

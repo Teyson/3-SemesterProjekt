@@ -30,7 +30,8 @@ public:
 	std::string trailer();		//Skal kalde og lave et CRC-check på data og header.
 	std::string packing();		//Skal kalde header() og trailer(), så de er samlet i et funktions. De skal alligevel altid kaldes sammen
 	void setLastBit();			//Skal gå ind i stringen og sætte det rigtige bit højt.
-	void setResendBit();
+	void clearLastBit();		//skal sætte LB til 0, hvis LB har været sat. 
+	void setResendBit();		//Skal sættes bit som fortæller om pakken er bllevet sendt før.
 	std::string getData();
 	std::string getSequenceNumber();
 	std::string getCRCcheck();
