@@ -29,8 +29,8 @@
 
 std::vector<Protokol> protokoller;
 
-int sampelsGlobal = (8000 * 1000)/1000;//16000;//44100
-int sampelFreqGlobal = 8000;//41000
+int samplesGlobal = (8000 * 300)/1000;//16000;//44100
+int sampleFreqGlobal = 8000;//41000
 int protokolOpdelingGlobal = 32;
 
 
@@ -59,25 +59,45 @@ label:
 	std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
 	std::cin >> answer;
 	if (answer == 'a') {						// Afsender
-		Afspilning test("0110110010101001",sampelsGlobal,sampelFreqGlobal);
+		//Afspilning test("1010101000011011111111100001101011100100",samplesGlobal,sampleFreqGlobal);
 					//	0110 1100 1010 1001
+	
+		std::string str = "Jeg holder af at spise kage!";
+		TextProcessing str_txt(str);
+		std::string str_bits=str_txt.stringToBitsString();
+		Bit2Tekst aben_b(str_bits);
+		std::cout << aben_b.bitToString() << std::endl;
+
+		Afspilning reA(str_bits, samplesGlobal, sampleFreqGlobal);
+
 		
+	//// Modtager side ////
+		//NAK bob;
+		//bob.reset();
+		//bob.insertIntoArray("0000");
+		//bob.insertIntoArray("0010");
 
-		std::vector<int>bla;
-		bla.push_back(0);
-		bla.push_back(2);
-		bla.push_back(0);
+		//std::cout << bob.createNAK() << std::endl;
+	//// Senderside	////
+		//Protokol f(bob.createNAK());
+		//PacketSelection a;
 
-		std::cout << bla.size() << std::endl;
-
+		//std::vector<int>bla;
+		//bla = a.selectPackets(f.getNAKs());
+	//	bla.push_back(1);
+	//	bla.push_back(0);
+	//	bla.push_back(0);
+		
+		//std::cout << bla.size() << std::endl;
+		/*
 		start = std::chrono::system_clock::now();
 		std::thread work(countdown);
 		sf::sleep(sf::milliseconds(1600));
 		std::cout << torbenTester << std::endl;
-		work.join();
+		*/
 
 		sf::SoundBuffer Buffer;
-		if (!Buffer.loadFromSamples(test.playThis(bla), test.getarraySize(), 1, sampelFreqGlobal)) {
+		if (!Buffer.loadFromSamples(reA.playString(str_bits), reA.getarraySize(), 1, sampleFreqGlobal)) {
 			std::cerr << "Loading failed!" << std::endl;
 			return 1;
 		}
@@ -88,36 +108,25 @@ label:
 		while (1) {
 			sf::sleep(sf::milliseconds(100));
 		}
-		work.join();
+		//work.join();
 	}
 	else if (answer == 'm') {					// Modtager
-		//Custom recorder
-	//if (!customRecorder::isAvailable())
-	//{
-	//	std::cout << "Audio capture not available";
-	//	return 0;
-	//}
+		//Customrecorder
 
-	//customRecorder recorder;
+		customRecorder recorder;
 
-	//recorder.start(8000);					//Start recording
-	//std::cout << "Recording...." << std::endl;
+		recorder.start(8000);					//Start recording
+		std::cout << "Recording...." << std::endl;
+		recorder.startThread();
 
-	//while (!_kbhit())
-	//{
-	//	std::cout << recorder.getVectorSize() << std::endl;
-	//}
+		while (!_kbhit())
+		{
+		}
 
-	//recorder.stop();						//Stop recording
-	//std::cout << "end recording" << std::endl;
+		recorder.stop();						//Stop recording
+		std::cout << "end recording" << std::endl;
 
 
-	///*for (int i = 0; i < recorder.getVectorSize(); i++)*/
-	//{
-	//	std::cout << recorder.getVector(i) << std::endl;
-	//}*/
-
-	//
 	}
 
 	//Overwriter raw igen og igen og tildeler 

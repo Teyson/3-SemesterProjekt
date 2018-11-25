@@ -6,7 +6,7 @@ NAK::NAK()
 
 	for (int i = 0; i < arraySize; i++)
 	{
-		recieveArray[i] = "0";
+		recieveArray[i] = "00";
 	}
 
 
@@ -22,7 +22,7 @@ NAK::NAK(int arrayS, int packets)
 
 	for (int i = 0; i < arraySize; i++)
 	{
-		recieveArray[i] = "0";
+		recieveArray[i] = "00";
 	}
 
 	windowSize = packetsSend * 2 + 1;
@@ -35,7 +35,7 @@ std::string NAK::createNonEmptyNAK()
 
 	for (int i = pointerNotRecieved; i < pointerExpected; i++)
 	{
-		if (recieveArray[i] == "0")
+		if (recieveArray[i] == "00")
 		{
 			std::bitset<4> bitset(i);
 			toSend.append(bitset.to_string());
@@ -88,25 +88,25 @@ void NAK::insertIntoArray(std::string s)
 
 void NAK::initRecieveArray()
 {
-	//"0" forstås som null
+	//"00" forstås som null
 
 	//Init recieveArray
 	if (pointerMax < pointerNotRecieved)
 	{
 		for (int i = pointerMax; i < pointerNotRecieved; i++)
 		{
-			recieveArray[i] = "0";
+			recieveArray[i] = "00";
 		}
 	}
 	else if (pointerMax > pointerNotRecieved)
 	{
 		for (int i = 0; i < pointerNotRecieved; i++)
 		{
-			recieveArray[i] = "0";
+			recieveArray[i] = "00";
 		}
 		for (int i = pointerMax; i < recieveArray->size(); i++)
 		{
-			recieveArray[i] = "0";
+			recieveArray[i] = "00";
 		}
 	}
 }
@@ -117,13 +117,13 @@ void NAK::updatePointerNotRecieved()
 
 	for (int i = pointerNotRecieved; i < pointerExpected; i++)
 	{
-		if (recieveArray[i] == "0")
+		if (recieveArray[i] == "00")
 		{
 			pointerNotRecieved = i;
 		}
 	}
 
-	if (recieveArray[pointerNotRecieved] != "0")
+	if (recieveArray[pointerNotRecieved] != "00")
 	{
 		pointerNotRecieved = pointerExpected;
 	}
@@ -168,7 +168,7 @@ void NAK::updateAllPointers()
 
 void NAK::reset()
 {
-	std::fill_n(recieveArray, arraySize, "0");
+	std::fill_n(recieveArray, arraySize, "00");
 
 	pointerExpected = packetsSend;
 	pointerMax = pointerNotRecieved + windowSize;

@@ -27,7 +27,7 @@ protected:
 	std::vector<Protokol>datapakker;
 	std::vector<DTMFToner> dtmfToner;
 	unsigned int arraySize=256000;
-	sf::Int16 raw1[500000]; // [arraySize]
+	sf::Int16 raw1[256000]; // [arraySize]
 
 
 };

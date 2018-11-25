@@ -38,12 +38,12 @@ void BitDTMF::toProtokol(std::vector<Protokol>& p)
 
 	//startString opdeles nu i opdelingsSize og gemmes i hvert sit objekt af typen Protokol i vektor protokoller
 	std::string acc;
-	for (int i = 1; i < antalOpdelinger + 1; i++)
+	for (int i = 0; i < antalOpdelinger; i++)
 	{
-		acc = startString.substr((i * opdelingsSize) - opdelingsSize, opdelingsSize);
+		acc = startString.substr((i * opdelingsSize), opdelingsSize);
 		
 		//Strengen pushes som objekt til klassen protokol 
-		Protokol nyProtokol(acc);
+		Protokol nyProtokol(acc,i);
 		p.push_back(nyProtokol);
 	}
 }
@@ -72,19 +72,27 @@ void BitDTMF::toDTMF(std::vector<Protokol>& prot, std::vector<DTMFToner>& dtmfVe
 			bitHold.append(divisionsrest, '0');
 		}
 
+		if (i < begin + antal - 1) {			// Sætter alle LPB'er til 0 bortset fra sidste frame
+			prot[i].clearLastBit();				// sætter lastPackageBit til 0
+		}
+		else {
+			prot[i].setLastBit();				// Sætter lastPackageBit til 1
+		}
+
+
 		prot[i].setToneStart(toneNr);					// Angiver datapakkens første tone nr. derved kan man nemmere finde hvilke toner der skal spilles, hvis denne pakke skal gensendes
 		std::string acc;
 
 		for (int t = 0; t < antalOpdelinger; t++)		// Giver hver pakke et tone nr. hvorfra man senere kan generere tonen ud fra tone nr.
 		{
 			acc = bitHold.substr(t*bitPrTone, bitPrTone);	// Finder en opdeling
-			std::cout << acc << std::endl;
+			//std::cout << acc << std::endl;
 			DTMFToner nyTone(acc);
 			nyTone.setToneNumber();
 			dtmfVec.push_back(nyTone);
 			toneNr++;
 		}
-
+		std::cout << prot[i].getString() << std::endl;
 		prot[i].setToneSlut(toneNr - 1);				// angiver datapakkens sidste tone nr. 
 	}
 

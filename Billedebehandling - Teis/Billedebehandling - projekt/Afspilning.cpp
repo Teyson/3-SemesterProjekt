@@ -10,19 +10,20 @@ Afspilning::Afspilning(std::string datainput, int sampleInput, int sampleRateInp
 {
 	samples = sampleInput;
 	sampleFreq = sampleRateInput;
-	BitDTMF sekven(datainput, samples, sampleFreq, 4);
+	BitDTMF sekven(datainput, samples, sampleFreq, 40);
 	sekvens = sekven;
 	sekvens.toProtokol(datapakker);
 }
 
 sf::Int16 * Afspilning::playThis(std::vector<int> resendPackage)
 {
+	clearRaw1DTMF();
 	int abc = 0;
 
 	abc = makeSyncSequence(0);
 	/////	Send begin	///////
 	for (int i = 0; i < resendPackage.size(); i++) {
-		// Opdater datapakke ved datapakker[resendPackage[i]].FUNKTION(); 
+		datapakker[resendPackage[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
 		abc = adddatapakke(resendPackage[i], abc);
 	}
 	/////	Send end	///////
@@ -31,6 +32,7 @@ sf::Int16 * Afspilning::playThis(std::vector<int> resendPackage)
 
 sf::Int16 * Afspilning::playString(std::string nakString)
 {
+	clearRaw1DTMF();
 	int bitPrTone = 4;
 	int j = 0;
 	int abc = 0;
@@ -57,11 +59,12 @@ sf::Int16 * Afspilning::playString(std::string nakString)
 
 sf::Int16* Afspilning::playSequence(int start, int antal)
 {
+	clearRaw1DTMF();
 	int j = 0;
 	int abc = 0;
 	std::vector<float> tone;
 
-	abc = makeSyncSequence(0);
+	abc = makeSyncSequence(1);
 	j = abc * samples;
 
 	/////	Send begin	///////

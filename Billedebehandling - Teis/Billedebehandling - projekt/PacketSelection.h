@@ -8,7 +8,7 @@ class PacketSelection
 public:
 	PacketSelection();
 
-	std::vector<int> selectPackets(std::vector<std::string> vecS);
+	std::vector<int> selectPackets(std::vector<std::string> stringS);
 
 	//simple get-kommandoer
 	int getPacketToSendIndex();
@@ -19,7 +19,7 @@ public:
 	~PacketSelection();
 
 protected:
-	int nextPacketToSendIndex = 0;
+	int lastPackIndex = -1;
 	int packetsPerSend = 3;
 };
 
