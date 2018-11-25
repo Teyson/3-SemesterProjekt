@@ -25,6 +25,8 @@ protected:
     std::vector<int> syncBuffer;
     std::vector<int> mainBuffer;
     std::string bitstring;
+    float forhold1;
+    float forhold2;
   
     int a;
     int mainPtr;

@@ -86,26 +86,22 @@ int main() {
 	while (1) {
 		sf::sleep(sf::milliseconds(100));
 	}*/
+    //sf::sleep(sf::milliseconds(10000));
+    
+    for (size_t i = 0; i < 100; i++)
+    {
+        customRecorder recorder;
+        recorder.start(8000);					//Start recording  
+        //std::cout << "Recording...." << std::endl;
 
+        sf::sleep(sf::milliseconds(300));
+        recorder.startThread();
 
+        recorder.stop();						//Stop recording
+        sf::sleep(sf::milliseconds(800));
+        //std::cout << "end recording" << std::endl;
 
-	customRecorder recorder;
-	recorder.start(8000);					//Start recording  
-	std::cout << "Recording...." << std::endl;
-
-	sf::sleep(sf::milliseconds(100));
-
-	
-	recorder.startThread();
-
-
-   	while (!_kbhit())
-	{}
-
-	recorder.stop();						//Stop recording
-	std::cout << "end recording" << std::endl;
-
-
+    }
 	///*for (int i = 0; i < recorder.getVectorSize(); i++)
 	//{
 	//	std::cout << recorder.getVector(i) << std::endl;
