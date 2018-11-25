@@ -2,8 +2,11 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <fstream>
+#include <mutex>;
 
-//#include <iostream>
+#include "Synkronisering.h"
+
 
 
 #pragma once
@@ -11,23 +14,18 @@ class customRecorder : public sf::SoundRecorder
 {
 public:
 	customRecorder();
-
 	virtual bool onStart();
-
 	virtual bool onProcessSamples(const sf::Int16* samples, std::size_t sampleCount);
-
-	std::vector<sf::Int16> sampleToner();
-
 	virtual void onStop();
-
-	int getVector(int k);
-
-	int getVectorSize();
-
-
+	void startThread();
+    
+    
 	~customRecorder();
 
 protected:
-	std::vector <sf::Int16> sampleVector;
-
+	std::vector <int> testVector;
+    std::vector<int> mainBuffer;
+	int filter;
+    int mainPointer;
+    Synkronisering obj;
 };

@@ -145,6 +145,7 @@
     <ClCompile Include="PictureProcessing.cpp" />
     <ClCompile Include="Protokol.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Synkronisering.cpp" />
     <ClCompile Include="TextProcessing.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +162,7 @@
     <ClInclude Include="PictureProcessing.h" />
     <ClInclude Include="Protokol.h" />
     <ClInclude Include="TextProcessing.h" />
+    <ClInclude Include="Synkronisering.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

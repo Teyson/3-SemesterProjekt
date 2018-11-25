@@ -5,17 +5,24 @@
 #include <string>
 #include <bitset>
 #include <conio.h>  //kbhit
+#include <fstream> //Gem til fil
+#include <mutex>
+#include <thread>
 
 #include "CImg.h"
 #include "PictureProcessing.h"
-//#include "customRecorder.h"
+#include "customRecorder.h"
 #include "Protokol.h"
 #include "BitDTMF.h"
 #include "TextProcessing.h"
 #include "DTMFToner.h"
+#include "Synkronisering.h"
 #include "NAK.h"
 #include "PacketSelection.h"
 #include "Bit2Tekst.h"
+
+//#include "Behandling.h"
+
 
 
 std::vector<Protokol> protokoller;
