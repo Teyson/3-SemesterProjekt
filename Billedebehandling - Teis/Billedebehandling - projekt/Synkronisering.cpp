@@ -15,16 +15,16 @@ void Synkronisering::clearMainBuffer(bool c)
 void Synkronisering::addToMainBuffer(const sf::Int16 *samples, int startPtr, int vectorSize)
 {
     //std::mutex mu;
-    
+
     for (int i = startPtr; i < vectorSize; i++)
     {
         mainBuffer.push_back(samples[i]);
     }
     mainPtr = mainBuffer.size();
-	//std::cout << mainPtr << std::endl;
-    
-    
-    
+    //std::cout << mainPtr << std::endl;
+
+
+
     //std::cout << mainBuffer.size() << std::endl;
 
 }
@@ -36,9 +36,9 @@ void Synkronisering::sync()
     bool startOutputting = 0; //Når den er færdig med selve synkroniseringen, kan tonerne blive dekodet til bit
 
     int ms = 20;    //Vinduesstørrelse i ms
-    int fs = 8000;  
+    int fs = 8000;
     int windowSz = (fs * ms) / 1000; //vinduesstørrelse i antal samples
-    int forskydning = windowSz / ms;
+    int forskydning = windowSz / (ms * 4);
     int low1;
     int high1;
     int low2;
@@ -49,7 +49,7 @@ void Synkronisering::sync()
     int low2Amp = 20000;
     int high2Amp = 20000;
     int counter = 0;
-        
+
     syncPtr = 0; //til at holde styr på, hvad der er syncet i mainBuf
     int elementNr = 0; //Til at holde styr på nr element der tages fra mainBuf
 
@@ -65,15 +65,15 @@ void Synkronisering::sync()
 
     while (keepSyncing == 1)
     {
-		//std::cout << mainPtr << std::endl;
+        //std::cout << mainPtr << std::endl;
         //std::cout << mainPtr << std::endl;
         //Det tjekkes om mainBufferen har nok elementer til at der kan tages et vindue
-      
+
         if (syncPtr + windowSz < mainPtr)
         {
             //std::cout << syncPtr + windowSz << std::endl;
             //std::cout << mainPtr << std::endl;
-			
+
             float gns1;
             float gns2;
             float forhold;
@@ -81,10 +81,10 @@ void Synkronisering::sync()
             if (startOutputting == 0)
             {
 
-				if (elementNr == 18)
-				{
-					startOutputting = 1;
-				}
+                if (elementNr == 38)
+                {
+                    startOutputting = 1;
+                }
                 high1 = behandling.goertzler(fs, 1209, &mainBuffer, syncPtr, windowSz);
                 low1 = behandling.goertzler(fs, 697, &mainBuffer, syncPtr, windowSz);
                 high2 = behandling.goertzler(fs, 1633, &mainBuffer, syncPtr, windowSz);
@@ -94,19 +94,21 @@ void Synkronisering::sync()
                 forhold = gns1 / gns2;
 
                 if (elementNr % 2 == 0) {
-                    std::cout << elementNr << "  " << forhold << std::endl;
+                    std::cout << "1   " << forhold << std::endl;
                 }
-                    //std::cout << forhold << std::endl;
+                else
+                    std::cout << forhold << std::endl;
+                //std::cout << forhold << std::endl;
                 //std::cout << elementNr << std::endl;
 
-                
+
                 if (elementNr == 0) //Første gang, er vi interesseret i at første tone er færdig inden tonevinduet slutter
                 {
                     if (forhold < 0.5)
                         syncPtr += 20 * forskydning;
-                    syncPtr += forskydning - (forskydning / 4) ;
+                    syncPtr += forskydning - (forskydning / 4);
                     forhold1 = forhold;
-                 
+
                 }
                 else if (elementNr == 2)
                 {
@@ -137,7 +139,7 @@ void Synkronisering::sync()
                             std::cout << "forskydning" << std::endl;
                         }
                     }
-                    
+
                     else
                     {
                         std::cout << "nedadgaaende" << std::endl;
@@ -158,17 +160,17 @@ void Synkronisering::sync()
                             std::cout << "forskydning 40 ned" << std::endl;
                         }
                     }
-                    
+
                 }
                 else if (elementNr % 2 == 0 && elementNr != 2 && elementNr != 0 && doneSync == false)
                 {
                     if (forhold < forhold3 && revertCounter < 2)
                     {
-                    syncPtr -= forskydning;
-                    revertCounter++;
-                    if (forhold > 13)
-                        doneSync = true;
-                    std::cout << "revert" << std::endl;
+                        syncPtr -= forskydning;
+                        revertCounter++;
+                        if (forhold > 10)
+                            doneSync = true;
+                        std::cout << "revert" << std::endl;
                     }
                     else if (forhold < 1) {
                         syncPtr += 18 * forskydning;
@@ -191,11 +193,13 @@ void Synkronisering::sync()
                         std::cout << "forskydning 3" << std::endl;
                     }
                     else {
-                        if (forhold > 19)
+                        if (forhold > 10)
                             doneSync = true;
-                        syncPtr += forskydning;
+                        else {
+                            syncPtr += forskydning * 2;
+                            std::cout << "forskydning" << std::endl;
+                        }
                         revertCounter = 0;
-                        std::cout << "forskydning" << std::endl;
                     }
 
                     forhold3 = forhold;
@@ -219,24 +223,24 @@ void Synkronisering::sync()
                             mistake++;
                     }
                     std::cout << bitstring << std::endl;
-                    std::cout << mistake / ((float)64)*100  << std::endl;
+                    std::cout << mistake / ((float)64) * 100 << std::endl;
                 }
                 counter++;
             }
         }
-        
-		sf::sleep(sf::milliseconds(10));
-     }
+
+        sf::sleep(sf::milliseconds(5));
+    }
 
 
 
-        
+
 }
 
 void Synkronisering::startThread()
 {
-	std::thread syncLoader(&Synkronisering::sync, this);
-	syncLoader.join();
+    std::thread syncLoader(&Synkronisering::sync, this);
+    syncLoader.join();
 }
 
 Synkronisering::~Synkronisering()

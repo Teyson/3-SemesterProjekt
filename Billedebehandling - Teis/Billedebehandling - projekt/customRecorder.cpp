@@ -11,7 +11,7 @@ bool customRecorder::onStart()
 {
 	// initialize whatever has to be done before the capture starts
 
-	setProcessingInterval(sf::milliseconds(80)); //S�tter intervallerne som onProcessSamples() arbejder p�
+	setProcessingInterval(sf::milliseconds(45)); //S�tter intervallerne som onProcessSamples() arbejder p�
 	filter = 1;
 												   // return true to start the capture, or false to cancel it
 	return true;
@@ -32,10 +32,10 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
         
         int amplitudeLow;
 		int amplitudeHigh;
-        int size = sampleCount / 8;
+        int size = sampleCount / 6;
 		      
 
-		for (size_t i = 0; i < 8; i++)
+		for (size_t i = 0; i < 6; i++)
 		{
             //std::cout << test.bestHigh(8000, &testVector, (i*size), size) << std::endl;
 			amplitudeLow = test.goertzler(8000, 697, &testVector, (i*size), size);
@@ -45,7 +45,7 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
             //std::cout << amplitudeLow << std::endl;
             //std::cout << amplitudeLow1 << std::endl;
 
-            if (amplitudeHigh > 500 && amplitudeLow > 500){
+            if (amplitudeHigh > 200 && amplitudeLow > 200){
                 //std::cout << amplitudeLow << std::endl;
 				if (i != 0) 
 					i--;
