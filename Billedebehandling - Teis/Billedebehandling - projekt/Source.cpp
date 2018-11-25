@@ -98,7 +98,10 @@ int main()
 	std::cout << "pointerNotRecieved: " << NAKtest.getPointerNotRecieved() << std::endl << "pointerMax: " << NAKtest.getPointerMax() << std::endl << "pointerExpected: " << NAKtest.getPointerExpected() << std::endl;
 
 
-
+	std::string packet1 = "1111000010101011010101101011011000001111";
+	std::string packet2 = "1111000010101011010101101011011000001111";
+	std::string packet3 = "1111000010101011010101101011011000001111";
+	std::cout << packet1.length() << std::endl;
 
 
 	/*std::string data = "1001011010101001001001001101011101010101";

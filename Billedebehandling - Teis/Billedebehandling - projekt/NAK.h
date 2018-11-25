@@ -16,6 +16,7 @@ public:
 	std::string createNAK();
 	std::string trailer(std::string s);
 	void insertIntoArray(std::string s);
+	void insertIntoDataArray(std::string s, std::string d);
 	void initRecieveArray();
 	void updatePointerNotRecieved();
 	void updatePointerMax();
@@ -26,6 +27,7 @@ public:
 	int getPointerNotRecieved();
 	int getPointerExpected();
 	int getPointerMax();
+	std::string getDataFromArray(std::string s);
 	bool getNAKBoolean();
 
 	~NAK();
@@ -41,5 +43,6 @@ protected:
 	bool NAKBoolean = false;
 
 	std::string* recieveArray;
+	std::string recieveDataAray;
 };
 

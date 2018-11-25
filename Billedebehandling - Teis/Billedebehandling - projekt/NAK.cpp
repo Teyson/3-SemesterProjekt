@@ -9,6 +9,14 @@ NAK::NAK()
 		recieveArray[i] = "0";
 	}
 
+	for (int i = 0; i < arraySize; i++)
+	{
+		for (int j = 0; j < 40; j++)
+		{
+			recieveDataAray += "0";
+		}
+	}
+
 
 	windowSize = packetsSend * 2 + 1;
 }
@@ -23,6 +31,14 @@ NAK::NAK(int arrayS, int packets)
 	for (int i = 0; i < arraySize; i++)
 	{
 		recieveArray[i] = "0";
+	}
+
+	for (int i = 0; i < arraySize; i++)
+	{
+		for (int j = 0; j < 40; j++)
+		{
+			recieveDataAray += "0";
+		}
 	}
 
 	windowSize = packetsSend * 2 + 1;
@@ -84,6 +100,22 @@ void NAK::insertIntoArray(std::string s)
 	int index = std::stoi(s, nullptr, 2);
 
 	recieveArray[index] = s;
+}
+
+
+//indtager sekvensnummer og data som string
+void NAK::insertIntoDataArray(std::string s, std::string d)
+{
+	//seq.nr. er en indeksering for vores string-array
+	int index = std::stoi(s, nullptr, 2);
+
+	// her opdeles recieveDataArray i start slut og det der skal indsættes
+	std::string startStr = recieveDataAray.substr(0, index * 40);
+	std::string indsatStr = d;
+	std::string slutStr = recieveDataAray.substr((index + 1) * 40, recieveDataAray.length() - (index * 40));
+	
+	// her sættes de sammen 
+	std::string resListe = startStr + indsatStr + slutStr;
 }
 
 void NAK::initRecieveArray()
@@ -189,6 +221,15 @@ int NAK::getPointerExpected()
 int NAK::getPointerMax()
 {
 	return pointerMax;
+}
+
+std::string NAK::getDataFromArray(std::string s)
+{
+	int index = std::stoi(s, nullptr, 2);
+
+	std::string oensketStr = recieveDataAray.substr(index * 40, 40);
+
+	return oensketStr;
 }
 
 bool NAK::getNAKBoolean()
