@@ -17,7 +17,8 @@ public:
     void addToMainBuffer(const sf::Int16 *samples, int startPtr, int vectorSize);
     void clearMainBuffer(bool clear);
     void sync();
-	void startThread();
+	std::string startThread();
+	std::string getString();
 
 	~Synkronisering();
 

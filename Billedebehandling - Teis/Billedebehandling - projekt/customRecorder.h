@@ -17,7 +17,7 @@ public:
 	virtual bool onStart();
 	virtual bool onProcessSamples(const sf::Int16* samples, std::size_t sampleCount);
 	virtual void onStop();
-	void startThread();
+	std::string startThread();
     
     
 	~customRecorder();
