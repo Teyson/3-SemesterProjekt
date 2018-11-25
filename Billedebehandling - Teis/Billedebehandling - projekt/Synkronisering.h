@@ -4,6 +4,8 @@
 #include <mutex>
 #include <iostream>
 #include <SFML/Audio.hpp>
+#include <conio.h>  //kbhit
+#include <fstream>
 
 #include "Behandling.h"
 #include "DTMF2Bit.h"
