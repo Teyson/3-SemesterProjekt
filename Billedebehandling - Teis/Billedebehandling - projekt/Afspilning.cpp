@@ -8,6 +8,7 @@ Afspilning::Afspilning()
 
 Afspilning::Afspilning(std::string datainput, int sampleInput, int sampleRateInput)
 {
+	raw1 = new sf::Int16[arraySize];
 	samples = sampleInput;
 	sampleFreq = sampleRateInput;
 	BitDTMF sekven(datainput, samples, sampleFreq, 40);
@@ -40,16 +41,16 @@ sf::Int16 * Afspilning::playString(std::string nakString)
 	std::string acc;
 
 	abc = makeSyncSequence(0);
-	j = abc * samples;
+	j = abc * samples;													// j er elementer i raw1
 		////	Play string	///////
 	for (int i = 0; i < nakString.length() / bitPrTone; i++) {
-		acc = nakString.substr(i*bitPrTone, bitPrTone);
+		acc = nakString.substr(i*bitPrTone, bitPrTone);					// Tager en del af stringen og laver den til en tone. 
 		DTMFToner nakToner(acc);
 		nakToner.setToneNumber();
 		dtmfToner.push_back(nakToner);
 	}
 	for (int i = abc; i < dtmfToner.size(); i++) {
-		tone = dtmfToner[i].createTone(samples, sampleFreq);
+		tone = dtmfToner[i].createTone(samples, sampleFreq);			// Tager et toneNr og konvertere det til en vector med amplituder
 		for (int k = 0; k < samples; j++, k++) {
 			raw1[j] = tone[k];
 		}
@@ -68,13 +69,13 @@ sf::Int16* Afspilning::playSequence(int start, int antal)
 	j = abc * samples;
 
 	/////	Send begin	///////
-	sekvens.toDTMF(datapakker, dtmfToner, start, antal);
+	sekvens.toDTMF(datapakker, dtmfToner, start, antal);								// Tager datapakker fra sekvensen startende fra start og giver det et toneNr. Dette gør den 'antal' gange
 	std::vector<float> toner;
 
 	for (int dtmftoneNR = abc; dtmftoneNR < dtmfToner.size(); dtmftoneNR++) {
-		toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);
+		toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);					// Tager et toneNr og konvertere det til en vector med amplituder
 		for (int t = 0; t < samples; t++, j++) {
-			raw1[j] = toner[t];
+			raw1[j] = toner[t];															// Tilføjer amplitudeværdierne i afspilningsarrayet.
 		}
 	}
 	/////	Send end	///////
@@ -87,14 +88,14 @@ sf::Int16* Afspilning::playSequence(int start, int antal)
 int Afspilning::adddatapakke(int pakke,int abc)
 {
 	/////	Send begin	///////
-	sekvens.toDTMF(datapakker, dtmfToner, pakke, 1);
+	sekvens.toDTMF(datapakker, dtmfToner, pakke, 1);									// Tager datapakker fra sekvensen startende fra start og giver det et toneNr. Dette gør den 1 gang
 	std::vector<float> toner;
 	int j = abc * samples;
 
 	for (int dtmftoneNR = abc; dtmftoneNR < dtmfToner.size(); dtmftoneNR++) {
-		toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);
+		toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);					// Tager et toneNr og konvertere det til en vector med amplituder
 		for (int t = 0; t < samples; t++, j++) {
-			raw1[j] = toner[t];
+			raw1[j] = toner[t];															// Tilføjer amplitudeværdierne i afspilningsarrayet.
 		}
 		abc++;
 	}
@@ -129,13 +130,13 @@ int Afspilning::makeSyncSequence(int perioder)
 		abc++;
 	}
 	/////	sync end	///////
-	return abc;
+	return abc;									// retunere antallet af toner i afspilningsarrayet (raw1)
 }
 
 void Afspilning::clearRaw1DTMF()
 {
-	std::fill_n(raw1, arraySize, 0);
-	dtmfToner.clear();
+	std::fill_n(raw1, arraySize, 0);			// tømmer og nulstiller afspillingsarrayet (raw1)
+	dtmfToner.clear();							// clearer vektoren der indeholder DTMF-tonerne
 }
 
 unsigned int Afspilning::getarraySize()

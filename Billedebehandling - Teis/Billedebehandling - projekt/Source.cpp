@@ -35,6 +35,7 @@ int protokolOpdelingGlobal = 32;
 
 
 ////////// Timer //////////
+double runOut = 1.5;
 bool torbenTester = true;
 std::chrono::system_clock::time_point start;
 
@@ -44,7 +45,7 @@ void countdown() {
 		std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
 		std::chrono::duration<double> differens = end - start;
 		std::cout << differens.count() << std::endl;
-		if (differens.count() > 1.5) {
+		if (differens.count() > runOut) {
 			torbenTester = false;
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -59,37 +60,20 @@ label:
 	std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
 	std::cin >> answer;
 	if (answer == 'a') {						// Afsender
-		//Afspilning test("1010101000011011111111100001101011100100",samplesGlobal,sampleFreqGlobal);
+		Afspilning test("1010101000011011111111100001101011100100",samplesGlobal,sampleFreqGlobal);
 					//	0110 1100 1010 1001
 	
-		std::string str = "Jeg holder af at spise kage!";
+		/*std::string str = "Jeg holder af at spise kage!";
 		TextProcessing str_txt(str);
 		std::string str_bits=str_txt.stringToBitsString();
 		Bit2Tekst aben_b(str_bits);
 		std::cout << aben_b.bitToString() << std::endl;
 
-		Afspilning reA(str_bits, samplesGlobal, sampleFreqGlobal);
+		Afspilning reA(str_bits, samplesGlobal, sampleFreqGlobal);*/
 
 		
-	//// Modtager side ////
-		//NAK bob;
-		//bob.reset();
-		//bob.insertIntoArray("0000");
-		//bob.insertIntoArray("0010");
 
-		//std::cout << bob.createNAK() << std::endl;
-	//// Senderside	////
-		//Protokol f(bob.createNAK());
-		//PacketSelection a;
-
-		//std::vector<int>bla;
-		//bla = a.selectPackets(f.getNAKs());
-	//	bla.push_back(1);
-	//	bla.push_back(0);
-	//	bla.push_back(0);
-		
-		//std::cout << bla.size() << std::endl;
-		/*
+		/* // 
 		start = std::chrono::system_clock::now();
 		std::thread work(countdown);
 		sf::sleep(sf::milliseconds(1600));
@@ -97,7 +81,7 @@ label:
 		*/
 
 		sf::SoundBuffer Buffer;
-		if (!Buffer.loadFromSamples(reA.playString(str_bits), reA.getarraySize(), 1, sampleFreqGlobal)) {
+		if (!Buffer.loadFromSamples(test.playSequence(0,1), test.getarraySize(), 1, sampleFreqGlobal)) {
 			std::cerr << "Loading failed!" << std::endl;
 			return 1;
 		}
@@ -118,7 +102,7 @@ label:
 		recorder.start(8000);					//Start recording
 		std::cout << "Recording...." << std::endl;
 		recorder.startThread();
-
+	
 		while (!_kbhit())
 		{
 		}
