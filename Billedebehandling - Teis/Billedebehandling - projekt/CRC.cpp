@@ -17,7 +17,7 @@ std::string CRC::crcCheck()
 	//hvor mange "0"'er  det mangler
 	int manglendeBits = divident.length()-1;
 	
-	//streng der skal udføres CRC-check på
+	//streng der skal udfï¿½res CRC-check pï¿½
 	std::string remainder = bitStreng;
 	
 	//der appendes "0"'er til 
@@ -37,7 +37,7 @@ std::string CRC::crcCheck()
 		{
 			
 			
-			//vi finder ud af om første bit er 1 eller 0
+			//vi finder ud af om fï¿½rste bit er 1 eller 0
 			if(remainder[j] == '1')
 			{
 				//vi finder det m'te ellement for dividenten 
@@ -55,7 +55,7 @@ std::string CRC::crcCheck()
 					std::string fDel = remainder.substr(0, j + m);
 					//her gemmes remainderen efter det j+m'te element
 					std::string sDel = remainder.substr(j + m + 1, remainder.length());
-					// her indsættes et ettal på det j+m'te element
+					// her indsï¿½ttes et ettal pï¿½ det j+m'te element
 					remainder = fDel + "1" + sDel;
 				}
 				else
@@ -64,12 +64,12 @@ std::string CRC::crcCheck()
 					std::string fDel = remainder.substr(0, j + m);
 					//her gemmes remainderen efter det j+m'te element
 					std::string sDel = remainder.substr(j + m + 1, remainder.length());
-					// her indsættes et ettal på det j+m'te element
+					// her indsï¿½ttes et ettal pï¿½ det j+m'te element
 					remainder = fDel + "0" + sDel;
 				}
 
 			}
-			//hvis MSB er = 0, skal alle bits bare rykkes da der XOR'es med m antal 0'er, og dette gøres ved at sætte j+1 
+			//hvis MSB er = 0, skal alle bits bare rykkes da der XOR'es med m antal 0'er, og dette gï¿½res ved at sï¿½tte j+1 
 		}
 	}
 
@@ -79,7 +79,7 @@ std::string CRC::crcCheck()
 
 std::string CRC::crcCheckReciever()
 {
-	//streng der skal udføres CRC-check på
+	//streng der skal udfï¿½res CRC-check pï¿½
 	std::string remainder = bitStreng;
 
 	//nu skal beskeden XOR'es med dividenten det antal gange der er bitstrengen er lang
@@ -89,7 +89,7 @@ std::string CRC::crcCheckReciever()
 		for (int m = divident.length() - 1; m > 0; m--)
 		{
 			
-			//vi finder ud af om første bit er 1 eller 0
+			//vi finder ud af om fï¿½rste bit er 1 eller 0
 			if (remainder[j] == '1')
 			{
 				//vi finder det m'te ellement for dividenten 
@@ -109,7 +109,7 @@ std::string CRC::crcCheckReciever()
 					std::string fDel = remainder.substr(0, j + m);
 					//her gemmes remainderen efter det j+m'te element
 					std::string sDel = remainder.substr(j + m + 1, remainder.length() - (j + m + 1));
-					// her indsættes et ettal på det j+m'te element
+					// her indsï¿½ttes et ettal pï¿½ det j+m'te element
 					remainder = fDel + "1" + sDel;
 
 				}
@@ -119,13 +119,13 @@ std::string CRC::crcCheckReciever()
 					std::string fDel = remainder.substr(0, j + m);
 					//her gemmes remainderen efter det j+m'te element
 					std::string sDel = remainder.substr(j + m + 1, remainder.length());
-					// her indsættes et ettal på det j+m'te element
+					// her indsï¿½ttes et ettal pï¿½ det j+m'te element
 					remainder = fDel + "0" + sDel;
 
 				}
 
 			}
-			//hvis MSB er = 0, skal alle bits bare rykkes da der XOR'es med m antal 0'er, og dette gøres ved at sætte j+1 
+			//hvis MSB er = 0, skal alle bits bare rykkes da der XOR'es med m antal 0'er, og dette gï¿½res ved at sï¿½tte j+1 
 		}
 	}
 

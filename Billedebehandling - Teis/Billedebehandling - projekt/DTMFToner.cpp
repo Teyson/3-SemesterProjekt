@@ -53,8 +53,8 @@ void DTMFToner::setToneNumber()
 
 std::vector<float> DTMFToner::createTone(int samples, int sampleRate)
 {
-	//const unsigned samples = 16000;
 	//const unsigned sampleRate = 8000;
+	//const unsigned samples = 16000;
 
 	const float increment1_1 = 697. / sampleRate;
 	const float increment1_2 = 770. / sampleRate;

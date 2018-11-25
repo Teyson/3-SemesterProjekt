@@ -7,20 +7,27 @@
 #include <conio.h>  //kbhit
 #include <thread>
 #include <atomic>
+#include <fstream> //Gem til fil
+#include <mutex>
 
 #include "CImg.h"
 #include "PictureProcessing.h"
-//#include "customRecorder.h"
-#include "PacketSelection.h"
+#include "customRecorder.h"
+#include "Protokol.h"
+#include "BitDTMF.h"
 #include "NAK.h"
+#include "PacketSelection.h"
 #include "TextProcessing.h"
+#include "Synkronisering.h"
+#include "DTMFToner.h"
+#include "Bit2Tekst.h"
 
 #include "Afspilning.h"
 #include "Timer.h"
-//#include "Protokol.h"
-//#include "BitDTMF.h"
-//#include "DTMFToner.h"
 
+
+
+std::vector<Protokol> protokoller;
 
 int sampelsGlobal = (8000 * 1000)/1000;//16000;//44100
 int sampelFreqGlobal = 8000;//41000
