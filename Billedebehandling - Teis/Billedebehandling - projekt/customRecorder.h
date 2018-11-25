@@ -28,11 +28,6 @@ public:
 	~customRecorder();
 
 protected:
-	//vector <double> sampleVector;
-	//vector <const sf::Int16*> sampleVector;
-	std::vector <int> sampleVector;
-	//int sampleArray[5000];
-	//sf::SoundBuffer buffer;
-	//const sf::Int16* testBit;
+	std::vector <sf::Int16> sampleVector;
 
 };

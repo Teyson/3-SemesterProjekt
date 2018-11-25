@@ -42,6 +42,18 @@
     <ClCompile Include="CRC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NAK.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DTMF2Bit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bit2Tekst.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketSelection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h">
@@ -56,9 +68,6 @@
     <ClInclude Include="Behandling.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BitDTMF.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DTMFToner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -69,6 +78,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CRC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NAK.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DTMF2Bit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bit2Tekst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BitDTMF.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketSelection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -13,13 +13,14 @@ public:
 	void setInputString(std::string s);
 	std::string getOutputString();
 
-	std::vector<std::bitset<8>> stringToBits();
-	void bitsetsVectorToString(std::vector<std::bitset<8>> vector);
+	std::vector<std::bitset<8>> stringToBitsVector();
+	std::string bitsetsVectorToString();
+	std::string stringToBitsString();
 
 	~TextProcessing();
 
 protected:
 	std::string inputString;
 	std::string outputString;
+	std::vector<std::bitset<8>> bitsetsVector;
 };
-

@@ -18,3 +18,9 @@ Billedebehandling - Teis/\.vs/Billedebehandling - projekt/v15/\.suo
 *.opendb
 
 *.obj
+
+*.xml
+
+*.lastbuildstate
+
+*.exe

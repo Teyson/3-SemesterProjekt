@@ -26,7 +26,7 @@ std::string TextProcessing::getOutputString()
 	return outputString;
 }
 
-std::vector<std::bitset<8>> TextProcessing::stringToBits()
+std::vector<std::bitset<8>> TextProcessing::stringToBitsVector()
 {
 	std::string newString = inputString;
 	
@@ -37,21 +37,32 @@ std::vector<std::bitset<8>> TextProcessing::stringToBits()
 		finalVector.push_back(std::bitset<8>((int)newString[i]));
 	}
 	
+	bitsetsVector = finalVector;
+
 	return finalVector;
 }
 
-void TextProcessing::bitsetsVectorToString(std::vector<std::bitset<8>> vector)
+std::string TextProcessing::bitsetsVectorToString()
 {
 	std::string finalString;
 
-	for (int i = 0; i < vector.size(); i++)
+	for (int i = 0; i < bitsetsVector.size(); i++)
 	{
-		std::bitset<8> bits = vector[i];
+		std::bitset<8> bits = bitsetsVector[i];
 		std::string bitString = bits.to_string();
 		finalString.append(bitString);
 	}
-	
+
 	outputString = finalString;
+	return outputString;
+}
+
+std::string TextProcessing::stringToBitsString()
+{
+	stringToBitsVector();
+	std::string returnString = bitsetsVectorToString();
+
+	return returnString;
 }
 
 TextProcessing::~TextProcessing()
