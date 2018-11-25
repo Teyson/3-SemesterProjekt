@@ -29,10 +29,11 @@
 
 std::vector<Protokol> protokoller;
 
-int samplesGlobal = (8000 * 300)/1000;//16000;//44100
+int samplesGlobal = (8000 * 20)/1000;//16000;//44100
 int sampleFreqGlobal = 8000;//41000
 int protokolOpdelingGlobal = 32;
 
+std::string finalBitString;
 
 ////////// Timer //////////
 bool torbenTester = true;
@@ -112,30 +113,60 @@ label:
 	}
 	else if (answer == 'm') {					// Modtager
 		//Customrecorder
-
+		NAK nak;
 		customRecorder recorder;
 
 		recorder.start(8000);					//Start recording
 		std::cout << "Recording...." << std::endl;
-		recorder.startThread();
+		std::string modtaget =  recorder.startThread();
+		recorder.stop();
 
-		while (!_kbhit())
+		//modtaget skal opdeles i tre pakker
+		bool sendNak = false;
+
+		Protokol prot1(modtaget1);
+		Protokol prot2(modtaget2);
+		Protokol prot3(modtaget3);
+
+		if (prot1.checkChecksum())
 		{
+			nak.insertIntoArray(prot1.getRecievedSequenceNumber());
+
+			if (prot1.checkLastBit())
+			{
+				sendNak = true;
+			}
 		}
 
-		recorder.stop();						//Stop recording
-		std::cout << "end recording" << std::endl;
+		if (prot2.checkChecksum())
+		{
+			nak.insertIntoArray(prot2.getRecievedSequenceNumber());
 
+			if (prot2.checkLastBit())
+			{
+				sendNak = true;
+			}
+		}
 
+		if (prot3.checkChecksum())
+		{
+			nak.insertIntoArray(prot3.getRecievedSequenceNumber());
+
+			if (prot3.checkLastBit())
+			{
+				sendNak = true;
+			}
+		}
+		
+		if (sendNak)
+		{
+			std::string nakToSend = nak.createNAK();
+
+			Afspilning nakAfspilning(nakToSend, samplesGlobal, sampleFreqGlobal);
+
+			nakAfspilning.playString(nakToSend);
+		}
 	}
-
-	//Overwriter raw igen og igen og tildeler 
-	//Laver en stor array pr. protokol objekt eller pr 
-	//Predefineret antal protokoller
-	//Så skal der sendes et ack hver efter et forudbestemt antal prot
-	//Så behøves kun 2 arrays til at indeholde tonedata
-
-
 
 	else {
 		char answer;

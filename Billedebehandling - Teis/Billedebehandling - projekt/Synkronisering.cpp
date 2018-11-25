@@ -224,11 +224,12 @@ void Synkronisering::sync()
 					}
 					std::cout << bitstring << std::endl;
 					std::cout << mistake / ((float)64) * 100 << std::endl;
+					keepSyncing = 0;
 				}
 				counter++;
 			}
 		}
-
+		
 		sf::sleep(sf::milliseconds(5));
 	}
 
@@ -237,10 +238,16 @@ void Synkronisering::sync()
 
 }
 
-void Synkronisering::startThread()
+std::string Synkronisering::startThread()
 {
 	std::thread syncLoader(&Synkronisering::sync, this);
 	syncLoader.join();
+	return bitstring;
+}
+
+std::string Synkronisering::getString()
+{
+	return bitstring;
 }
 
 Synkronisering::~Synkronisering()
