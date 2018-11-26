@@ -1,109 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="Afspilning.cpp" />
     <ClCompile Include="Behandling.cpp" />
+    <ClCompile Include="Bit2Tekst.cpp" />
     <ClCompile Include="BitDTMF.cpp" />
+    <ClCompile Include="CRC.cpp" />
     <ClCompile Include="customRecorder.cpp" />
     <ClCompile Include="DTMF2Bit.cpp" />
     <ClCompile Include="DTMFToner.cpp" />
+    <ClCompile Include="NAK.cpp" />
+    <ClCompile Include="PacketSelection.cpp" />
     <ClCompile Include="PictureProcessing.cpp" />
     <ClCompile Include="Protokol.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Synkronisering.cpp" />
+    <ClCompile Include="TextProcessing.cpp" />
+    <ClCompile Include="Opdeling.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PictureProcessing.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="customRecorder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Behandling.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BitDTMF.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DTMFToner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Protokol.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextProcessing.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CRC.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NAK.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DTMF2Bit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Afspilning.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Bit2Tekst.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PacketSelection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h" />
+    <ClInclude Include="Afspilning.h" />
+    <ClInclude Include="Behandling.h" />
+    <ClInclude Include="BitDTMF.h" />
+    <ClInclude Include="Bit2Tekst.h" />
+    <ClInclude Include="CRC.h" />
+    <ClInclude Include="customRecorder.h" />
+    <ClInclude Include="DTMF2Bit.h" />
+    <ClInclude Include="DTMFToner.h" />
+    <ClInclude Include="NAK.h" />
+    <ClInclude Include="PacketSelection.h" />
+    <ClInclude Include="PictureProcessing.h" />
+    <ClInclude Include="Protokol.h" />
+    <ClInclude Include="TextProcessing.h" />
     <ClInclude Include="Synkronisering.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Opdeling.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PictureProcessing.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    </ClInclude>
-    <ClInclude Include="Behandling.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DTMFToner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Protokol.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TextProcessing.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CRC.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NAK.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DTMF2Bit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Afspilning.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BitDTMF.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bit2Tekst.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketSelection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-    <ClInclude Include="customRecorder.h">
-      <Filter>Header Files</Filter>
 </Project>

@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{C76F6907-1C5E-4232-A33B-E0BAFAF64309}</ProjectGuid>
     <RootNamespace>Billedebehandlingprojekt</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -142,6 +142,7 @@
     <ClCompile Include="DTMF2Bit.cpp" />
     <ClCompile Include="DTMFToner.cpp" />
     <ClCompile Include="NAK.cpp" />
+    <ClCompile Include="Opdeling.cpp" />
     <ClCompile Include="PacketSelection.cpp" />
     <ClCompile Include="PictureProcessing.cpp" />
     <ClCompile Include="Protokol.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="DTMF2Bit.h" />
     <ClInclude Include="DTMFToner.h" />
     <ClInclude Include="NAK.h" />
+    <ClInclude Include="Opdeling.h" />
     <ClInclude Include="PacketSelection.h" />
     <ClInclude Include="PictureProcessing.h" />
     <ClInclude Include="Protokol.h" />

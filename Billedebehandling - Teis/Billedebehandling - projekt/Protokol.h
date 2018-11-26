@@ -40,6 +40,7 @@ public:
 	//Modtagning af NAK
 	bool checkNAKChecksum();
 	std::vector<std::string> getNAKs();
+
 	
 	//simple get og set metoder
 	void setDataSize(int dataS); //skal bruges hvis vi �nsker at �ndre datast�rrelsen p� en protokol. Som default er datast�rrelsen sat til 40.

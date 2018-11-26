@@ -6,23 +6,30 @@ PacketSelection::PacketSelection()
 {
 }
 
-std::vector<int> PacketSelection::selectPackets(std::vector<std::string> vecS)
+std::vector<int> PacketSelection::selectPackets(std::vector<std::string> stringS)
 {
+	int realSeqNum;
+	int seqNum;
+	int a=0;
 	std::vector<int> returnVector;
-
-	for (int i = 0; i < vecS.size(); i++)
-	{
-		int seqNum = std::stoi(vecS[i], nullptr, 2);
-		returnVector.push_back(seqNum);
+	int graense=99999;
+	
+	for (int v = 0; v < stringS.size()-1; v++) {
+		if (stoi(stringS[v], nullptr, 2) > stoi(stringS[v + 1], nullptr, 2))
+			graense = v;
 	}
+	
+	for (int i = 0; i < stringS.size(); i++) {
+		seqNum = stoi(stringS[i], nullptr, 2);
 
-	if (returnVector.size() == 0)
-	{
-		for (int i = 0; i < packetsPerSend; i++)
-		{
-			returnVector.push_back(nextPacketToSendIndex);
-			nextPacketToSendIndex++;
+		if (i <= graense) {
+			a = -1;
 		}
+		else {
+			a = 0;
+		}
+		realSeqNum = 15 * ((lastPackIndex) / 15 + a) + seqNum;
+		returnVector.push_back(realSeqNum);
 	}
 
 	return returnVector;
@@ -30,9 +37,8 @@ std::vector<int> PacketSelection::selectPackets(std::vector<std::string> vecS)
 
 int PacketSelection::getPacketToSendIndex()
 {
-	return nextPacketToSendIndex;
+	return lastPackIndex+1;
 }
-
 
 void PacketSelection::print(std::vector<int> vec)
 {

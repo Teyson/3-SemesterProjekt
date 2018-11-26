@@ -21,7 +21,7 @@
 #include "Synkronisering.h"
 #include "DTMFToner.h"
 #include "Bit2Tekst.h"
-
+#include "Opdeling.h"
 #include "Afspilning.h"
 #include "Timer.h"
 
@@ -29,12 +29,14 @@
 
 std::vector<Protokol> protokoller;
 
-int sampelsGlobal = (8000 * 1000)/1000;//16000;//44100
-int sampelFreqGlobal = 8000;//41000
+int samplesGlobal = (8000 * 20)/1000;//16000;//44100
+int sampleFreqGlobal = 8000;//41000
 int protokolOpdelingGlobal = 32;
 
+std::string finalBitString;
 
 ////////// Timer //////////
+double runOut = 1.5;
 bool torbenTester = true;
 std::chrono::system_clock::time_point start;
 
@@ -44,7 +46,7 @@ void countdown() {
 		std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
 		std::chrono::duration<double> differens = end - start;
 		std::cout << differens.count() << std::endl;
-		if (differens.count() > 1.5) {
+		if (differens.count() > runOut) {
 			torbenTester = false;
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -59,25 +61,28 @@ label:
 	std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
 	std::cin >> answer;
 	if (answer == 'a') {						// Afsender
-		Afspilning test("0110110010101001",sampelsGlobal,sampelFreqGlobal);
+		Afspilning test("1010101000011011111111100001101011100100",samplesGlobal,sampleFreqGlobal);
 					//	0110 1100 1010 1001
+	
+		/*std::string str = "Jeg holder af at spise kage!";
+		TextProcessing str_txt(str);
+		std::string str_bits=str_txt.stringToBitsString();
+		Bit2Tekst aben_b(str_bits);
+		std::cout << aben_b.bitToString() << std::endl;
+
+		Afspilning reA(str_bits, samplesGlobal, sampleFreqGlobal);*/
+
 		
 
-		std::vector<int>bla;
-		bla.push_back(0);
-		bla.push_back(2);
-		bla.push_back(0);
-
-		std::cout << bla.size() << std::endl;
-
+		/* // 
 		start = std::chrono::system_clock::now();
 		std::thread work(countdown);
 		sf::sleep(sf::milliseconds(1600));
 		std::cout << torbenTester << std::endl;
-		work.join();
+		*/
 
 		sf::SoundBuffer Buffer;
-		if (!Buffer.loadFromSamples(test.playThis(bla), test.getarraySize(), 1, sampelFreqGlobal)) {
+		if (!Buffer.loadFromSamples(test.playSequence(0,1), test.getarraySize(), 1, sampleFreqGlobal)) {
 			std::cerr << "Loading failed!" << std::endl;
 			return 1;
 		}
@@ -88,46 +93,67 @@ label:
 		while (1) {
 			sf::sleep(sf::milliseconds(100));
 		}
-		work.join();
+		//work.join();
 	}
-	else if (answer == 'm') {					// Modtager
-		//Custom recorder
-	//if (!customRecorder::isAvailable())
-	//{
-	//	std::cout << "Audio capture not available";
-	//	return 0;
-	//}
+	else if (answer == 'm') {	// Modtager
+	Modtager:
 
-	//customRecorder recorder;
+		NAK nak;
+		customRecorder recorder;
 
-	//recorder.start(8000);					//Start recording
-	//std::cout << "Recording...." << std::endl;
+		recorder.start(8000);					//Start recording
+		std::cout << "Recording...." << std::endl;
+		std::string modtaget =  recorder.startThread();
+		recorder.stop();
 
-	//while (!_kbhit())
-	//{
-	//	std::cout << recorder.getVectorSize() << std::endl;
-	//}
+		bool sendNak = false;
+		
+		Opdeler in(modtaget);
 
-	//recorder.stop();						//Stop recording
-	//std::cout << "end recording" << std::endl;
+		int antalBitPrFrame = 56;
+		int antalOpdelinger = std::stoi(in.opdel(antalBitPrFrame)[0]);
 
+		std::vector<Protokol> modtagetProt;
 
-	///*for (int i = 0; i < recorder.getVectorSize(); i++)*/
-	//{
-	//	std::cout << recorder.getVector(i) << std::endl;
-	//}*/
+		//flyttes eventuelt til Protokol
+		if (antalOpdelinger > 0)
+		{
+			for (int i = 1; i < antalOpdelinger + 1; i++)
+			{
+				std::string modtagetString = in.opdel(antalOpdelinger)[i];
 
-	//
+				Protokol prot1(modtagetString);
+				modtagetProt.push_back(prot1);
+			}
+
+			for (int i = 0; i < modtagetProt.size(); i++)
+			{
+				Protokol prot = modtagetProt[i];
+				if (prot.checkChecksum())
+				{
+					nak.insertIntoArray(prot.getRecievedSequenceNumber());
+
+					if (prot.checkLastBit())
+					{
+						sendNak = true;
+					}
+				}
+			}
+		}		
+		
+		//MANGLER!!! at appende data til finalString
+
+		if (sendNak)
+		{
+			std::string nakToSend = nak.createNAK();
+
+			Afspilning nakAfspilning(nakToSend, samplesGlobal, sampleFreqGlobal);
+
+			nakAfspilning.playString(nakToSend);
+		}
+
+		goto Modtager;
 	}
-
-	//Overwriter raw igen og igen og tildeler 
-	//Laver en stor array pr. protokol objekt eller pr 
-	//Predefineret antal protokoller
-	//Så skal der sendes et ack hver efter et forudbestemt antal prot
-	//Så behøves kun 2 arrays til at indeholde tonedata
-
-
-
 	else {
 		char answer;
 		goto label;
