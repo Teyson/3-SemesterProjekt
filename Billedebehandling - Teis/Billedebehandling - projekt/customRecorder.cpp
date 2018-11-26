@@ -41,9 +41,11 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
 			amplitudeLow = test.goertzler(8000, 697, &testVector, (i*size), size);
 			amplitudeHigh = test.goertzler(8000, 1209, &testVector, (i*size), size);
             //std::cout << amplitudeLow<< std::endl;
+            //amplitudeLow = test.bestHigh(8000, &testVector, (i*size), size);
+            //amplitudeHigh = test.bestLow(8000, &testVector, (i*size), size);
             int amplitudeLow1 = test.goertzler(8000, 941, &testVector, (i*size), size);
-            //std::cout << amplitudeLow << std::endl;
-            //std::cout << amplitudeLow1 << std::endl;
+            //std::cout << amplitudeLow << ",";
+            //std::cout << amplitudeHigh << std::endl;
 
             if (amplitudeHigh > 500 && amplitudeLow > 500){
                 //std::cout << amplitudeLow << std::endl;

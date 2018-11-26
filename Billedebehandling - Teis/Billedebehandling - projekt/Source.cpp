@@ -105,8 +105,19 @@ label:
 		std::cout << "Recording...." << std::endl;
 		std::string modtaget =  recorder.startThread();
 		recorder.stop();
+        std::cout << modtaget << std::endl;
+		
+        float mistake = 0;
+        std::string check = "0011011111110010100110000001111010110010101001011101011011000000";
+        for (size_t i = 0; i < 64; i++)
+        {
+            if (modtaget[i] != check[i])
+                mistake++;
+        }
+        std::cout << mistake / ((float)64) * 100 << std::endl;
 
-		bool sendNak = false;
+        
+        bool sendNak = false;
 		
 		Opdeler in(modtaget);
 
