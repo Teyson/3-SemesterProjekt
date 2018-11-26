@@ -13,7 +13,7 @@
 #include "CImg.h"
 #include "PictureProcessing.h"
 #include "customRecorder.h"
-#include "Protokol.h"
+#include "Framing.h"
 #include "BitDTMF.h"
 #include "NAK.h"
 #include "PacketSelection.h"
@@ -27,7 +27,7 @@
 
 
 
-std::vector<Protokol> protokoller;
+std::vector<Framing> protokoller;
 
 int samplesGlobal = (8000 * 20)/1000;//16000;//44100
 int sampleFreqGlobal = 8000;//41000
@@ -113,7 +113,7 @@ label:
 		int antalBitPrFrame = 56;
 		int antalOpdelinger = std::stoi(in.opdel(antalBitPrFrame)[0]);
 
-		std::vector<Protokol> modtagetProt;
+		std::vector<Framing> modtagetFrame;
 
 		//flyttes eventuelt til Protokol
 		if (antalOpdelinger > 0)
@@ -122,18 +122,18 @@ label:
 			{
 				std::string modtagetString = in.opdel(antalOpdelinger)[i];
 
-				Protokol prot1(modtagetString);
-				modtagetProt.push_back(prot1);
+				Framing frame(modtagetString);
+				modtagetFrame.push_back(frame);
 			}
 
-			for (int i = 0; i < modtagetProt.size(); i++)
+			for (int i = 0; i < modtagetFrame.size(); i++)
 			{
-				Protokol prot = modtagetProt[i];
-				if (prot.checkChecksum())
+				Framing frame = modtagetFrame[i];
+				if (frame.checkChecksum())
 				{
-					nak.insertIntoArray(prot.getRecievedSequenceNumber());
+					nak.insertIntoArray(frame.getRecievedSequenceNumber());
 
-					if (prot.checkLastBit())
+					if (frame.checkLastBit())
 					{
 						sendNak = true;
 					}

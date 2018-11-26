@@ -8,11 +8,11 @@
 //#include "BitDTMF.h" SKAL IKKE INKLUDERES
 
 
-class Protokol
+class Framing
 {
 public:
-	Protokol(std::string sr);
-	Protokol(std::string sr, int plac);
+	Framing(std::string sr);
+	Framing(std::string sr, int plac);
 
 	//Modtagning af almindelige pakker
 	void unpacking(); //Skal tage en string der repr�senterer en pakke, og dele den op i checksum, lastbit, sekvensnummer og data.
@@ -52,7 +52,7 @@ public:
 	std::string getRecievedPacket();
 	std::string getResendBit();
 
-	~Protokol();
+	~Framing();
 
 protected:
 	std::string startString;

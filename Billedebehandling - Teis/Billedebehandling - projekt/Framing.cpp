@@ -1,7 +1,7 @@
-#include "Protokol.h"
+#include "Framing.h"
 #include <bitset>
 
-Protokol::Protokol(std::string sr)
+Framing::Framing(std::string sr)
 {
 	if (sr.size() != dataSize + 16)
 	{
@@ -17,7 +17,7 @@ Protokol::Protokol(std::string sr)
 	
 }
 
-Protokol::Protokol(std::string sr, int plac)
+Framing::Framing(std::string sr, int plac)
 {
 	//Constructor til n�r vi skal afsende data. Tager data bitstreng som input
 	startString = sr;
@@ -26,7 +26,7 @@ Protokol::Protokol(std::string sr, int plac)
 	packing();
 }
 
-void Protokol::unpacking()
+void Framing::unpacking()
 {
 	checksum = recievedPacket.substr(recievedPacket.length() - 8, 8);
 	lastBit = recievedPacket.substr(4, 1);
@@ -34,7 +34,7 @@ void Protokol::unpacking()
 	data = recievedPacket.substr(8, dataSize);
 }
 
-std::string Protokol::header()
+std::string Framing::header()
 {
 	int seqNum = placering % 15;		//Finder sekvensnummeret (decimalt) udfra det inputtede placeringsnummer.
 
@@ -53,7 +53,7 @@ std::string Protokol::header()
 	return header;
 }
 
-std::string Protokol::trailer()
+std::string Framing::trailer()
 {
 	CRC check(endString);
 
@@ -63,7 +63,7 @@ std::string Protokol::trailer()
 	return trailer;
 }
 
-std::string Protokol::packing()
+std::string Framing::packing()
 {
 	//Lavet for at g�re main() mindre. Begge �ndrer i endString, og det er altid vigtigt at trailer() kaldes EFTER header().
 	//Derfor er de lagt sammen, for at det ikke kan g� galt.
@@ -74,7 +74,7 @@ std::string Protokol::packing()
 	return endString;
 }
 
-void Protokol::setLastBit()
+void Framing::setLastBit()
 {
 	//Deler endString op i dets delelementer, og �ndrer derefter lastBit, hvorefter den s�ttes sammen igen.
 	std::string lastB = "1";
@@ -89,7 +89,7 @@ void Protokol::setLastBit()
 	trailer();
 }
 
-void Protokol::clearLastBit()
+void Framing::clearLastBit()
 {
 	//Deler endString op i dets delelementer, og �ndrer derefter lastBit, hvorefter den s�ttes sammen igen.
 
@@ -106,17 +106,17 @@ void Protokol::clearLastBit()
 	endString;
 }
 
-std::string Protokol::getData()
+std::string Framing::getData()
 {
 	return endString.substr(8, 40);
 }
 
-std::string Protokol::getSequenceNumber()
+std::string Framing::getSequenceNumber()
 {
 	return endString.substr(0, 4);
 }
 
-void Protokol::setResendBit()
+void Framing::setResendBit()
 {
 	//Deler endString op i dets delelementer, og �ndrer derefter lastBit, hvorefter den s�ttes sammen igen.
 
@@ -132,18 +132,18 @@ void Protokol::setResendBit()
 	trailer();
 }
 
-std::string Protokol::getCRCcheck()
+std::string Framing::getCRCcheck()
 {
 	return endString.substr(endString.length() - 8, 8);
 }
 
-std::string Protokol::getLastBit()
+std::string Framing::getLastBit()
 {
 	return endString.substr(4, 1);
 }
 
 
-bool Protokol::checkNAKChecksum()
+bool Framing::checkNAKChecksum()
 {
 	CRC check(recievedNAK);
 
@@ -161,7 +161,7 @@ bool Protokol::checkNAKChecksum()
 	}
 }
 
-std::vector<std::string> Protokol::getNAKs()
+std::vector<std::string> Framing::getNAKs()
 {
 	std::vector<std::string> NAKs;
 
@@ -173,7 +173,7 @@ std::vector<std::string> Protokol::getNAKs()
 	return NAKs;
 }
 
-bool Protokol::checkChecksum()
+bool Framing::checkChecksum()
 {
 	CRC check(recievedPacket);
 	
@@ -191,7 +191,7 @@ bool Protokol::checkChecksum()
 	}
 }
 
-std::string Protokol::writeChecksum()
+std::string Framing::writeChecksum()
 {
 	CRC check(recievedPacket);
 
@@ -200,7 +200,7 @@ std::string Protokol::writeChecksum()
 	return checkedS;
 }
 
-bool Protokol::checkLastBit()
+bool Framing::checkLastBit()
 {
 	std::string lastB = getRecievedLastBit();
 
@@ -216,68 +216,68 @@ bool Protokol::checkLastBit()
 	return false;
 }
 
-std::string Protokol::getRecievedChecksum()
+std::string Framing::getRecievedChecksum()
 {
 	return checksum;
 }
 
-std::string Protokol::getRecievedLastBit()
+std::string Framing::getRecievedLastBit()
 {
 	
 	return lastBit;
 }
 
-std::string Protokol::getRecievedSequenceNumber()
+std::string Framing::getRecievedSequenceNumber()
 {
 	return sequenceNumber;
 }
 
-std::string Protokol::getRecievedData()
+std::string Framing::getRecievedData()
 {
 	return data;
 }
 
-void Protokol::setToneStart(int s)
+void Framing::setToneStart(int s)
 {
 	toneNrStart = s;
 }
 
-void Protokol::setToneSlut(int s)
+void Framing::setToneSlut(int s)
 {
 	toneNrSlut = s;
 }
 
-int Protokol::getToneStart()
+int Framing::getToneStart()
 {
 	return toneNrStart;
 }
 
-int Protokol::getToneSlut()
+int Framing::getToneSlut()
 {
 	std::cout << toneNrSlut << std::endl;
 	return toneNrSlut;
 }
 
-void Protokol::setDataSize(int dataS)
+void Framing::setDataSize(int dataS)
 {
 	dataSize = dataS;
 }
 
-std::string Protokol::getString()
+std::string Framing::getString()
 {
 	return endString;
 }
 
-std::string Protokol::getRecievedPacket()
+std::string Framing::getRecievedPacket()
 {
 	return recievedPacket;
 }
 
-std::string Protokol::getResendBit()
+std::string Framing::getResendBit()
 {
 	return endString.substr(5, 1);
 }
 
-Protokol::~Protokol()
+Framing::~Framing()
 {
 }

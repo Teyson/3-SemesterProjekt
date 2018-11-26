@@ -7,7 +7,7 @@
 #include <bitset>
 #include <vector>
 
-#include "Protokol.h"
+#include "Framing.h"
 #include "DTMFToner.h"
 
 class BitDTMF
@@ -16,10 +16,10 @@ public:
 	BitDTMF();
 	BitDTMF(std::string, int antalSamples, int samplingFrekvens, int opdelingsSize);
 	
-	void toProtokol(std::vector<Protokol>&);
+	void toProtokol(std::vector<Framing>&);
 	//toProtokol - Del datastringen op i bidder af objekter
 
-	void toDTMF(std::vector<Protokol>&, std::vector<DTMFToner>&, int begin, int antal);
+	void toDTMF(std::vector<Framing>&, std::vector<DTMFToner>&, int begin, int antal);
 	//toDTMF - Deler protokolstrengen op i tonebidder og laver den om til toner
 
 	~BitDTMF();

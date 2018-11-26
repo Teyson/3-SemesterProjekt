@@ -3,7 +3,7 @@
 #include <string>
 #include <SFML/Audio.hpp>
 
-#include "Protokol.h"
+#include "Framing.h"
 #include "BitDTMF.h"
 #include "DTMFToner.h"
 class Afspilning
@@ -32,7 +32,7 @@ protected:
 	int samples;
 	int sampleFreq;
 	BitDTMF sekvens;
-	std::vector<Protokol>datapakker;
+	std::vector<Framing>datapakker;
 	std::vector<DTMFToner> dtmfToner;
 	unsigned int arraySize=256000;
 	sf::Int16* raw1; // [arraySize]
