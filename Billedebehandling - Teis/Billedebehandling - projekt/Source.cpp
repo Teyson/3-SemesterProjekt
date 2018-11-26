@@ -32,6 +32,7 @@ std::vector<Framing> protokoller;
 int samplesGlobal = (8000 * 20)/1000;//16000;//44100
 int sampleFreqGlobal = 8000;//41000
 int protokolOpdelingGlobal = 32;
+int framesSend;
 
 std::string finalBitString;
 
@@ -61,16 +62,24 @@ label:
 	std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
 	std::cin >> answer;
 	if (answer == 'a') {						// Afsender
-		Afspilning test("1010101000011011111111100001101011100100",samplesGlobal,sampleFreqGlobal);
-					//	0110 1100 1010 1001
-	
-		/*std::string str = "Jeg holder af at spise kage!";
-		TextProcessing str_txt(str);
-		std::string str_bits=str_txt.stringToBitsString();
-		Bit2Tekst aben_b(str_bits);
-		std::cout << aben_b.bitToString() << std::endl;
+		std::string input;
 
-		Afspilning reA(str_bits, samplesGlobal, sampleFreqGlobal);*/
+		std::cout << "Skriv tekst der skal sendes: " << std::endl;
+
+		std::getline(std::cin, input);
+
+		TextProcessing tekst(input);
+
+		std::string bitstring = tekst.stringToBitsString();
+
+		Afspilning afspiller(bitstring, samplesGlobal, sampleFreqGlobal);
+
+		PacketSelection selecter;
+
+		afspiller.playSequence(selecter.getPacketToSendIndex(), framesSend);
+
+	Afspiller:
+
 
 		
 
@@ -96,11 +105,10 @@ label:
 		//work.join();
 	}
 	else if (answer == 'm') {	// Modtager
-	Modtager:
-
 		NAK nak;
 		customRecorder recorder;
 
+	Modtager:
 		recorder.start(8000);					//Start recording
 		std::cout << "Recording...." << std::endl;
 		std::string modtaget =  recorder.startThread();
