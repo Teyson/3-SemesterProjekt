@@ -21,7 +21,7 @@
 #include "Synkronisering.h"
 #include "DTMFToner.h"
 #include "Bit2Tekst.h"
-
+#include "Opdeling.h"
 #include "Afspilning.h"
 #include "Timer.h"
 
@@ -111,8 +111,9 @@ label:
 		}
 		//work.join();
 	}
-	else if (answer == 'm') {					// Modtager
-		//Customrecorder
+	else if (answer == 'm') {	// Modtager
+	Modtager:
+
 		NAK nak;
 		customRecorder recorder;
 
@@ -121,43 +122,43 @@ label:
 		std::string modtaget =  recorder.startThread();
 		recorder.stop();
 
-		//modtaget skal opdeles i tre pakker
 		bool sendNak = false;
-
-		Protokol prot1(modtaget1);
-		Protokol prot2(modtaget2);
-		Protokol prot3(modtaget3);
-
-		if (prot1.checkChecksum())
-		{
-			nak.insertIntoArray(prot1.getRecievedSequenceNumber());
-
-			if (prot1.checkLastBit())
-			{
-				sendNak = true;
-			}
-		}
-
-		if (prot2.checkChecksum())
-		{
-			nak.insertIntoArray(prot2.getRecievedSequenceNumber());
-
-			if (prot2.checkLastBit())
-			{
-				sendNak = true;
-			}
-		}
-
-		if (prot3.checkChecksum())
-		{
-			nak.insertIntoArray(prot3.getRecievedSequenceNumber());
-
-			if (prot3.checkLastBit())
-			{
-				sendNak = true;
-			}
-		}
 		
+		Opdeler in(modtaget);
+
+		int antalBitPrFrame = 56;
+		int antalOpdelinger = std::stoi(in.opdel(antalBitPrFrame)[0]);
+
+		std::vector<Protokol> modtagetProt;
+
+		//flyttes eventuelt til Protokol
+		if (antalOpdelinger > 0)
+		{
+			for (int i = 1; i < antalOpdelinger + 1; i++)
+			{
+				std::string modtagetString = in.opdel(antalOpdelinger)[i];
+
+				Protokol prot1(modtagetString);
+				modtagetProt.push_back(prot1);
+			}
+
+			for (int i = 0; i < modtagetProt.size(); i++)
+			{
+				Protokol prot = modtagetProt[i];
+				if (prot.checkChecksum())
+				{
+					nak.insertIntoArray(prot.getRecievedSequenceNumber());
+
+					if (prot.checkLastBit())
+					{
+						sendNak = true;
+					}
+				}
+			}
+		}		
+		
+		//MANGLER!!! at appende data til finalString
+
 		if (sendNak)
 		{
 			std::string nakToSend = nak.createNAK();
@@ -166,8 +167,9 @@ label:
 
 			nakAfspilning.playString(nakToSend);
 		}
-	}
 
+		goto Modtager;
+	}
 	else {
 		char answer;
 		goto label;

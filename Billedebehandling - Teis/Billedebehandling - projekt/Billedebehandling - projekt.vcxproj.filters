@@ -17,6 +17,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Synkronisering.cpp" />
     <ClCompile Include="TextProcessing.cpp" />
+    <ClCompile Include="Opdeling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h" />
@@ -35,5 +36,6 @@
     <ClInclude Include="TextProcessing.h" />
     <ClInclude Include="Synkronisering.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Opdeling.h" />
   </ItemGroup>
 </Project>
