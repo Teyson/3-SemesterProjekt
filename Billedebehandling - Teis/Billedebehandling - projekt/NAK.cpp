@@ -3,6 +3,7 @@
 NAK::NAK()
 {
 	recieveArray = new std::string[arraySize];
+	recieveDataArray = new std::string[arraySize];
 
 	for (int i = 0; i < arraySize; i++)
 	{
@@ -11,6 +12,12 @@ NAK::NAK()
 
 
 	windowSize = packetsSend * 2 + 1;
+
+	//laver array der er datastørrelsen * bufferstørrelse skal først initialiseres når der bliver modtaget en pakke der er har data.
+	for (int i = 0; i < arraySize; i++)
+	{
+		recieveDataArray[i] = "0";
+	}
 }
 
 NAK::NAK(int arrayS, int packets)
@@ -19,15 +26,40 @@ NAK::NAK(int arrayS, int packets)
 	packetsSend = packets;
 
 	recieveArray = new std::string[arraySize];
+	recieveDataArray = new std::string[arraySize];
 
 	for (int i = 0; i < arraySize; i++)
 	{
 		recieveArray[i] = "0";
 	}
 
+	
+
 	windowSize = packetsSend * 2 + 1;
+
+
+	//laver array der er datastørrelsen * bufferstørrelse skal først initialiseres når der bliver modtaget en pakke der er har data.
+	for (int i = 0; i < arraySize; i++)
+	{
+		recieveDataArray[i] = "0";
+	}
 }
 
+
+
+std::string NAK::getDataFromArray(std::string s)
+{
+	int index = std::stoi(s, nullptr, 2);
+
+	std::string oensketStr = recieveDataArray[index];
+
+	return oensketStr;
+}
+
+std::string NAK::getDataModtaget()
+{
+	return dataModtaget;
+}
 
 std::string NAK::createNonEmptyNAK()
 {
@@ -79,10 +111,13 @@ std::string NAK::trailer(std::string s)
 	return returnString;
 }
 
-void NAK::insertIntoArray(std::string s)
+void NAK::insertIntoArray(std::string s,std::string d)
 {
+	//seq.nr. er en indeksering for vores string-array
 	int index = std::stoi(s, nullptr, 2);
+	
 
+	recieveDataArray[index] = d;
 	recieveArray[index] = s;
 }
 
@@ -113,13 +148,15 @@ void NAK::initRecieveArray()
 
 void NAK::updatePointerNotRecieved()
 {
-	initRecieveArray();
+
+	int pointerStartValue = pointerNotRecieved;
 
 	for (int i = pointerNotRecieved; i < pointerExpected; i++)
 	{
 		if (recieveArray[i] == "0")
 		{
 			pointerNotRecieved = i;
+			//kunne potentielt være en fejl, hvor alle i arrayet bliver godkendt...
 		}
 	}
 
@@ -132,6 +169,21 @@ void NAK::updatePointerNotRecieved()
 	{
 		NAKBoolean = false;
 	}
+
+	int pointerNewValue = pointerNotRecieved;
+
+	if (pointerStartValue != pointerNewValue)
+	{
+		for (int i = pointerStartValue; i < pointerNewValue; i++)
+		{
+			std::string data = recieveDataArray[i];
+			dataModtaget += data;
+		}
+	}
+	
+	initRecieveArray();
+
+	
 }
 
 void NAK::updatePointerMax()

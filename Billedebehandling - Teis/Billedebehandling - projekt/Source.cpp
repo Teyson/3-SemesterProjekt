@@ -10,6 +10,7 @@
 #include <fstream> //Gem til fil
 #include <mutex>
 
+
 #include "CImg.h"
 #include "PictureProcessing.h"
 #include "customRecorder.h"
@@ -26,7 +27,7 @@
 #include "Timer.h"
 
 
-
+/*
 std::vector<Protokol> protokoller;
 
 int sampelsGlobal = (8000 * 1000)/1000;//16000;//44100
@@ -51,9 +52,60 @@ void countdown() {
 	}
 }
 //////////  Timer end //////////////
-
+*/
 
 int main() {
+
+	NAK nak;
+
+	std::cout << "hej" << std::endl;
+
+	std::string abe1 = "1111100011001011001100011011011010101111";
+	std::string abe2 = "1010100011001011001100011011011010100000";
+	std::string abe3 = "0000100011001011001100011011011010100000";
+
+
+	std::cout << "1. besked: " << abe1 << std::endl;
+	std::cout << "2. besked: " << abe2 << std::endl;
+	std::cout << "3. besked: " << abe3 << std::endl << std::endl;
+
+	std::cout << "laengden af 1. besked: " << abe1.length() << std::endl;
+	std::cout << "laengden af 2. besked: " << abe2.length() << std::endl;
+	std::cout << "laengden af 3. besked: " << abe3.length() << std::endl << std::endl;
+
+	Protokol prot1(abe1, 0);
+	Protokol prot2(abe2, 1);
+	Protokol prot3(abe3, 2);
+
+	std::string hej = prot3.getString();
+
+	Protokol prot1M(prot1.getString());
+	Protokol prot2M(prot2.getString());
+	Protokol prot3M(prot3.getString());
+
+	prot1M.unpacking();
+	prot2M.unpacking();
+	prot3M.unpacking();
+
+	std::cout << "laengden af 1. modtagede besked: " << prot1M.getRecievedData().length() << std::endl;
+	std::cout << "laengden af 2. modtagede besked: " << prot2M.getRecievedData().length() << std::endl;
+	std::cout << "laengden af 3. modtagede besked: " << prot3M.getRecievedData().length() << std::endl << std::endl;
+
+	nak.insertIntoArray(prot1M.getRecievedSequenceNumber(), prot1M.getRecievedData());
+
+	nak.insertIntoArray(prot2M.getRecievedSequenceNumber(), prot2M.getRecievedData());
+	
+
+	nak.insertIntoArray(prot3M.getRecievedSequenceNumber(), prot3M.getRecievedData());
+	
+
+	nak.createNAK();
+
+	std::cout << "Den Samlede besked er: " << nak.getDataModtaget() << std::endl;
+	std::cout << "Den samlede længde af det modtagede er: " << nak.getDataModtaget().length() << std::endl;
+
+	
+	/*
 	char answer;
 label:
 	std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
@@ -112,12 +164,12 @@ label:
 	//std::cout << "end recording" << std::endl;
 
 
-	///*for (int i = 0; i < recorder.getVectorSize(); i++)*/
-	//{
-	//	std::cout << recorder.getVector(i) << std::endl;
-	//}*/
+	//for (int i = 0; i < recorder.getVectorSize(); i++)
+	{
+		std::cout << recorder.getVector(i) << std::endl;
+	}
 
-	//
+	
 	}
 
 	//Overwriter raw igen og igen og tildeler 
@@ -136,10 +188,7 @@ label:
 
 		
 	
-
-
-	int c;
-	std::cin >> c;
+	*/
 
 	return 0;
 }

@@ -22,12 +22,14 @@ Protokol::Protokol(std::string sr, int plac)
 	startString = sr;
 	endString = startString;
 	placering = plac;
+	packing();
 }
 
 void Protokol::unpacking()
 {
 	checksum = recievedPacket.substr(recievedPacket.length() - 8, 8);
 	lastBit = recievedPacket.substr(4, 1);
+
 	sequenceNumber = recievedPacket.substr(0, 4);
 	data = recievedPacket.substr(8, dataSize);
 }
