@@ -22,7 +22,7 @@ std::vector<int> PacketSelection::selectPackets(std::vector<std::string> stringS
 	for (int i = 0; i < stringS.size(); i++) {
 		seqNum = stoi(stringS[i], nullptr, 2);
 
-		if (i <= graense) {
+		if (i <= graense){
 			a = -1;
 		}
 		else {
@@ -37,7 +37,7 @@ std::vector<int> PacketSelection::selectPackets(std::vector<std::string> stringS
 
 int PacketSelection::getPacketToSendIndex()
 {
-	return lastPackIndex+1;
+	return lastPackIndex+1;			// skal denne ikke stige med framesend?
 }
 
 void PacketSelection::print(std::vector<int> vec)

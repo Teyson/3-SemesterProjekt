@@ -9,6 +9,7 @@
 #include <atomic>
 #include <fstream> //Gem til fil
 #include <mutex>
+#include <sstream>
 
 #include "CImg.h"
 #include "PictureProcessing.h"
@@ -32,23 +33,28 @@ std::vector<Framing> protokoller;
 int samplesGlobal = (8000 * 20)/1000;//16000;//44100
 int sampleFreqGlobal = 8000;//41000
 int protokolOpdelingGlobal = 32;
-int framesSend;
+int framesSend=3;
 
 std::string finalBitString;
+////////// Variabler der bliver brugt til protokol /////////
+
+bool wasLastNakNotRecieved = false;
+
+///////// END   /////////
 
 ////////// Timer //////////
 double runOut = 1.5;
-bool torbenTester = true;
+bool runnedOut;
 std::chrono::system_clock::time_point start;
 
 void countdown() {
-	
-	while (torbenTester) {
+	runnedOut = false;
+	while (!runnedOut) {
 		std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
 		std::chrono::duration<double> differens = end - start;
 		std::cout << differens.count() << std::endl;
 		if (differens.count() > runOut) {
-			torbenTester = false;
+			runnedOut = true;
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
@@ -61,13 +67,13 @@ int main() {
 label:
 	std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
 	std::cin >> answer;
-	if (answer == 'a') {						// Afsender
-		std::string input;
-
-		std::cout << "Skriv tekst der skal sendes: " << std::endl;
-
-		std::getline(std::cin, input);
-
+	if (answer == 'a') {	// Afsender
+				
+		std::string input = "Jeg plukker frugt med en brugt frugtplukker, og kommer det i en brugt plastikpose";
+		//std::cout << "Skriv tekst der skal sendes: " << std::endl;
+		
+		/*std::getline(std::cin, input);
+		std::cout << input << std::endl;*/
 		TextProcessing tekst(input);
 
 		std::string bitstring = tekst.stringToBitsString();
@@ -76,33 +82,62 @@ label:
 
 		PacketSelection selecter;
 
-		afspiller.playSequence(selecter.getPacketToSendIndex(), framesSend);
-
-	Afspiller:
-
-
 		
 
-		/* // 
+		/*sf::SoundBuffer Buffer;
+		Buffer.loadFromSamples(afspiller.playSequence(selecter.getPacketToSendIndex(), framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
+
+		sf::Sound Sound;
+		Sound.setBuffer(Buffer);
+		Sound.play();
+		while (Sound.getStatus() != 0) {
+		}	*/							// linie 87-94 funktion for sig i Afspiller klassen. raw1 array kun stor nok til at tonerne bliver spillet
+		std::cout << "fisk" << std::endl;
+		
+		/* // Timer
 		start = std::chrono::system_clock::now();
 		std::thread work(countdown);
 		sf::sleep(sf::milliseconds(1600));
 		std::cout << torbenTester << std::endl;
 		*/
-
-		sf::SoundBuffer Buffer;
-		if (!Buffer.loadFromSamples(test.playSequence(0,1), test.getarraySize(), 1, sampleFreqGlobal)) {
-			std::cerr << "Loading failed!" << std::endl;
-			return 1;
-		}
 		
-		sf::Sound Sound;
-		Sound.setBuffer(Buffer);
-		Sound.play();
-		while (1) {
-			sf::sleep(sf::milliseconds(100));
+		//work.join();
+
+	Afspiller:
+		customRecorder recorderAfsender;
+		recorderAfsender.start(8000);
+		std::cout << "Lytter for NAK's...." << std::endl;
+		std::string modtagetNAKS = recorderAfsender.startThread();
+		recorderAfsender.stop();
+		Framing modtagetNAKFrame(modtagetNAKS);
+		std::vector<std::string> nAKS;
+		std::vector<int> nakINT;
+
+		if (modtagetNAKFrame.checkNAKChecksum()) {
+			wasLastNakNotRecieved = false;
+			if (modtagetNAKFrame.getNAKs()[0] == "1111") {		// Hvis vi modtager NAK-ingenting
+				afspiller.playSequence(selecter.getPacketToSendIndex(), framesSend);
+			}
+			nAKS = modtagetNAKFrame.getNAKs();
+			nakINT = selecter.selectPackets(nAKS);
+			afspiller.playThis(nakINT);
 		}
 		//work.join();
+		else if (runnedOut) // I tilfaelde af Timeren løber ud
+		{
+			if (wasLastNakNotRecieved) 
+			{
+				// Afspiller de sidste 3
+			}
+			else {
+				// sender 3 nye
+			}
+		}
+
+
+		goto Afspiller;
+
+		
 	}
 	else if (answer == 'm') {	// Modtager
 		NAK nak;
