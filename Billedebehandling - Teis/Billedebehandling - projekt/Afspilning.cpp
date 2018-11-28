@@ -8,7 +8,13 @@ Afspilning::Afspilning()
 
 Afspilning::Afspilning(std::string datainput, int sampleInput, int sampleRateInput)
 {
-	raw1 = new sf::Int16[arraySize];
+	raw1 = new sf::Int16[arraySize+antalSyncvaerdier+100];// En tone + antal sync + buffer
+	raw2 = new sf::Int16[2*arraySize + antalSyncvaerdier + 100];
+	raw3 = new sf::Int16[3 * arraySize + antalSyncvaerdier + 100];
+	raw4 = new sf::Int16[4 * arraySize + antalSyncvaerdier + 100];
+	raw5 = new sf::Int16[5 * arraySize + antalSyncvaerdier + 100];
+	raw6 = new sf::Int16[6 * arraySize + antalSyncvaerdier + 100];
+	rawNak = new sf::Int16[1280 + antalSyncvaerdier + 100]; // 1280 er maksimal antal nak værdier
 	samples = sampleInput;
 	sampleFreq = sampleRateInput;
 	BitDTMF sekven(datainput, samples, sampleFreq, 40);
@@ -20,15 +26,78 @@ sf::Int16 * Afspilning::playThis(std::vector<int> resendPackage)
 {
 	clearRaw1DTMF();
 	int abc = 0;
-
-	abc = makeSyncSequence(0);
-	/////	Send begin	///////
-	for (int i = 0; i < resendPackage.size(); i++) {
-		datapakker[resendPackage[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
-		abc = adddatapakke(resendPackage[i], abc);
+	switch (resendPackage.size())
+	{
+	case 1: {
+		abc = makeSyncSequence(1);
+		/////	Send begin	///////
+		for (int i = 0; i < resendPackage.size(); i++) {
+			datapakker[resendPackage[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
+			abc = adddatapakke(resendPackage[i], abc,1);
+		}
+		/////	Send end	///////
+		rawNumber = 1;
+		return raw1;
 	}
-	/////	Send end	///////
-	return raw1;
+	case 2: {
+		abc = makeSyncSequence(2);
+		/////	Send begin	///////
+		for (int i = 0; i < resendPackage.size(); i++) {
+			datapakker[resendPackage[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
+			abc = adddatapakke(resendPackage[i], abc,2);
+		}
+		/////	Send end	///////
+		rawNumber = 2;
+		return raw2;
+	}
+	case 3: {
+		abc = makeSyncSequence(3);
+		/////	Send begin	///////
+		for (int i = 0; i < resendPackage.size(); i++) {
+			datapakker[resendPackage[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
+			abc = adddatapakke(resendPackage[i], abc,3);
+		}
+		/////	Send end	///////
+		rawNumber = 3;
+		return raw3;
+	}
+	case 4: {
+		abc = makeSyncSequence(4);
+		/////	Send begin	///////
+		for (int i = 0; i < resendPackage.size(); i++) {
+			datapakker[resendPackage[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
+			abc = adddatapakke(resendPackage[i], abc,4);
+		}
+		/////	Send end	///////
+		rawNumber = 4;
+		return raw4;
+	}
+	case 5: {
+		abc = makeSyncSequence(5);
+		/////	Send begin	///////
+		for (int i = 0; i < resendPackage.size(); i++) {
+			datapakker[resendPackage[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
+			abc = adddatapakke(resendPackage[i], abc,5);
+		}
+		/////	Send end	///////
+		rawNumber = 5;
+		return raw5;
+	}
+	case 6: {
+		abc = makeSyncSequence(6);
+		/////	Send begin	///////
+		for (int i = 0; i < resendPackage.size(); i++) {
+			datapakker[resendPackage[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
+			abc = adddatapakke(resendPackage[i], abc,6);
+		}
+		/////	Send end	///////
+		rawNumber = 6;
+		return raw6;
+	}
+	default:
+		std::cout << "Well you need some more cases ;) " << std::endl;
+		break;
+	}
 }
 
 sf::Int16 * Afspilning::playString(std::string nakString)
@@ -52,10 +121,11 @@ sf::Int16 * Afspilning::playString(std::string nakString)
 	for (int i = abc; i < dtmfToner.size(); i++) {
 		tone = dtmfToner[i].createTone(samples, sampleFreq);			// Tager et toneNr og konvertere det til en vector med amplituder
 		for (int k = 0; k < samples; j++, k++) {
-			raw1[j] = tone[k];
+			rawNak[j] = tone[k];
 		}
 	}
-	return raw1;
+	rawNumber = 0;
+	return rawNak;
 }
 
 sf::Int16* Afspilning::playSequence(int start, int antal)
@@ -65,7 +135,8 @@ sf::Int16* Afspilning::playSequence(int start, int antal)
 	int abc = 0;
 	std::vector<float> tone;
 
-	abc = makeSyncSequence(1);
+
+	abc = makeSyncSequence(3);
 	j = abc * samples;
 
 	/////	Send begin	///////
@@ -75,62 +146,285 @@ sf::Int16* Afspilning::playSequence(int start, int antal)
 	for (int dtmftoneNR = abc; dtmftoneNR < dtmfToner.size(); dtmftoneNR++) {
 		toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);					// Tager et toneNr og konvertere det til en vector med amplituder
 		for (int t = 0; t < samples; t++, j++) {
-			raw1[j] = toner[t];															// Tilføjer amplitudeværdierne i afspilningsarrayet.
+			raw3[j] = toner[t];															// Tilføjer amplitudeværdierne i afspilningsarrayet.
 		}
 	}
 	/////	Send end	///////
 
 	// Får en pinter til en vector med protokol elementer (datapakker). Her skal funktionen afspille alle pakkerne mellem start og slut, inkl. grænserne.
 	//Skal på sigt implementere set LastPackageBit. 
-	return raw1;
+	rawNumber = 3;
+	return raw3;
 }
 
-int Afspilning::adddatapakke(int pakke,int abc)
+int Afspilning::adddatapakke(int pakke,int abc, int rawµ)
 {
 	/////	Send begin	///////
 	sekvens.toDTMF(datapakker, dtmfToner, pakke, 1);									// Tager datapakker fra sekvensen startende fra start og giver det et toneNr. Dette gør den 1 gang
 	std::vector<float> toner;
 	int j = abc * samples;
 
-	for (int dtmftoneNR = abc; dtmftoneNR < dtmfToner.size(); dtmftoneNR++) {
-		toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);					// Tager et toneNr og konvertere det til en vector med amplituder
-		for (int t = 0; t < samples; t++, j++) {
-			raw1[j] = toner[t];															// Tilføjer amplitudeværdierne i afspilningsarrayet.
+	switch (rawµ)
+	{
+	case 1: {
+		for (int dtmftoneNR = abc; dtmftoneNR < dtmfToner.size(); dtmftoneNR++) {
+			toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);					// Tager et toneNr og konvertere det til en vector med amplituder
+			for (int t = 0; t < samples; t++, j++) {
+				raw1[j] = toner[t];															// Tilføjer amplitudeværdierne i afspilningsarrayet.
+			}
+			abc++;
 		}
-		abc++;
+		rawNumber = 1;
+		return abc; 
 	}
-	return abc;
+	case 2: {
+		for (int dtmftoneNR = abc; dtmftoneNR < dtmfToner.size(); dtmftoneNR++) {
+			toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);					// Tager et toneNr og konvertere det til en vector med amplituder
+			for (int t = 0; t < samples; t++, j++) {
+				raw2[j] = toner[t];															// Tilføjer amplitudeværdierne i afspilningsarrayet.
+			}
+			abc++;
+		}
+		rawNumber = 2;
+		return abc;
+	}
+	case 3: {
+		for (int dtmftoneNR = abc; dtmftoneNR < dtmfToner.size(); dtmftoneNR++) {
+			toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);					// Tager et toneNr og konvertere det til en vector med amplituder
+			for (int t = 0; t < samples; t++, j++) {
+				raw3[j] = toner[t];															// Tilføjer amplitudeværdierne i afspilningsarrayet.
+			}
+			abc++;
+		}
+		rawNumber = 3;
+		return abc;
+	}
+	case 4: {
+		for (int dtmftoneNR = abc; dtmftoneNR < dtmfToner.size(); dtmftoneNR++) {
+			toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);					// Tager et toneNr og konvertere det til en vector med amplituder
+			for (int t = 0; t < samples; t++, j++) {
+				raw4[j] = toner[t];															// Tilføjer amplitudeværdierne i afspilningsarrayet.
+			}
+			abc++;
+		}
+		rawNumber = 4;
+		return abc;
+	}
+	case 5:
+	{
+		for (int dtmftoneNR = abc; dtmftoneNR < dtmfToner.size(); dtmftoneNR++) {
+			toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);					// Tager et toneNr og konvertere det til en vector med amplituder
+			for (int t = 0; t < samples; t++, j++) {
+				raw5[j] = toner[t];															// Tilføjer amplitudeværdierne i afspilningsarrayet.
+			}
+			abc++;
+		}
+		rawNumber = 5;
+		return abc;
+	}
+	case 6: {
+		for (int dtmftoneNR = abc; dtmftoneNR < dtmfToner.size(); dtmftoneNR++) {
+			toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);					// Tager et toneNr og konvertere det til en vector med amplituder
+			for (int t = 0; t < samples; t++, j++) {
+				raw6[j] = toner[t];															// Tilføjer amplitudeværdierne i afspilningsarrayet.
+			}
+			abc++;
+		}
+		rawNumber = 6;
+		return abc;
+	}
+	default:
+		std::cout << "Well you need more cases in adddatapakke ;)" << std::endl;
+		break;
+	}
+	
 	/////	Send end	///////
 
 }
 
-int Afspilning::makeSyncSequence(int perioder)
+int Afspilning::makeSyncSequence(int rawµ)
 {
 	int abc = 0, j = 0;
 	std::vector<float> tone;
-	/////	sync begin	///////
+	int perioder = 20;
 	std::string sync;
-	for (int i = 0; i < perioder; i++) {
-		sync.append("00001111");
-	}
-	//sync.append("1001");								// Afslutende sync tone
 
-	std::string acc;
-	for (int i = 0; i < 2 * perioder; i++) {
-		acc = sync.substr(i * 4, 4);
-		DTMFToner syncToner(acc);
-		syncToner.setToneNumber();
-		dtmfToner.push_back(syncToner);
-	}
-	for (int i = 0; i < 2 * perioder; i++) {
-		tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
-		for (int k = 0; k < samples; j++, k++) {
-			raw1[j] = tone[k];
+	/////	sync begin	///////
+	switch (rawµ)
+	{
+	case 0: {
+		for (int i = 0; i < perioder; i++) {
+			sync.append("00001111");
 		}
-		abc++;
+		//sync.append("1001");								// Afslutende sync tone
+
+		std::string acc;
+		for (int i = 0; i < 2 * perioder; i++) {
+			acc = sync.substr(i * 4, 4);
+			DTMFToner syncToner(acc);
+			syncToner.setToneNumber();
+			dtmfToner.push_back(syncToner);
+		}
+		for (int i = 0; i < 2 * perioder; i++) {
+			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
+			for (int k = 0; k < samples; j++, k++) {
+				rawNak[j] = tone[k];
+			}
+			abc++;
+		}
+		/////	sync end	///////
+		rawNumber = 0;
+		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
 	}
-	/////	sync end	///////
-	return abc;									// retunere antallet af toner i afspilningsarrayet (raw1)
+	case 1: {
+		for (int i = 0; i < perioder; i++) {
+			sync.append("00001111");
+		}
+		//sync.append("1001");								// Afslutende sync tone
+
+		std::string acc;
+		for (int i = 0; i < 2 * perioder; i++) {
+			acc = sync.substr(i * 4, 4);
+			DTMFToner syncToner(acc);
+			syncToner.setToneNumber();
+			dtmfToner.push_back(syncToner);
+		}
+		for (int i = 0; i < 2 * perioder; i++) {
+			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
+			for (int k = 0; k < samples; j++, k++) {
+				raw1[j] = tone[k];
+			}
+			abc++;
+		}
+		/////	sync end	///////
+		rawNumber = 1;
+		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
+	}
+	case 2: {
+		for (int i = 0; i < perioder; i++) {
+			sync.append("00001111");
+		}
+		//sync.append("1001");								// Afslutende sync tone
+
+		std::string acc;
+		for (int i = 0; i < 2 * perioder; i++) {
+			acc = sync.substr(i * 4, 4);
+			DTMFToner syncToner(acc);
+			syncToner.setToneNumber();
+			dtmfToner.push_back(syncToner);
+		}
+		for (int i = 0; i < 2 * perioder; i++) {
+			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
+			for (int k = 0; k < samples; j++, k++) {
+				raw2[j] = tone[k];
+			}
+			abc++;
+		}
+		/////	sync end	///////
+		rawNumber = 2;
+		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
+	}
+	case 3: {
+		for (int i = 0; i < perioder; i++) {
+			sync.append("00001111");
+		}
+		//sync.append("1001");								// Afslutende sync tone
+
+		std::string acc;
+		for (int i = 0; i < 2 * perioder; i++) {
+			acc = sync.substr(i * 4, 4);
+			DTMFToner syncToner(acc);
+			syncToner.setToneNumber();
+			dtmfToner.push_back(syncToner);
+		}
+		for (int i = 0; i < 2 * perioder; i++) {
+			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
+			for (int k = 0; k < samples; j++, k++) {
+				raw3[j] = tone[k];
+			}
+			abc++;
+		}
+		/////	sync end	///////
+		rawNumber = 3;
+		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
+	}
+	case 4: {
+		for (int i = 0; i < perioder; i++) {
+			sync.append("00001111");
+		}
+		//sync.append("1001");								// Afslutende sync tone
+
+		std::string acc;
+		for (int i = 0; i < 2 * perioder; i++) {
+			acc = sync.substr(i * 4, 4);
+			DTMFToner syncToner(acc);
+			syncToner.setToneNumber();
+			dtmfToner.push_back(syncToner);
+		}
+		for (int i = 0; i < 2 * perioder; i++) {
+			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
+			for (int k = 0; k < samples; j++, k++) {
+				raw4[j] = tone[k];
+			}
+			abc++;
+		}
+		/////	sync end	///////
+		rawNumber = 4;
+		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
+	}
+	case 5: {
+		for (int i = 0; i < perioder; i++) {
+			sync.append("00001111");
+		}
+		//sync.append("1001");								// Afslutende sync tone
+
+		std::string acc;
+		for (int i = 0; i < 2 * perioder; i++) {
+			acc = sync.substr(i * 4, 4);
+			DTMFToner syncToner(acc);
+			syncToner.setToneNumber();
+			dtmfToner.push_back(syncToner);
+		}
+		for (int i = 0; i < 2 * perioder; i++) {
+			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
+			for (int k = 0; k < samples; j++, k++) {
+				raw5[j] = tone[k];
+			}
+			abc++;
+		}
+		/////	sync end	///////
+		rawNumber = 5;
+		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
+	}
+	case 6:
+	{
+		for (int i = 0; i < perioder; i++) {
+			sync.append("00001111");
+		}
+		//sync.append("1001");								// Afslutende sync tone
+
+		std::string acc;
+		for (int i = 0; i < 2 * perioder; i++) {
+			acc = sync.substr(i * 4, 4);
+			DTMFToner syncToner(acc);
+			syncToner.setToneNumber();
+			dtmfToner.push_back(syncToner);
+		}
+		for (int i = 0; i < 2 * perioder; i++) {
+			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
+			for (int k = 0; k < samples; j++, k++) {
+				raw6[j] = tone[k];
+			}
+			abc++;
+		}
+		/////	sync end	///////
+		rawNumber = 6;
+		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
+	}
+	default:
+		std::cout << "Well you need some more cases in makeSyncSeq ;)" << std::endl;
+		break;
+	}						// retunere antallet af toner i afspilningsarrayet (raw1)
 }
 
 void Afspilning::clearRaw1DTMF()
@@ -141,10 +435,35 @@ void Afspilning::clearRaw1DTMF()
 
 unsigned int Afspilning::getarraySize()
 {
-	return arraySize;
+		switch (rawNumber)
+	{
+	case 0:
+		return 1280 + antalSyncvaerdier + 100;
+	case 1:
+		return arraySize + antalSyncvaerdier + 100;
+	case 2:
+		return 2 * arraySize + antalSyncvaerdier + 100;
+	case 3: 
+		return 3 * arraySize + antalSyncvaerdier + 100;
+	case 4: 
+		return 4 * arraySize + antalSyncvaerdier + 100;
+	case 5:
+		return 5 * arraySize + antalSyncvaerdier + 100;
+	case 6:
+		return 6 * arraySize + antalSyncvaerdier + 100;
+	default:
+		std::cout << "well you fucked up" << std::endl;
+		break;
+	}
+}
+
+int Afspilning::getAntalDataPakker()
+{
+	return datapakker.size();
 }
 
 
 Afspilning::~Afspilning()
 {
 }
+

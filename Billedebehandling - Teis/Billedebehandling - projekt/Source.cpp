@@ -28,13 +28,15 @@
 
 
 std::vector<Protokol> protokoller;
-
-int samplesGlobal = (8000 * 20)/1000;//16000;//44100
+int toneLength = 20;
 int sampleFreqGlobal = 8000;//41000
+int samplesGlobal = (sampleFreqGlobal * toneLength)/1000;//16000;//44100
 int protokolOpdelingGlobal = 32;
 
-std::string finalBitString;
+bool wasLastNakRecieved = true;
 
+std::string finalBitString;
+int framesSend = 3;
 ////////// Timer //////////
 double runOut = 1.5;
 bool torbenTester = true;
@@ -61,16 +63,19 @@ label:
 	std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
 	std::cin >> answer;
 	if (answer == 'a') {						// Afsender
-		Afspilning test("1010101000011011111111100001101011100100",samplesGlobal,sampleFreqGlobal);
-					//	0110 1100 1010 1001
-	
-		/*std::string str = "Jeg holder af at spise kage!";
-		TextProcessing str_txt(str);
-		std::string str_bits=str_txt.stringToBitsString();
-		Bit2Tekst aben_b(str_bits);
-		std::cout << aben_b.bitToString() << std::endl;
 
-		Afspilning reA(str_bits, samplesGlobal, sampleFreqGlobal);*/
+		std::string input = "Jeg plukker frugt med en brugt frugtplukker, og kommer det i en brugt plastikpose";
+		//std::cout << "Skriv tekst der skal sendes: " << std::endl;
+
+		/*std::getline(std::cin, input);
+		std::cout << input << std::endl;*/
+		TextProcessing tekst(input);
+
+		std::string bitstring = tekst.stringToBitsString();
+
+		Afspilning afspiller(bitstring, samplesGlobal, sampleFreqGlobal);
+
+		PacketSelection selecter(afspiller.getAntalDataPakker());
 
 		
 
@@ -80,20 +85,92 @@ label:
 		sf::sleep(sf::milliseconds(1600));
 		std::cout << torbenTester << std::endl;
 		*/
-
+		afspiller.playSequence(selecter.getPacketToSendIndex(), framesSend);
 		sf::SoundBuffer Buffer;
-		if (!Buffer.loadFromSamples(test.playSequence(0,1), test.getarraySize(), 1, sampleFreqGlobal)) {
-			std::cerr << "Loading failed!" << std::endl;
-			return 1;
-		}
-		
+		Buffer.loadFromSamples(afspiller.playSequence(selecter.getPacketToSendIndex(), framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
+
 		sf::Sound Sound;
 		Sound.setBuffer(Buffer);
 		Sound.play();
-		while (1) {
-			sf::sleep(sf::milliseconds(100));
+		while (Sound.getStatus() != 0) {
 		}
+		std::cout << "fisk" << std::endl;
+
 		//work.join();
+	Afspiller:
+		//Variable
+		std::vector<std::string> nAKS;
+		std::vector<int> nakINT;
+		std::string modtagetNAKS;
+
+		customRecorder recorderAfsender;
+		/*recorderAfsender.start(8000);
+		std::cout << "Lytter for NAK's...." << std::endl;
+		modtagetNAKS = recorderAfsender.startThread();
+		recorderAfsender.stop();*/
+
+		NAK testNak;
+		testNak.insertIntoArray("0000");
+		testNak.insertIntoArray("0001");
+		testNak.insertIntoArray("0010");
+		modtagetNAKS = testNak.createNAK();
+
+		Protokol modtagetNAKFrame(modtagetNAKS);
+		
+
+		if (modtagetNAKFrame.checkNAKChecksum()) {
+			wasLastNakRecieved = true;
+			if (modtagetNAKFrame.getNAKs()[0] == "1111") {		// Hvis vi modtager NAK-ingenting spilles de tre næste frames
+				afspiller.playSequence(selecter.getPacketToSendIndex(), framesSend);		// Opdaterer getarraySize();
+				Buffer.loadFromSamples(afspiller.playSequence(selecter.getPacketToSendIndex(), framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
+				Sound.setBuffer(Buffer);
+				Sound.play();
+				while (Sound.getStatus() != 0) {
+				}
+			}
+			else {
+				
+				nAKS = modtagetNAKFrame.getNAKs(); //Kigger på hvilke frames der ikke er modtaget korrekt
+				nakINT = selecter.selectPackets(nAKS); //Udvælger hvilke frames der skal gensendes ud fra NAKs
+				afspiller.playThis(nakINT); //Frames'ne afspilles
+				Buffer.loadFromSamples(afspiller.playThis(nakINT), afspiller.getarraySize(), 1, sampleFreqGlobal);
+				Sound.setBuffer(Buffer);
+				Sound.play();
+				while (Sound.getStatus() != 0) {
+				}
+			}
+		}
+
+		else
+		{
+			if (wasLastNakRecieved==false)
+			{
+				wasLastNakRecieved = true;
+				afspiller.playSequence(selecter.getResendIndex(),framesSend); //Frames'ne afspilles
+				Buffer.loadFromSamples(afspiller.playSequence(selecter.getResendIndex(),framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
+				Sound.setBuffer(Buffer);
+				Sound.play();
+				while (Sound.getStatus() != 0) {
+				}
+				// sender 3 forrige
+			}
+			else {
+				wasLastNakRecieved = false;
+				afspiller.playSequence(selecter.getPacketToSendIndex(), framesSend); //Frames'ne afspilles
+				Buffer.loadFromSamples(afspiller.playSequence(selecter.getPacketToSendIndex(), framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
+				Sound.setBuffer(Buffer);
+				Sound.play();
+				while (Sound.getStatus() != 0) {
+				}
+				// sender 3 nye
+			}
+		}
+		
+		if (!selecter.getPacketToSendIndex() - 1 < afspiller.getAntalDataPakker() - framesSend) {
+			goto Afspiller;
+		}
+		
+
 	}
 	else if (answer == 'm') {	// Modtager
 	Modtager:

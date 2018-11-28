@@ -20,12 +20,13 @@ public:
 	sf::Int16* playSequence(int start, int antal);
 	
 //	Hjælpefunktioner	//
-	int adddatapakke(int pakke,int abc);
-	int makeSyncSequence(int perioder);
+	int adddatapakke(int pakke,int abc,int rawµ);
+	int makeSyncSequence(int rawµ);
 	void clearRaw1DTMF();
 
 //	Get-funktioner	
 	unsigned int getarraySize();
+	int getAntalDataPakker();
 	
 	~Afspilning();
 protected:
@@ -34,8 +35,16 @@ protected:
 	BitDTMF sekvens;
 	std::vector<Protokol>datapakker;
 	std::vector<DTMFToner> dtmfToner;
-	unsigned int arraySize=256000;
-	sf::Int16* raw1; // [arraySize]
+	unsigned int arraySize=2240;
+	int antalSyncvaerdier = 6400;
+	sf::Int16* raw1; // en datapakke
+	sf::Int16* raw2;
+	sf::Int16* raw3;
+	sf::Int16* raw4;
+	sf::Int16* raw5;
+	sf::Int16* raw6;
+	sf::Int16* rawNak;
+	int rawNumber=-1;
 
 
 };

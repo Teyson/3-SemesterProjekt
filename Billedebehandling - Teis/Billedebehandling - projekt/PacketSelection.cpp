@@ -2,23 +2,26 @@
 
 
 
-PacketSelection::PacketSelection()
+PacketSelection::PacketSelection(int n)
 {
+	datapakkeAntal = n;
 }
 
 std::vector<int> PacketSelection::selectPackets(std::vector<std::string> stringS)
 {
 	int realSeqNum;
 	int seqNum;
-	int a=0;
+	int a = 0;
 	std::vector<int> returnVector;
-	int graense=99999;
-	
-	for (int v = 0; v < stringS.size()-1; v++) {
+	int graense = 99999;
+	if (stringS.size() == 1) {
+		graense = -1;
+	}
+	for (int v = 0; v < stringS.size() - 1; v++) {
 		if (stoi(stringS[v], nullptr, 2) > stoi(stringS[v + 1], nullptr, 2))
 			graense = v;
 	}
-	
+
 	for (int i = 0; i < stringS.size(); i++) {
 		seqNum = stoi(stringS[i], nullptr, 2);
 
@@ -37,7 +40,14 @@ std::vector<int> PacketSelection::selectPackets(std::vector<std::string> stringS
 
 int PacketSelection::getPacketToSendIndex()
 {
-	return lastPackIndex+1;
+	int returner = lastPackIndex + 1;
+	lastPackIndex += packetsPerSend;
+	return returner;
+}
+
+int PacketSelection::getResendIndex()
+{
+	return lastPackIndex-2;
 }
 
 void PacketSelection::print(std::vector<int> vec)

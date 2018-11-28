@@ -6,12 +6,13 @@
 class PacketSelection
 {
 public:
-	PacketSelection();
+	PacketSelection(int n);
 
 	std::vector<int> selectPackets(std::vector<std::string> stringS);
-
+	
 	//simple get-kommandoer
 	int getPacketToSendIndex();
+	int getResendIndex();
 	
 	//til test
 	void print(std::vector<int> vec);
@@ -21,5 +22,6 @@ public:
 protected:
 	int lastPackIndex = -1;
 	int packetsPerSend = 3;
+	int datapakkeAntal;
 };
 
