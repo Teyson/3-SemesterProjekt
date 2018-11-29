@@ -20,6 +20,7 @@ Afspilning::Afspilning(std::string datainput, int sampleInput, int sampleRateInp
 	BitDTMF sekven(datainput, samples, sampleFreq, 40);
 	sekvens = sekven;
 	sekvens.toProtokol(datapakker);
+	setLastBit();
 }
 
 sf::Int16 * Afspilning::playThis(std::vector<int> resendPackage)
@@ -431,6 +432,11 @@ void Afspilning::clearRaw1DTMF()
 {
 	std::fill_n(raw1, arraySize, 0);			// tømmer og nulstiller afspillingsarrayet (raw1)
 	dtmfToner.clear();							// clearer vektoren der indeholder DTMF-tonerne
+}
+
+void Afspilning::setLastBit()
+{
+	datapakker[datapakker.size() - 1].setLastBit();
 }
 
 unsigned int Afspilning::getarraySize()

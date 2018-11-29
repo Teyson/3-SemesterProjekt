@@ -229,6 +229,7 @@ Modtager:
 		std::string modtaget;
 		std::string check = "0011011111110010100110000001111010110010101001011101011011000000";
 		bool sendNak = false;
+		bool lastPackage = false;
 
 		recorder.start(sampleFreqGlobal);					//Start recording
 		std::cout << "Recording...." << std::endl;
@@ -250,7 +251,6 @@ Modtager:
 
 		std::vector<Protokol> modtagetFrame;
 
-		//flyttes eventuelt til Protokol
 		if (antalOpdelinger > 0)
 		{
 			for (int i = 1; i < antalOpdelinger + 1; i++)
@@ -267,21 +267,32 @@ Modtager:
 				if (frame.checkChecksum())
 				{
 					nak.insertIntoArray(frame.getRecievedSequenceNumber(), frame.getData());
+
+					if (nak.getPointerExpected == nak.getPointerNotRecieved && frame.checkLastBit())
+					{
+						lastPackage = true;
+					}
 				}
 			}
 		}
 
-		std::string nakToSend = nak.createNAK();
-
-		Afspilning nakAfspilning(nakToSend, samplesGlobal, sampleFreqGlobal);
-
-		nakAfspilning.playString(nakToSend);
 		
-		//Husk at lave om så Last bit nu betyder allersidste frame
-		if (!modtagetFrame[modtagetFrame.size() - 1].checkLastBit() && !(nak.getPointerExpected() == nak.getPointerNotRecieved()))
+		if (!lastPackage)
 		{
-			goto Modtager;
+			std::string nakToSend = nak.createNAK();
+
+			Afspilning nakAfspilning(nakToSend, samplesGlobal, sampleFreqGlobal);
+
+			nakAfspilning.playString(nakToSend);
+
+			//Husk at lave om så Last bit nu betyder allersidste frame
+			if (!modtagetFrame[modtagetFrame.size() - 1].checkLastBit() && !(nak.getPointerExpected() == nak.getPointerNotRecieved()))
+			{
+				goto Modtager;
+			}
 		}
+
+		//Slutnignen for modtageren
 
 		std::string dataModtaget = nak.getDataModtaget();
 

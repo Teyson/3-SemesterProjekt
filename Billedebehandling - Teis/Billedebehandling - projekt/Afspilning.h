@@ -23,6 +23,7 @@ public:
 	int adddatapakke(int pakke,int abc,int rawµ);
 	int makeSyncSequence(int rawµ);
 	void clearRaw1DTMF();
+	void setLastBit();
 
 //	Get-funktioner	
 	unsigned int getarraySize();
