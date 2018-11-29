@@ -72,12 +72,7 @@ void BitDTMF::toDTMF(std::vector<Protokol>& prot, std::vector<DTMFToner>& dtmfVe
 			bitHold.append(divisionsrest, '0');
 		}
 
-		if (i < begin + antal - 1) {			// Sætter alle LPB'er til 0 bortset fra sidste frame
-			prot[i].clearLastBit();				// sætter lastPackageBit til 0
-		}
-		else {
-			prot[i].setLastBit();				// Sætter lastPackageBit til 1
-		}
+		//prot[i].clearLastBit();				// sætter lastPackageBit til 0
 
 
 		prot[i].setToneStart(toneNr);					// Angiver datapakkens første tone nr. derved kan man nemmere finde hvilke toner der skal spilles, hvis denne pakke skal gensendes

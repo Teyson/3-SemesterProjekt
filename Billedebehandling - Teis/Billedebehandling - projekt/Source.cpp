@@ -268,7 +268,7 @@ Modtager:
 				{
 					nak.insertIntoArray(frame.getRecievedSequenceNumber(), frame.getData());
 
-					if (nak.getPointerExpected == nak.getPointerNotRecieved && frame.checkLastBit())
+					if (nak.getPointerExpected() == nak.getPointerNotRecieved() && frame.checkLastBit())
 					{
 						lastPackage = true;
 					}
