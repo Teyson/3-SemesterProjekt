@@ -45,7 +45,7 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
             //std::cout << amplitudeLow << std::endl;
             //std::cout << amplitudeLow1 << std::endl;
 
-            if (amplitudeHigh > 500 && amplitudeLow > 500){
+            if (amplitudeHigh > 300 && amplitudeLow > 300){
                 //std::cout << amplitudeLow << std::endl;
 				if (i != 0) 
 					i--;

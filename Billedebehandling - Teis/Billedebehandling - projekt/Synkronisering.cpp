@@ -177,11 +177,10 @@ void Synkronisering::sync()
 						}
 						revertCounter = 0;			//Nulstiller revertCounter, da forholdet er voksende.
 					}
-
-					forhold3 = forhold;
+                   forhold3 = forhold;
 				}
 
-				if (elementNr == 38)		// Tjekker om vi har modtaget alle synkroniseringstonerne.
+				if (elementNr == 37)		// Tjekker om vi har modtaget alle synkroniseringstonerne.
 				{
 					startOutputting = 1;
 				}
@@ -202,10 +201,8 @@ void Synkronisering::sync()
 						acc += mainBuffer[i];
 				}
 				acc = acc / windowSz; //Tager gns
-				std::cout << acc << std::endl;
-				if (counter == 16)
-					acc = 30;
-
+				//std::cout << acc << std::endl;
+			
 
 				if (acc < previousAcc && acc < 45 && previousAcc < 45)
 					keepSyncing = 0;
@@ -225,14 +222,15 @@ void Synkronisering::sync()
 	}
 
 
-
+    syncBuffer.clear();
 
 }
 
 std::string Synkronisering::startThread()
 {
-	std::thread syncLoader(&Synkronisering::sync, this);
+    std::thread syncLoader(&Synkronisering::sync, this);
 	syncLoader.join();
+
 	return bitstring;
 }
 

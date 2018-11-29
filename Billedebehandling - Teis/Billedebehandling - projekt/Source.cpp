@@ -35,6 +35,8 @@ int protokolOpdelingGlobal = 32;
 
 bool wasLastNakRecieved = true;
 
+
+
 std::string finalBitString;
 int framesSend = 3;
 ////////// Timer //////////
@@ -64,7 +66,7 @@ label:
 	std::cin >> answer;
 	if (answer == 'a') {						// Afsender
 		bool end = false;
-		std::string input = "Jeg plukker frugt med en brugt frugtplukker, og kommer det i en brugt plastikpose";
+		std::string input = "Hej mit navn er Teis, min ynglingshobby er at fappe meget kraftigt i mens jeg ligger i min seng og ser porno";
 		//std::cout << "Skriv tekst der skal sendes: " << std::endl;
 
 		/*std::getline(std::cin, input);
@@ -86,8 +88,7 @@ label:
 		std::cout << torbenTester << std::endl;
 		*/
 		int index = selecter.getPacketToSendIndex();
-
-		afspiller.playSequence(index, framesSend);
+        afspiller.playSequence(index, framesSend);
 		sf::SoundBuffer Buffer;
 		Buffer.loadFromSamples(afspiller.playSequence(index, framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
 
@@ -96,7 +97,7 @@ label:
 		Sound.play();
 		while (Sound.getStatus() != 0) {
 		}
-		std::cout << "fisk" << std::endl;
+		
 
 		//work.join();
 	Afspiller:
@@ -105,12 +106,14 @@ label:
 		std::vector<int> nakINT;
 		std::string modtagetNAKS;
 
+
+
 		customRecorder recorderAfsender;
 		recorderAfsender.start(8000);
 		std::cout << "Lytter for NAK's...." << std::endl;
 		modtagetNAKS = recorderAfsender.startThread();
 		recorderAfsender.stop();	
-		
+        std::cout << modtagetNAKS << std::endl;
 		/*
 		NAK testNak;
 		testNak.insertIntoArray("0000");
@@ -118,14 +121,19 @@ label:
 		testNak.insertIntoArray("0010");
 		modtagetNAKS = testNak.createNAK();
 		*/
-		
+        if (modtagetNAKS.length() < 9) {
+            modtagetNAKS = "0000000000000000000100000";
+        }
+
+
 		Protokol modtagetNAKFrame(modtagetNAKS);
 		
-
+        sf::sleep(sf::seconds(5));
+        
 		if (modtagetNAKFrame.checkNAKChecksum()) {
 			wasLastNakRecieved = true;
 
-			std::cout << "Fejl 1" << std::endl;
+			std::cout << "NakCheckSum true" << std::endl;
 
 			if (end && modtagetNAKFrame.getNAKs()[0] == "1111")
 			{
@@ -163,7 +171,7 @@ label:
 
 		else
 		{
-			std::cout << "Forventet 1" << std::endl;
+			std::cout << "Fejl i nak" << std::endl;
 
 			if (end)		//KIG PÅ DET HER FUCKING LORT!! PROBLEMATIC AS FUCK!
 			{
@@ -178,6 +186,7 @@ label:
 			}
 			else if (wasLastNakRecieved==false)
 			{
+                std::cout << "Send 3 forrige" << std::endl;
 				afspiller.playSequence(selecter.getResendIndex(),framesSend); //Frames'ne afspilles
 				Buffer.loadFromSamples(afspiller.playSequence(selecter.getResendIndex(),framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
 				Sound.setBuffer(Buffer);
@@ -186,9 +195,9 @@ label:
 				}
 				// sender 3 forrige
 			}
-			else {
+			else { //Skal sende de næste 3 pakker
 				int index = selecter.getPacketToSendIndex();
-				std::cout << "Forventet 2" << std::endl;
+				std::cout << "Send 3 næste" << std::endl;
 
 				if (index - 1 >= afspiller.getAntalDataPakker() - framesSend)
 				{
@@ -221,10 +230,11 @@ label:
 	}
 	else if (answer == 'm') {	// Modtager
 		NAK nak;
-		customRecorder recorder;
+		//customRecorder recorder;
 
 Modtager:
 		//Variable
+        customRecorder recorder;
 		float mistake = 0;
 		std::string modtaget;
 		std::string check = "0011011111110010100110000001111010110010101001011101011011000000";
