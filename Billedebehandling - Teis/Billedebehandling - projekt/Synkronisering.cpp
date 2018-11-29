@@ -202,14 +202,15 @@ void Synkronisering::sync()
 						acc += mainBuffer[i];
 				}
 				acc = acc / windowSz; //Tager gns
-				std::cout << acc << std::endl;
-				if (counter == 16)
-					acc = 30;
 
+				std::cout << "acc er: " << acc << " previousAcc er: " << previousAcc << std::endl;
 
 				if (acc < previousAcc && acc < 45 && previousAcc < 45)
+				{
 					keepSyncing = 0;
-
+					std::cout << "keep syncing er 0" << std::endl;
+				}
+					
 				previousAcc = acc;
 				//std::cout << bitstring << std::endl;
 
@@ -225,7 +226,7 @@ void Synkronisering::sync()
 	}
 
 
-
+	syncBuffer.clear();
 
 }
 

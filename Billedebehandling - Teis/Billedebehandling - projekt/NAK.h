@@ -35,12 +35,12 @@ public:
 	~NAK();
 
 protected:
-	int pointerMax = pointerNotRecieved + windowSize;
 	int pointerNotRecieved = 0;
 	int packetsSend = 3; //Må maks være 7 med en arraystørrelse på 15. Udregning: (arraySize - 1) / 2 = maxPacketsSend!
 	int pointerExpected = packetsSend;
 	int arraySize = 15;
-	int windowSize;
+	int windowSize = packetsSend * 2 + 1;
+	int pointerMax = pointerNotRecieved + windowSize;
 	std::string NAKTone = "1111";
 	bool NAKBoolean = false;
 	std::string dataModtaget;

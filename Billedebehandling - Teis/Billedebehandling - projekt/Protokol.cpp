@@ -14,6 +14,7 @@ Protokol::Protokol(std::string sr)
 	{
 		//Constructor til n�r vi modtager en besked. Tager hele den modtagede bitstreng som input.
 		recievedPacket = sr;
+        unpacking();
 	}
 }
 
@@ -247,7 +248,7 @@ std::vector<std::string> Protokol::getNAKs()
 	std::vector<std::string> NAKs;
 
 
-	for (int i = 8; i < recievedNAK.size() - 8; i += 4)
+	for (int i = 0; i < recievedNAK.size() - 8; i += 4)
 
 	{
 

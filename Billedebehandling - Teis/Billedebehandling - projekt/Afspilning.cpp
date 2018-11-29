@@ -257,7 +257,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 		for (int i = 0; i < perioder; i++) {
 			sync.append("00001111");
 		}
-		//sync.append("1001");								// Afslutende sync tone
+		sync.append("0000");								// Afslutende sync tone
 
 		std::string acc;
 		for (int i = 0; i < 2 * perioder; i++) {
@@ -284,13 +284,13 @@ int Afspilning::makeSyncSequence(int rawµ)
 		//sync.append("1001");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder +1 ; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				raw1[j] = tone[k];
@@ -308,13 +308,13 @@ int Afspilning::makeSyncSequence(int rawµ)
 		//sync.append("1001");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder+1; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder+1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				raw2[j] = tone[k];
@@ -332,13 +332,13 @@ int Afspilning::makeSyncSequence(int rawµ)
 		//sync.append("1001");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder +1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				raw3[j] = tone[k];
@@ -356,13 +356,13 @@ int Afspilning::makeSyncSequence(int rawµ)
 		//sync.append("1001");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder +1; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder +1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				raw4[j] = tone[k];
@@ -380,13 +380,13 @@ int Afspilning::makeSyncSequence(int rawµ)
 		//sync.append("1001");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder +1; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder +1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				raw5[j] = tone[k];
@@ -405,13 +405,13 @@ int Afspilning::makeSyncSequence(int rawµ)
 		//sync.append("1001");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder+ 1; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder +1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				raw6[j] = tone[k];
