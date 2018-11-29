@@ -64,7 +64,7 @@ label:
 	std::cin >> answer;
 	if (answer == 'a') {						// Afsender
 		bool end = false;
-		std::string input = "Jeg plukker frugt med en brugt frugtplukker, og kommer det i en brugt plastikpose";
+		std::string input = "Hej mit navn er Teis, min ynglingshobby er at fappe meget kraftigt imens jeg ligger i min seng og ser porno.";
 		//std::cout << "Skriv tekst der skal sendes: " << std::endl;
 
 		/*std::getline(std::cin, input);
@@ -85,7 +85,7 @@ label:
 		sf::sleep(sf::milliseconds(1600));
 		std::cout << torbenTester << std::endl;
 		*/
-		int index = selecter.getPacketToSendIndex();
+		int index = 0;
 
 		afspiller.playSequence(index, framesSend);
 		sf::SoundBuffer Buffer;
@@ -118,9 +118,14 @@ label:
 		testNak.insertIntoArray("0010");
 		modtagetNAKS = testNak.createNAK();
 		*/
+
+		if (modtagetNAKS.length() > 7)
+		{
+			modtagetNAKS = "00000000000000000010000000";
+		}
 		
 		Protokol modtagetNAKFrame(modtagetNAKS);
-		
+
 
 		if (modtagetNAKFrame.checkNAKChecksum()) {
 			wasLastNakRecieved = true;
@@ -221,9 +226,10 @@ label:
 	}
 	else if (answer == 'm') {	// Modtager
 		NAK nak;
-		customRecorder recorder;
+		
 
-Modtager:
+	Modtager:
+		customRecorder recorder;
 		//Variable
 		float mistake = 0;
 		std::string modtaget;
@@ -235,6 +241,10 @@ Modtager:
 		std::cout << "Recording...." << std::endl;
 		modtaget = recorder.startThread();
 		recorder.stop();
+		std::cout << "RECORDER STOPPET!!!!!!!!!" << std::endl;
+
+		std::cout << "Længden på det modtagede er: " << modtaget.length() << std::endl;
+		std::cout << "Bitstrengen er: " << modtaget << std::endl;
 
 		//Check til forsøg 
 		//for (size_t i = 0; i < 64; i++) 
@@ -279,14 +289,42 @@ Modtager:
 		
 		if (!lastPackage)
 		{
+			sf::sleep(sf::seconds(1));
+
 			std::string nakToSend = nak.createNAK();
+
+			std::cout << nakToSend << std::endl;
+			std::cout << nak.getDataModtaget() << std::endl;
+			std::cout << "pointerExpected er: " << nak.getPointerExpected() << std::endl;
+			std::cout << "pointerNotRecieved er: " << nak.getPointerNotRecieved() << std::endl;
+			std::cout << "pointerMax er: " << nak.getPointerMax() << std::endl;
+
+			std::string pointerNRString = std::bitset<4>(nak.getPointerNotRecieved()).to_string();
+
+			std::cout << "dataen ved pointerNotRecieved er: " << nak.getDataFromArray(pointerNRString) << std::endl;
 
 			Afspilning nakAfspilning(nakToSend, samplesGlobal, sampleFreqGlobal);
 
 			nakAfspilning.playString(nakToSend);
 
+			sf::SoundBuffer Buffer;
+			Buffer.loadFromSamples(nakAfspilning.playString(nakToSend), nakAfspilning.getarraySize(), 1, sampleFreqGlobal);
+
+			sf::Sound Sound;
+			Sound.setBuffer(Buffer);
+			Sound.play();
+			while (Sound.getStatus() != 0) {
+			}
+
 			//Husk at lave om så Last bit nu betyder allersidste frame
-			if (!modtagetFrame[modtagetFrame.size() - 1].checkLastBit() && !(nak.getPointerExpected() == nak.getPointerNotRecieved()))
+			if (modtagetFrame.size() > 0)
+			{
+				if (!modtagetFrame[modtagetFrame.size() - 1].checkLastBit() && !(nak.getPointerExpected() == nak.getPointerNotRecieved()))
+				{
+					goto Modtager;
+				}
+			}
+			else
 			{
 				goto Modtager;
 			}

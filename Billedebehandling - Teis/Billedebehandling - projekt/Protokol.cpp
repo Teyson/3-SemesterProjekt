@@ -247,7 +247,7 @@ std::vector<std::string> Protokol::getNAKs()
 	std::vector<std::string> NAKs;
 
 
-	for (int i = 8; i < recievedNAK.size() - 8; i += 4)
+	for (int i = 0; i < recievedNAK.size() - 8; i += 4)
 
 	{
 

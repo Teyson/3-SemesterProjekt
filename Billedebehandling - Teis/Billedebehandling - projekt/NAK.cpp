@@ -11,9 +11,6 @@ NAK::NAK()
 		recieveArray[i] = "0";
 	}
 
-
-	windowSize = packetsSend * 2 + 1;
-
 	//laver array der er datastørrelsen * bufferstørrelse skal først initialiseres når der bliver modtaget en pakke der er har data.
 	for (int i = 0; i < arraySize; i++)
 	{
@@ -92,10 +89,12 @@ std::string NAK::createNAK()
 	if (pointerExpected == pointerNotRecieved)
 	{
 		returnString = createEmptyNAK();
+		std::cout << "Created Empty NAK" << std::endl;
 	}
 	else
 	{
 		returnString = createNonEmptyNAK();
+		std::cout << "created nonempty NAK" << std::endl;
 	}
 	
 	updatePointerExpected();
@@ -160,8 +159,6 @@ void NAK::updatePointerNotRecieved()
 		if (recieveArray[i] == "0")
 		{
 			pointerNotRecieved = i;
-			//kunne potentielt være en fejl, hvor alle i arrayet bliver godkendt...
-			
 		}
 	}
 
@@ -207,7 +204,7 @@ void NAK::updatePointerExpected()
 		{
 			if (pointerExpected <= (pointerMax + arraySize - packetsSend))
 			{
-				pointerExpected += packetsSend;
+				pointerExpected = (pointerExpected + packetsSend) % 15;
 			}
 			else // nakBoolean sættes hvis pointer notExpected ikke kan blive højere
 			{
