@@ -50,6 +50,11 @@ int PacketSelection::getResendIndex()
 	return lastPackIndex-2;
 }
 
+int PacketSelection::getResendIndexLast(int frames)
+{
+	return lastPackIndex - frames + 1;
+}
+
 void PacketSelection::print(std::vector<int> vec)
 {
 	for (int i = 0; i < vec.size(); i++)

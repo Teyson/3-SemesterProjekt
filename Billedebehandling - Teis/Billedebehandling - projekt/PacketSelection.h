@@ -13,6 +13,7 @@ public:
 	//simple get-kommandoer
 	int getPacketToSendIndex();
 	int getResendIndex();
+	int getResendIndexLast(int frames);
 	
 	//til test
 	void print(std::vector<int> vec);

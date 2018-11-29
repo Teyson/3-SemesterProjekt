@@ -10,12 +10,14 @@ class NAK
 public:
 	NAK();
 	NAK(int arrayS, int packets);
-	
+
 	std::string createNonEmptyNAK();
 	std::string createEmptyNAK();
 	std::string createNAK();
 	std::string trailer(std::string s);
-	void insertIntoArray(std::string s);
+	void insertIntoArray(std::string s, std::string d);
+
+
 	void initRecieveArray();
 	void updatePointerNotRecieved();
 	void updatePointerMax();
@@ -27,19 +29,23 @@ public:
 	int getPointerExpected();
 	int getPointerMax();
 	bool getNAKBoolean();
+	std::string getDataFromArray(std::string s);
+	std::string getDataModtaget();
 
 	~NAK();
 
 protected:
 	int pointerMax = pointerNotRecieved + windowSize;
 	int pointerNotRecieved = 0;
-	int arraySize = 15;
-	int windowSize;
 	int packetsSend = 3; //Må maks være 7 med en arraystørrelse på 15. Udregning: (arraySize - 1) / 2 = maxPacketsSend!
 	int pointerExpected = packetsSend;
+	int arraySize = 15;
+	int windowSize;
 	std::string NAKTone = "1111";
 	bool NAKBoolean = false;
+	std::string dataModtaget;
+
 
 	std::string* recieveArray;
+	std::string* recieveDataArray;
 };
-
