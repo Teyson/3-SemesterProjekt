@@ -181,7 +181,7 @@ void Synkronisering::sync()
 					forhold3 = forhold;
 				}
 
-				if (elementNr == 38)		// Tjekker om vi har modtaget alle synkroniseringstonerne.
+				if (elementNr == 37)		// Tjekker om vi har modtaget alle synkroniseringstonerne.
 				{
 					startOutputting = 1;
 				}
