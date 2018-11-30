@@ -88,6 +88,7 @@ void BitDTMF::toDTMF(std::vector<Protokol>& prot, std::vector<DTMFToner>& dtmfVe
 			toneNr++;
 		}
 		std::cout << prot[i].getString() << std::endl;
+		std::cout << prot[i].getString().length() << std::endl;
 		prot[i].setToneSlut(toneNr - 1);				// angiver datapakkens sidste tone nr. 
 	}
 

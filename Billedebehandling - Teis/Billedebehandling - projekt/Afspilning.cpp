@@ -143,15 +143,16 @@ sf::Int16* Afspilning::playSequence(int start, int antal)
 	/////	Send begin	///////
 	sekvens.toDTMF(datapakker, dtmfToner, start, antal);								// Tager datapakker fra sekvensen startende fra start og giver det et toneNr. Dette gør den 'antal' gange
 	std::vector<float> toner;
-
+	int z = 0;
 	for (int dtmftoneNR = abc; dtmftoneNR < dtmfToner.size(); dtmftoneNR++) {
 		toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);					// Tager et toneNr og konvertere det til en vector med amplituder
 		for (int t = 0; t < samples; t++, j++) {
 			raw3[j] = toner[t];															// Tilføjer amplitudeværdierne i afspilningsarrayet.
 		}
+		z = dtmftoneNR - abc;
 	}
 	/////	Send end	///////
-
+	std::cout << "cout af z: " << z << std::endl;
 	// Får en pinter til en vector med protokol elementer (datapakker). Her skal funktionen afspille alle pakkerne mellem start og slut, inkl. grænserne.
 	//Skal på sigt implementere set LastPackageBit. 
 	rawNumber = 3;
@@ -257,16 +258,16 @@ int Afspilning::makeSyncSequence(int rawµ)
 		for (int i = 0; i < perioder; i++) {
 			sync.append("00001111");
 		}
-		//sync.append("1001");								// Afslutende sync tone
+		sync.append("0000");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				rawNak[j] = tone[k];
@@ -274,6 +275,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 			abc++;
 		}
 		/////	sync end	///////
+		abc++;
 		rawNumber = 0;
 		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
 	}
@@ -281,16 +283,16 @@ int Afspilning::makeSyncSequence(int rawµ)
 		for (int i = 0; i < perioder; i++) {
 			sync.append("00001111");
 		}
-		//sync.append("1001");								// Afslutende sync tone
+		sync.append("0000");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				raw1[j] = tone[k];
@@ -298,6 +300,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 			abc++;
 		}
 		/////	sync end	///////
+		abc++;
 		rawNumber = 1;
 		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
 	}
@@ -305,16 +308,16 @@ int Afspilning::makeSyncSequence(int rawµ)
 		for (int i = 0; i < perioder; i++) {
 			sync.append("00001111");
 		}
-		//sync.append("1001");								// Afslutende sync tone
+		sync.append("0000");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				raw2[j] = tone[k];
@@ -322,6 +325,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 			abc++;
 		}
 		/////	sync end	///////
+		abc++;
 		rawNumber = 2;
 		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
 	}
@@ -329,16 +333,16 @@ int Afspilning::makeSyncSequence(int rawµ)
 		for (int i = 0; i < perioder; i++) {
 			sync.append("00001111");
 		}
-		//sync.append("1001");								// Afslutende sync tone
+		sync.append("0000");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				raw3[j] = tone[k];
@@ -346,6 +350,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 			abc++;
 		}
 		/////	sync end	///////
+		abc++;
 		rawNumber = 3;
 		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
 	}
@@ -353,16 +358,16 @@ int Afspilning::makeSyncSequence(int rawµ)
 		for (int i = 0; i < perioder; i++) {
 			sync.append("00001111");
 		}
-		//sync.append("1001");								// Afslutende sync tone
+		sync.append("0000");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				raw4[j] = tone[k];
@@ -370,6 +375,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 			abc++;
 		}
 		/////	sync end	///////
+		abc++;
 		rawNumber = 4;
 		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
 	}
@@ -377,16 +383,16 @@ int Afspilning::makeSyncSequence(int rawµ)
 		for (int i = 0; i < perioder; i++) {
 			sync.append("00001111");
 		}
-		//sync.append("1001");								// Afslutende sync tone
+		sync.append("0000");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				raw5[j] = tone[k];
@@ -394,6 +400,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 			abc++;
 		}
 		/////	sync end	///////
+		abc++;
 		rawNumber = 5;
 		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
 	}
@@ -402,16 +409,16 @@ int Afspilning::makeSyncSequence(int rawµ)
 		for (int i = 0; i < perioder; i++) {
 			sync.append("00001111");
 		}
-		//sync.append("1001");								// Afslutende sync tone
+		sync.append("0000");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder; i++) {
+		for (int i = 0; i < 2 * perioder + 1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				raw6[j] = tone[k];
@@ -419,6 +426,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 			abc++;
 		}
 		/////	sync end	///////
+		abc++;
 		rawNumber = 6;
 		return abc;									// retunere antallet af toner i afspilningsarrayet (rawµ)
 	}
@@ -466,6 +474,11 @@ unsigned int Afspilning::getarraySize()
 int Afspilning::getAntalDataPakker()
 {
 	return datapakker.size();
+}
+
+int Afspilning::getAntalDTMFToner()
+{
+	return dtmfToner.size();
 }
 
 

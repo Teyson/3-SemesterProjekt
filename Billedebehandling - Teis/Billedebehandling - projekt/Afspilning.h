@@ -28,6 +28,7 @@ public:
 //	Get-funktioner	
 	unsigned int getarraySize();
 	int getAntalDataPakker();
+	int getAntalDTMFToner();
 	
 	~Afspilning();
 protected:

@@ -27,37 +27,16 @@
 
 
 
-std::vector<Protokol> protokoller;
 int toneLength = 20;
 int sampleFreqGlobal = 8000;//41000
 int samplesGlobal = (sampleFreqGlobal * toneLength)/1000;//16000;//44100
 int protokolOpdelingGlobal = 32;
 
 bool wasLastNakRecieved = true;
-
-
+bool end = false;
 
 std::string finalBitString;
 int framesSend = 3;
-////////// Timer //////////
-double runOut = 1.5;
-bool torbenTester = true;
-std::chrono::system_clock::time_point start;
-
-void countdown() {
-	
-	while (torbenTester) {
-		std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
-		std::chrono::duration<double> differens = end - start;
-		std::cout << differens.count() << std::endl;
-		if (differens.count() > runOut) {
-			torbenTester = false;
-		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	}
-}
-//////////  Timer end //////////////
-
 
 int main() {
 	char answer;
@@ -65,12 +44,10 @@ label:
 	std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
 	std::cin >> answer;
 	if (answer == 'a') {						// Afsender
-		bool end = false;
-		std::string input = "Hej mit navn er Teis, min ynglingshobby er at fappe meget kraftigt i mens jeg ligger i min seng og ser porno";
-		//std::cout << "Skriv tekst der skal sendes: " << std::endl;
 
-		/*std::getline(std::cin, input);
-		std::cout << input << std::endl;*/
+
+		std::string input = "Hej mit navn er Teis, min ynglingshobby er at fappe meget kraftigt i mens jeg ligger i min seng og ser porno";
+		
 		TextProcessing tekst(input);
 
 		std::string bitstring = tekst.stringToBitsString();
@@ -79,24 +56,25 @@ label:
 
 		PacketSelection selecter(afspiller.getAntalDataPakker());
 
-		
+		int index = selecter.getPacketToSendIndex();		//køres for at initialisere værdien
 
-		/* // 
-		start = std::chrono::system_clock::now();
-		std::thread work(countdown);
-		sf::sleep(sf::milliseconds(1600));
-		std::cout << torbenTester << std::endl;
-		*/
-		int index = selecter.getPacketToSendIndex();
+		std::cout << "Index er: " << index << std::endl;
+
         afspiller.playSequence(index, framesSend);
 		sf::SoundBuffer Buffer;
 		Buffer.loadFromSamples(afspiller.playSequence(index, framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
+
+		std::cout << "Antal DTMF toner i vector: " << afspiller.getAntalDTMFToner() << std::endl;
 
 		sf::Sound Sound;
 		Sound.setBuffer(Buffer);
 		Sound.play();
 		while (Sound.getStatus() != 0) {
 		}
+
+		index = selecter.getPacketToSendIndex();
+
+		std::cout << "Index er: " << index << std::endl;
 		
 
 		//work.join();
