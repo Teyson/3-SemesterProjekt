@@ -20,11 +20,11 @@ Afspilning::Afspilning(std::string datainput, int sampleInput, int sampleRateInp
 	
 	/////	sync begin	///////
 	std::string sync;
-	int syncperioder = 10;
+	int syncperioder = 0;
 	for (int i = 0; i < syncperioder; i++) {
 		sync.append("00001111");
 	}
-	sync.append("1001");								// Afslutende sync tone
+	sync.append("0000");								// Afslutende sync tone
 		
 	std::string acc;
 	for (int i = 0; i < 2 * syncperioder + 1; i++) {
