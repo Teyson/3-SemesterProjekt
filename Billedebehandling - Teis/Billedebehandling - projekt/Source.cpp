@@ -56,6 +56,167 @@ void countdown() {
 
 int main() {
 
+	///////////	Metode til at finde mulige fejl ved et ekstra påpåhængende tone //////////
+	for (int i = 0; i < 5000; i++)
+	{
+		std::string s = std::bitset< 40 >(i).to_string(); // string conversion
+		CRC crc(s);
+		std::string b = s + crc.crcCheck();
+		std::string c = s + crc.crcCheck() + "0000";
+		std::string d = s + crc.crcCheck() + "0001";
+		std::string e = s + crc.crcCheck() + "0010";
+		std::string f = s + crc.crcCheck() + "0100";
+		std::string g = s + crc.crcCheck() + "1000";
+		std::string h = s + crc.crcCheck() + "0011";
+		std::string j = s + crc.crcCheck() + "0101";
+		std::string k = s + crc.crcCheck() + "1001";
+		std::string l = s + crc.crcCheck() + "1010";
+		std::string m = s + crc.crcCheck() + "0110";
+		std::string n = s + crc.crcCheck() + "1100";
+		std::string o = s + crc.crcCheck() + "0111";
+		std::string p = s + crc.crcCheck() + "1011";
+		std::string q = s + crc.crcCheck() + "1110";
+		std::string r = s + crc.crcCheck() + "1101";
+		std::string t = s + crc.crcCheck() + "1111";
+
+
+		CRC crc1(s+b);
+		CRC crc2(c);
+		CRC crc3(d);
+		CRC crc4(e);
+		CRC crc5(f);
+		CRC crc6(g);
+		CRC crc7(h);
+		CRC crc8(j);
+		CRC crc9(k);
+		CRC crc10(l);
+		CRC crc11(m);
+		CRC crc12(n);
+		CRC crc13(o);
+		CRC crc14(p);
+		CRC crc15(q);
+		CRC crc16(r);
+		CRC crc17(t);
+
+		std::string wntTrue = crc1.crcCheckReciever();
+		std::string wnttrue1 = crc2.crcCheckReciever();
+		std::string wnttrue2 = crc1.crcCheckReciever();
+		std::string wnttrue3 = crc1.crcCheckReciever();
+		std::string wnttrue4 = crc1.crcCheckReciever();
+		std::string wnttrue5 = crc1.crcCheckReciever();
+		std::string wnttrue6 = crc1.crcCheckReciever();
+		std::string wnttrue7 = crc1.crcCheckReciever();
+		std::string wnttrue8 = crc1.crcCheckReciever();
+		std::string wnttrue9 = crc1.crcCheckReciever();
+		std::string wnttrue10 = crc1.crcCheckReciever();
+		std::string wnttrue11 = crc1.crcCheckReciever();
+		std::string wnttrue12 = crc1.crcCheckReciever();
+		std::string wnttrue13 = crc1.crcCheckReciever();
+		std::string wnttrue14 = crc1.crcCheckReciever();
+		std::string wnttrue15 = crc1.crcCheckReciever();
+		std::string wnttrue16 = crc1.crcCheckReciever();
+		std::string wnttrue17 = crc1.crcCheckReciever();
+
+		/*if (wnttrue1 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue1 " << wnttrue1 << std::endl << std::endl;
+		}*/
+
+		if (wnttrue2 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue2 " << wnttrue2 << std::endl << std::endl;
+		}
+
+		if (wnttrue3 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue3 " << wnttrue3 << std::endl << std::endl;
+		}
+
+		if (wnttrue4 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue4 " << wnttrue4 << std::endl << std::endl;
+		}
+
+		if (wnttrue5 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue5 " << wnttrue5 << std::endl << std::endl;
+		}
+
+		if (wnttrue6 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue6 " << wnttrue6 << std::endl << std::endl;
+		}
+
+		if (wnttrue7 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue7 " << wnttrue7 << std::endl << std::endl;
+		}
+
+		if (wnttrue8 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue8 " << wnttrue8 << std::endl << std::endl;
+		}
+
+		if (wnttrue9 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue9 " << wnttrue9 << std::endl << std::endl;
+		}
+
+		if (wnttrue10 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue10 " << wnttrue10 << std::endl << std::endl;
+		}
+
+		if (wnttrue11 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue11 " << wnttrue11 << std::endl << std::endl;
+		}
+
+		if (wnttrue12 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue12 " << wnttrue12 << std::endl << std::endl;
+		}
+
+		if (wnttrue13 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue13 " << wnttrue13 << std::endl << std::endl;
+		}
+
+		if (wnttrue14 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue14 " << wnttrue14 << std::endl << std::endl;
+		}
+
+		if (wnttrue15 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue15 " << wnttrue15 << std::endl << std::endl;
+		}
+
+		if (wnttrue16 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue16 " << wnttrue16 << std::endl << std::endl;
+		}
+
+		if (wnttrue17 == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: wnttrue17 " << wnttrue17 << std::endl << std::endl;
+		}
+
+
+		
+		if (wntTrue == "00000000")
+		{
+			std::cout << "Dette er nummer " << i << " og jeg er: " << wntTrue << std::endl << std::endl;
+		}
+		
+	}
+
+	std::cout << "Jeg er faerdig" << std::endl;
+
+
+
+
+	/*
 	NAK nak;
 
 	std::cout << "hej" << std::endl;
@@ -103,7 +264,7 @@ int main() {
 
 	std::cout << "Den Samlede besked er: " << nak.getDataModtaget() << std::endl;
 	std::cout << "Den samlede længde af det modtagede er: " << nak.getDataModtaget().length() << std::endl;
-
+	*/
 	
 	/*
 	char answer;
