@@ -109,6 +109,8 @@ std::vector<float> DTMFToner::createTone(int samples, int sampleRate, float last
             }
         }
     }
+
+	fase = 0;
  
 
 	if (tone == 0) {

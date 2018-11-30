@@ -31,19 +31,10 @@ label:
 	std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
 	 std::cin >> answer;
 
+	// sf::sleep(sf::seconds(15));
+
 	if (answer == 'a') {						// Afsender
-		Afspilning test("01010101010101010101",sampelsGlobal,sampelFreqGlobal, 0,5);
-
-
-		
-
-
-
-
-		
-
-
-
+		Afspilning test("0011011111110010100110000001111010110010101001011101011011000000", sampelsGlobal, sampelFreqGlobal, 0, 16);
 
 		sf::SoundBuffer Buffer;
 		if (!Buffer.loadFromSamples(test.startplaying(), test.getarraySize(), 1, sampelFreqGlobal)) {
@@ -52,11 +43,20 @@ label:
 		}
 		sf::Sound Sound;
 		Sound.setBuffer(Buffer);
-		Sound.play();
-		while (1) {
-			sf::sleep(sf::milliseconds(100));
-		}
 
+		/*for (size_t i = 0; i < 100; i++)
+		{
+			Sound.play();
+			sf::sleep(sf::milliseconds(2000));
+		}*/
+	
+			Sound.play();
+			while (1) {
+				sf::sleep(sf::milliseconds(100));
+			}
+	
+
+		
 	}
 	else if (answer == 'm') {					// Modtager
 		//Custom recorder
