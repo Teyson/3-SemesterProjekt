@@ -20,7 +20,7 @@ Afspilning::Afspilning(std::string datainput, int sampleInput, int sampleRateInp
 	
 	/////	sync begin	///////
 	std::string sync;
-	int syncperioder = 0;
+	int syncperioder = 20;
 	for (int i = 0; i < syncperioder; i++) {
 		sync.append("00001111");
 	}
@@ -37,7 +37,7 @@ Afspilning::Afspilning(std::string datainput, int sampleInput, int sampleRateInp
     float lastVal = 0;
     float secondLastVal = 0;
 	for (int i = 0; i < 2 * syncperioder + 1; i++) {
-        tone = dtmfToner[i].createTone(samples, sampleFreq, lastVal, secondLastVal);				// Vector af floats der fortløbende beskriver DTMFtonens amplitude
+        tone = dtmfToner[i].createTone(samples, sampleFreq, lastVal, secondLastVal);				// Vector af floats der fortlï¿½bende beskriver DTMFtonens amplitude
         if (i > 0)  {
             lastVal = tone[tone.size() - 1];
             secondLastVal = tone[tone.size() - 2];
@@ -67,8 +67,8 @@ Afspilning::Afspilning(std::string datainput, int sampleInput, int sampleRateInp
 	std::cout << "Hey!" << std::endl;
 	/////	Send end	///////
 
-	// Får en pinter til en vector med protokol elementer (datapakker). Her skal funktionen afspille alle pakkerne mellem start og slut, inkl. grænserne.
-	//Skal på sigt implementere set LastPackageBit. 
+	// Fï¿½r en pinter til en vector med protokol elementer (datapakker). Her skal funktionen afspille alle pakkerne mellem start og slut, inkl. grï¿½nserne.
+	//Skal pï¿½ sigt implementere set LastPackageBit. 
 }
 
 sf::Int16* Afspilning::startplaying()

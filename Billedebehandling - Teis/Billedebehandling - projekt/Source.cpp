@@ -44,16 +44,16 @@ label:
 		sf::Sound Sound;
 		Sound.setBuffer(Buffer);
 
-		for (size_t i = 0; i < 100; i++)
+		/*for (size_t i = 0; i < 100; i++)
 		{
 			Sound.play();
 			sf::sleep(sf::milliseconds(2000));
-		}
+		}*/
 	
-			/*Sound.play();
+			Sound.play();
 			while (1) {
 				sf::sleep(sf::milliseconds(100));
-			}*/
+			}
 	
 
 		
