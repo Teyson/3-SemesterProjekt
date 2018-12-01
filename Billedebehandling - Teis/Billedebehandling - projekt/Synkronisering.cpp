@@ -61,6 +61,8 @@ void Synkronisering::sync()
     float forhold3;
     bool doneSync = 0;
     int revertCounter = 0;
+    int acc = 0;
+    int previousAcc = 100;
 
 
     while (keepSyncing == 1)
@@ -81,7 +83,7 @@ void Synkronisering::sync()
             if (startOutputting == 0)
             {
 
-                if (elementNr == 38)
+                if (elementNr == 22)
                 {
                     startOutputting = 1;
                 }
@@ -91,13 +93,14 @@ void Synkronisering::sync()
                 low2 = behandling.goertzler(fs, 941, &mainBuffer, syncPtr, windowSz);
                 gns1 = ((float)high1 + (float)low1) / 2;
                 gns2 = ((float)high2 + (float)low2) / 2;
-                forhold = gns1 / gns2;
+                /*std::cout << "Gns tone 0:   " << gns1 << std::endl;
+                std::cout << "Gns tone 15:   " << gns2 << std::endl;*/
 
                 if (elementNr % 2 == 0) {
-                    std::cout << "1   " << forhold << std::endl;
+                    forhold = gns1 / gns2;
                 }
                 else
-                    std::cout << forhold << std::endl;
+                    forhold = gns2 / gns1;
                 //std::cout << forhold << std::endl;
                 //std::cout << elementNr << std::endl;
 
@@ -110,7 +113,7 @@ void Synkronisering::sync()
                     forhold1 = forhold;
 
                 }
-                else if (elementNr == 2)
+                else if (elementNr == 1)
                 {
                     // std::cout << "elementnr2" << std::endl;
                     forhold3 = forhold;
@@ -162,7 +165,7 @@ void Synkronisering::sync()
                     }
 
                 }
-                else if (elementNr % 2 == 0 && elementNr != 2 && elementNr != 0 && doneSync == false)
+                else if (elementNr != 1 && elementNr != 0 && doneSync == false)
                 {
                     if (forhold < forhold3 && revertCounter < 2)
                     {
@@ -170,7 +173,7 @@ void Synkronisering::sync()
                         revertCounter++;
                         if (forhold > 10)
                             doneSync = true;
-                        std::cout << "revert" << std::endl;
+                       // std::cout << "revert" << std::endl;
                     }
                     else if (forhold < 1) {
                         syncPtr += 18 * forskydning;
@@ -197,7 +200,7 @@ void Synkronisering::sync()
                             doneSync = true;
                         else {
                             syncPtr += forskydning * 2;
-                            std::cout << "forskydning" << std::endl;
+                           // std::cout << "forskydning" << std::endl;
                         }
                         revertCounter = 0;
                     }
@@ -210,22 +213,35 @@ void Synkronisering::sync()
             //Outputting to string
             else
             {
-                bitstring.append(d.convertDTMF2Nibble(8000, &mainBuffer, syncPtr, windowSz));
-                syncPtr += windowSz;
+            for (size_t i = syncPtr; i < syncPtr + windowSz; i++)
+            {
+                if (mainBuffer[i] < 0)
+                    acc += mainBuffer[i] * (-1); //Ved negative værdier
+                else
+                    acc += mainBuffer[i];
+            }
+            acc = acc / windowSz; //Tager gns
+                                  //std::cout << acc << std::endl;
 
-                float mistake = 0;
-                std::string check = "001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010101001011101011011000000";
-                if (counter == 15)
-                {
-                    for (size_t i = 0; i < 64; i++)
-                    {
-                        if (bitstring[i] != check[i])
-                            mistake++;
-                    }
-                    std::cout << bitstring << std::endl;
-                    std::cout << mistake / ((float)64) * 100 << std::endl;
-                }
-                counter++;
+
+            if (acc < previousAcc && acc < 45 && previousAcc < 45)
+                keepSyncing = 0;
+
+            previousAcc = acc;
+            //std::cout << bitstring << std::endl;
+
+
+            counter++;
+            bitstring.append(d.convertDTMF2Nibble(8000, &mainBuffer, syncPtr, windowSz)); //Konverterer DTMF til bits og appender det til en string.
+            if (keepSyncing == 0)
+            {
+                std::cout << "Modtagerside: Test af playString()  " << std::endl;
+                std::cout << "Den sendte bitstreng er:    1010101011100100111100100100010011110010" << std::endl;
+                bitstring.erase(bitstring.end() - 8, bitstring.end());
+
+                std::cout << "Den modtagede bitstreng er: " << bitstring << std::endl;
+            }
+            syncPtr += windowSz;
             }
         }
 
