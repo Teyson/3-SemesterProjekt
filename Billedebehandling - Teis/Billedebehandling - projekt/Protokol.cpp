@@ -14,6 +14,7 @@ Protokol::Protokol(std::string sr)
 	{
 		//Constructor til n�r vi modtager en besked. Tager hele den modtagede bitstreng som input.
 		recievedPacket = sr;
+        unpacking();
 	}
 }
 
@@ -211,6 +212,14 @@ std::string Protokol::getLastBit()
 {
 	return endString.substr(4, 1);
 
+}
+
+bool Protokol::checkResendBit()
+{
+    bool returnBool = false;
+    if (lastBit == "1")
+        returnBool = true;
+    return returnBool;
 }
 
 

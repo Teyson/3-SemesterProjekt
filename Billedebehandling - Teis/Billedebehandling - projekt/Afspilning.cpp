@@ -27,6 +27,8 @@ sf::Int16 * Afspilning::playThis(std::vector<int> resendPackage)
 {
 	clearRaw1DTMF();
 	int abc = 0;
+    forrigeSendteDatapakker.clear();
+    forrigeSendteDatapakker = resendPackage;
 	switch (resendPackage.size())
 	{
 	case 1: {
@@ -136,6 +138,11 @@ sf::Int16* Afspilning::playSequence(int start, int antal)
 	int abc = 0;
 	std::vector<float> tone;
 
+    forrigeSendteDatapakker.clear();
+    for (int i = 0; i < antal; i++) {
+        forrigeSendteDatapakker.push_back(start + i);
+    }
+    
 
 	abc = makeSyncSequence(3);
 	j = abc * samples;
@@ -157,6 +164,84 @@ sf::Int16* Afspilning::playSequence(int start, int antal)
 	//Skal på sigt implementere set LastPackageBit. 
 	rawNumber = 3;
 	return raw3;
+}
+
+sf::Int16 * Afspilning::playForrigePakker()
+{
+    clearRaw1DTMF();
+    int abc = 0;
+    switch (forrigeSendteDatapakker.size())
+    {
+    case 1: {
+        abc = makeSyncSequence(1);
+        /////	Send begin	///////
+        for (int i = 0; i < forrigeSendteDatapakker.size(); i++) {
+            datapakker[forrigeSendteDatapakker[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
+            abc = adddatapakke(forrigeSendteDatapakker[i], abc, 1);
+        }
+        /////	Send end	///////
+        rawNumber = 1;
+        return raw1;
+    }
+    case 2: {
+        abc = makeSyncSequence(2);
+        /////	Send begin	///////
+        for (int i = 0; i < forrigeSendteDatapakker.size(); i++) {
+            datapakker[forrigeSendteDatapakker[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
+            abc = adddatapakke(forrigeSendteDatapakker[i], abc, 2);
+        }
+        /////	Send end	///////
+        rawNumber = 2;
+        return raw2;
+    }
+    case 3: {
+        abc = makeSyncSequence(3);
+        /////	Send begin	///////
+        for (int i = 0; i < forrigeSendteDatapakker.size(); i++) {
+            datapakker[forrigeSendteDatapakker[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
+            abc = adddatapakke(forrigeSendteDatapakker[i], abc, 3);
+        }
+        /////	Send end	///////
+        rawNumber = 3;
+        return raw3;
+    }
+    case 4: {
+        abc = makeSyncSequence(4);
+        /////	Send begin	///////
+        for (int i = 0; i < forrigeSendteDatapakker.size(); i++) {
+            datapakker[forrigeSendteDatapakker[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
+            abc = adddatapakke(forrigeSendteDatapakker[i], abc, 4);
+        }
+        /////	Send end	///////
+        rawNumber = 4;
+        return raw4;
+    }
+    case 5: {
+        abc = makeSyncSequence(5);
+        /////	Send begin	///////
+        for (int i = 0; i < forrigeSendteDatapakker.size(); i++) {
+            datapakker[forrigeSendteDatapakker[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
+            abc = adddatapakke(forrigeSendteDatapakker[i], abc, 5);
+        }
+        /////	Send end	///////
+        rawNumber = 5;
+        return raw5;
+    }
+    case 6: {
+        abc = makeSyncSequence(6);
+        /////	Send begin	///////
+        for (int i = 0; i < forrigeSendteDatapakker.size(); i++) {
+            datapakker[forrigeSendteDatapakker[i]].setResendBit();		// Sætter RPB'er (Resend Package Bit) for hver pakke der bliver gensendt. 
+            abc = adddatapakke(forrigeSendteDatapakker[i], abc, 6);
+        }
+        /////	Send end	///////
+        rawNumber = 6;
+        return raw6;
+    }
+    default:
+        std::cout << "Well you need some more cases in playForrigePakker ;) " << std::endl;
+        break;
+    }
 }
 
 int Afspilning::adddatapakke(int pakke,int abc, int rawµ)
