@@ -27,7 +27,7 @@
 
 
 
-int toneLength = 20;
+int toneLength = 500;
 int sampleFreqGlobal = 8000;//41000
 int samplesGlobal = (sampleFreqGlobal * toneLength)/1000;//16000;//44100
 int protokolOpdelingGlobal = 32;
@@ -253,21 +253,26 @@ Modtager:
 		
 		if (!lastPackage)
 		{
-            if (nak.getPointerExpected() + framesSend < nak.getPointerMax() && !isResend)
-                nak.updatePointerExpected();
-
+			nak.updatePointerMax();
+			if (nak.getPointerExpected() + framesSend < nak.getPointerMax() && !isResend)
+			{
+				nak.updatePointerExpected();
+				std::cout << "PointerExpected er opdateret!" << std::endl;
+			}
+                
             isResend = false;
 
 			std::string nakToSend = nak.createNAK();
 
 			Afspilning nakAfspilning(nakToSend, samplesGlobal, sampleFreqGlobal);
-
 			nakAfspilning.playString(nakToSend);
+			std::cout << "Arraysize er: " << nakAfspilning.getarraySize() << std::endl;
 
             std::cout << "Det sendte NAK:  " << nakToSend << std::endl;
-
+			
             sf::SoundBuffer buffer;
             buffer.loadFromSamples(nakAfspilning.playString(nakToSend), nakAfspilning.getarraySize(), 1, sampleFreqGlobal);
+			std::cout << "Arraysize er: " << nakAfspilning.getarraySize() << std::endl;
             sf::Sound sound;
             sound.setBuffer(buffer);
             sound.play();

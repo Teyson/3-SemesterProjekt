@@ -40,7 +40,7 @@ protected:
 	std::vector<Protokol>datapakker;
 	std::vector<DTMFToner> dtmfToner;
 	unsigned int arraySize=2240;
-	int antalSyncvaerdier = 6400;
+	int antalSyncvaerdier = 6560;
 	sf::Int16* raw1; // en datapakke
 	sf::Int16* raw2;
 	sf::Int16* raw3;

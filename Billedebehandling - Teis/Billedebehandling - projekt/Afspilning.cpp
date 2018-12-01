@@ -14,7 +14,7 @@ Afspilning::Afspilning(std::string datainput, int sampleInput, int sampleRateInp
 	raw4 = new sf::Int16[4 * arraySize + antalSyncvaerdier + 100];
 	raw5 = new sf::Int16[5 * arraySize + antalSyncvaerdier + 100];
 	raw6 = new sf::Int16[6 * arraySize + antalSyncvaerdier + 100];
-	rawNak = new sf::Int16[1280 + antalSyncvaerdier + 100]; // 1280 er maksimal antal nak værdier
+	rawNak = new sf::Int16[50*(1280 + 160)]; //22*1280 + antalSyncvaerdier + 100]; // 1280 er maksimal antal nak værdier
 	samples = sampleInput;
 	sampleFreq = sampleRateInput;
 	BitDTMF sekven(datainput, samples, sampleFreq, 40);
@@ -111,7 +111,7 @@ sf::Int16 * Afspilning::playString(std::string nakString)
 	int abc = 0;
 	std::vector<float> tone;
 	std::string acc;
-
+	std::cout << "nakString: "<< nakString << std::endl;
 	abc = makeSyncSequence(0);
 	j = abc * samples;													// j er elementer i raw1
 		////	Play string	///////
@@ -121,13 +121,16 @@ sf::Int16 * Afspilning::playString(std::string nakString)
 		nakToner.setToneNumber();
 		dtmfToner.push_back(nakToner);
 	}
+	std::cout << "dtmfToner size: " << dtmfToner.size() << std::endl;
+	std::cout << "abc:  " << abc << std::endl;
 	for (int i = abc; i < dtmfToner.size(); i++) {
+		//std::cout << "dtmf-Tone nr: " << dtmfToner[i].getToneNumber() << std::endl;
 		tone = dtmfToner[i].createTone(samples, sampleFreq);			// Tager et toneNr og konvertere det til en vector med amplituder
 		for (int k = 0; k < samples; j++, k++) {
 			rawNak[j] = tone[k];
 		}
 	}
-	rawNumber = 0;
+	rawNumber = 1;
 	return rawNak;
 }
 
@@ -150,13 +153,11 @@ sf::Int16* Afspilning::playSequence(int start, int antal)
 	/////	Send begin	///////
 	sekvens.toDTMF(datapakker, dtmfToner, start, antal);								// Tager datapakker fra sekvensen startende fra start og giver det et toneNr. Dette gør den 'antal' gange
 	std::vector<float> toner;
-	int z = 0;
 	for (int dtmftoneNR = abc; dtmftoneNR < dtmfToner.size(); dtmftoneNR++) {
-		toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);					// Tager et toneNr og konvertere det til en vector med amplituder
+	toner = dtmfToner[dtmftoneNR].createTone(samples, sampleFreq);	// Tager et toneNr og konvertere det til en vector med amplituder
 		for (int t = 0; t < samples; t++, j++) {
 			raw3[j] = toner[t];															// Tilføjer amplitudeværdierne i afspilningsarrayet.
 		}
-		z = dtmftoneNR - abc;
 	}
 	/////	Send end	///////
 	// Får en pinter til en vector med protokol elementer (datapakker). Her skal funktionen afspille alle pakkerne mellem start og slut, inkl. grænserne.
@@ -332,7 +333,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 {
 	int abc = 0, j = 0;
 	std::vector<float> tone;
-	int perioder = 20;
+	int perioder = 0;
 	std::string sync;
 
 	/////	sync begin	///////
@@ -345,18 +346,18 @@ int Afspilning::makeSyncSequence(int rawµ)
 		sync.append("0000");								// Afslutende sync tone
 
 		std::string acc;
-		for (int i = 0; i < 2 * perioder + 1; i++) {
+		for (int i = 0; i < 2 * perioder+1; i++) {
 			acc = sync.substr(i * 4, 4);
 			DTMFToner syncToner(acc);
 			syncToner.setToneNumber();
 			dtmfToner.push_back(syncToner);
 		}
-		for (int i = 0; i < 2 * perioder + 1; i++) {
+		for (int i = 0; i < 2 * perioder+1; i++) {
 			tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 			for (int k = 0; k < samples; j++, k++) {
 				rawNak[j] = tone[k];
 			}
-			abc++;
+			//abc++;
 		}
 		/////	sync end	///////
 		abc++;
@@ -381,7 +382,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 			for (int k = 0; k < samples; j++, k++) {
 				raw1[j] = tone[k];
 			}
-			abc++;
+			//abc++;
 		}
 		/////	sync end	///////
 		abc++;
@@ -406,7 +407,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 			for (int k = 0; k < samples; j++, k++) {
 				raw2[j] = tone[k];
 			}
-			abc++;
+			//abc++;
 		}
 		/////	sync end	///////
 		abc++;
@@ -431,7 +432,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 			for (int k = 0; k < samples; j++, k++) {
 				raw3[j] = tone[k];
 			}
-			abc++;
+			//abc++;
 		}
 		/////	sync end	///////
 		abc++;
@@ -456,7 +457,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 			for (int k = 0; k < samples; j++, k++) {
 				raw4[j] = tone[k];
 			}
-			abc++;
+			//abc++;
 		}
 		/////	sync end	///////
 		abc++;
@@ -481,7 +482,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 			for (int k = 0; k < samples; j++, k++) {
 				raw5[j] = tone[k];
 			}
-			abc++;
+			//abc++;
 		}
 		/////	sync end	///////
 		abc++;
@@ -507,7 +508,7 @@ int Afspilning::makeSyncSequence(int rawµ)
 			for (int k = 0; k < samples; j++, k++) {
 				raw6[j] = tone[k];
 			}
-			abc++;
+			//abc++;
 		}
 		/////	sync end	///////
 		abc++;
@@ -522,8 +523,16 @@ int Afspilning::makeSyncSequence(int rawµ)
 
 void Afspilning::clearRaw1DTMF()
 {
-	std::fill_n(raw1, arraySize, 0);			// tømmer og nulstiller afspillingsarrayet (raw1)
+	std::fill_n(raw1, arraySize, '0');			// tømmer og nulstiller afspillingsarrayet (raw1)
+//	std::fill_n(raw2, 2 * arraySize + antalSyncvaerdier + 100, '0');
+//	std::fill_n(raw3, 3 * arraySize + antalSyncvaerdier + 100, '0');
+//	std::fill_n(raw4, 4 * arraySize + antalSyncvaerdier + 100, '0');
+//	std::fill_n(raw5, 5 * arraySize + antalSyncvaerdier + 100, '0');
+//	std::fill_n(raw6, 6 * arraySize + antalSyncvaerdier + 100, '0');
+//	std::fill_n(rawNak, 20*1280 + antalSyncvaerdier + 100, '0');
 	dtmfToner.clear();							// clearer vektoren der indeholder DTMF-tonerne
+
+	
 }
 
 void Afspilning::setLastBit()
@@ -536,7 +545,7 @@ unsigned int Afspilning::getarraySize()
 		switch (rawNumber)
 	{
 	case 0:
-		return 1280 + antalSyncvaerdier + 100;
+		return 1280 + antalSyncvaerdier + 100;  // Nak raw
 	case 1:
 		return arraySize + antalSyncvaerdier + 100;
 	case 2:

@@ -38,7 +38,7 @@ protected:
 	int pointerMax = pointerNotRecieved + windowSize;
 	int pointerNotRecieved = 0;
 	int packetsSend = 3; //Må maks være 7 med en arraystørrelse på 15. Udregning: (arraySize - 1) / 2 = maxPacketsSend!
-	int pointerExpected = packetsSend;
+	int pointerExpected = 0;
 	int arraySize = 15;
 	int windowSize;
 	std::string NAKTone = "1111";

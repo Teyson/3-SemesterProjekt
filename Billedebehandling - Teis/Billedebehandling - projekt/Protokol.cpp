@@ -332,7 +332,6 @@ std::string Protokol::getRecievedChecksum()
 
 
 std::string Protokol::getRecievedLastBit()
-
 {
 
 
@@ -342,7 +341,6 @@ std::string Protokol::getRecievedLastBit()
 
 
 std::string Protokol::getRecievedSequenceNumber()
-
 {
 
 	return sequenceNumber;
@@ -351,7 +349,6 @@ std::string Protokol::getRecievedSequenceNumber()
 
 
 std::string Protokol::getRecievedData()
-
 {
 
 	return data;
