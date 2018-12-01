@@ -60,7 +60,7 @@ label:
         bool nakTabt = false; 
         bool sidsteSending = false;
 
-		int index = selecter.getPacketToSendIndex();		//køres for at initialisere værdien
+		int index = selecter.getPacketToSendIndex();		//kï¿½res for at initialisere vï¿½rdien
 
 		std::cout << "Index er: " << index << std::endl;
 
@@ -104,7 +104,7 @@ label:
 		modtagetNAKS = testNak.createNAK();
 		*/
         if (modtagetNAKS.length() < 9) {
-            modtagetNAKS = "0000000000000000000100000";     //Hvis den modtagede bitstreng er for kort ift. CRC-check - laves en tilfældig string
+            modtagetNAKS = "0000000000000000000100000";     //Hvis den modtagede bitstreng er for kort ift. CRC-check - laves en tilfï¿½ldig string
         }
 
 		Protokol modtagetNAKFrame(modtagetNAKS);
@@ -117,11 +117,11 @@ label:
                 goto Ending;
             }
             else if (modtagetNAKFrame.getNAKs()[0] == "1111")
-            { // Sætter naktabt false og sender 3 næste
+            { // Sï¿½tter naktabt false og sender 3 nï¿½ste
                 nakTabt = false;
-                int index = selecter.getPacketToSendIndex(); //Opdater index, som returnerer næste pakke der skal sendes
+                int index = selecter.getPacketToSendIndex(); //Opdater index, som returnerer nï¿½ste pakke der skal sendes
 
-                if (index - 1 >= afspiller.getAntalDataPakker() - framesSend) //I tilfælde af, at det er de sidste pakker der sendes
+                if (index - 1 >= afspiller.getAntalDataPakker() - framesSend) //I tilfï¿½lde af, at det er de sidste pakker der sendes
                 {
                     framesSend = afspiller.getAntalDataPakker() - index - 1;		
                     sidsteSending = true;
@@ -136,8 +136,8 @@ label:
             }
             else //Sender Nakpakker
             {
-                nAKS = modtagetNAKFrame.getNAKs(); //Kigger på hvilke frames der ikke er modtaget korrekt
-                nakINT = selecter.selectPackets(nAKS); //Udvælger hvilke frames der skal gensendes ud fra NAKs
+                nAKS = modtagetNAKFrame.getNAKs(); //Kigger pï¿½ hvilke frames der ikke er modtaget korrekt
+                nakINT = selecter.selectPackets(nAKS); //Udvï¿½lger hvilke frames der skal gensendes ud fra NAKs
                 afspiller.playThis(nakINT); //Frames'ne afspilles
                 Buffer.loadFromSamples(afspiller.playThis(nakINT), afspiller.getarraySize(), 1, sampleFreqGlobal);
                 Sound.setBuffer(Buffer);
@@ -150,7 +150,7 @@ label:
         }
         else //False Checksum
         {
-            if (nakTabt) //2 tabte nak i streg, derfor send forrige sending   -   Vi ved ikke om pakken når frem, derfor ændres nakTabt ikke
+            if (nakTabt) //2 tabte nak i streg, derfor send forrige sending   -   Vi ved ikke om pakken nï¿½r frem, derfor ï¿½ndres nakTabt ikke
             {
                 afspiller.playForrigePakker();
                 Buffer.loadFromSamples(afspiller.playForrigePakker(), afspiller.getarraySize(), 1, sampleFreqGlobal);
@@ -161,12 +161,12 @@ label:
                 
                
             }
-            else //Sende de 3 næste pakker
+            else //Sende de 3 nï¿½ste pakker
             {
                 nakTabt = true;
-                int index = selecter.getPacketToSendIndex(); //Opdater index, som returnerer næste pakke der skal sendes
+                int index = selecter.getPacketToSendIndex(); //Opdater index, som returnerer nï¿½ste pakke der skal sendes
 
-                if (index - 1 >= afspiller.getAntalDataPakker() - framesSend) //I tilfælde af, at det er de sidste pakker der sendes
+                if (index - 1 >= afspiller.getAntalDataPakker() - framesSend) //I tilfï¿½lde af, at det er de sidste pakker der sendes
                 {
                     framesSend = afspiller.getAntalDataPakker() - index - 1;
                     sidsteSending = true;
@@ -209,8 +209,8 @@ Modtager:
 		recorder.stop();
 
         std::cout << "Den modtagede bitstreng:  " << modtaget << std::endl;
-        std::cout << "Length på modtagede bitstreng:  " << modtaget.size() << std::endl;
-		//Check til forsøg 
+        std::cout << "Length pï¿½ modtagede bitstreng:  " << modtaget.size() << std::endl;
+		//Check til forsï¿½g 
 		//for (size_t i = 0; i < 64; i++) 
 		//{
 		//    if (modtaget[i] != check[i])
@@ -280,7 +280,7 @@ Modtager:
 
             goto Modtager;
 
-			//Husk at lave om så Last bit nu betyder allersidste frame
+			//Husk at lave om sï¿½ Last bit nu betyder allersidste frame
 			if (!modtagetFrame[modtagetFrame.size() - 1].checkLastBit() && !(nak.getPointerExpected() == nak.getPointerNotRecieved()))
 			{
 				goto Modtager;
