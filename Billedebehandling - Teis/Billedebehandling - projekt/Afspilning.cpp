@@ -159,7 +159,6 @@ sf::Int16* Afspilning::playSequence(int start, int antal)
 		z = dtmftoneNR - abc;
 	}
 	/////	Send end	///////
-	std::cout << "cout af z: " << z << std::endl;
 	// Får en pinter til en vector med protokol elementer (datapakker). Her skal funktionen afspille alle pakkerne mellem start og slut, inkl. grænserne.
 	//Skal på sigt implementere set LastPackageBit. 
 	rawNumber = 3;

@@ -62,13 +62,9 @@ label:
 
 		int index = selecter.getPacketToSendIndex();		//k�res for at initialisere v�rdien
 
-		std::cout << "Index er: " << index << std::endl;
-
         afspiller.playSequence(index, framesSend);
 		sf::SoundBuffer Buffer;
 		Buffer.loadFromSamples(afspiller.playSequence(index, framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
-
-		std::cout << "Antal DTMF toner i vector: " << afspiller.getAntalDTMFToner() << std::endl;
 
 		sf::Sound Sound;
 		Sound.setBuffer(Buffer);
@@ -77,9 +73,6 @@ label:
 		}
 
 		index = selecter.getPacketToSendIndex();
-
-		std::cout << "Index er: " << index << std::endl;
-		
 
 		//work.join();
 	Afspiller:
@@ -95,7 +88,7 @@ label:
 		std::cout << "Lytter for NAK's...." << std::endl;
 		modtagetNAKS = recorderAfsender.startThread();
 		recorderAfsender.stop();	
-        std::cout << modtagetNAKS << std::endl;
+        std::cout << "Det modtagede NAK er: " << modtagetNAKS << std::endl;
 		/*
 		NAK testNak;
 		testNak.insertIntoArray("0000");
@@ -108,16 +101,18 @@ label:
         }
 
 		Protokol modtagetNAKFrame(modtagetNAKS);
-        sf::sleep(sf::seconds(5));
+        sf::sleep(sf::seconds(4));
         
         if (modtagetNAKFrame.checkNAKChecksum())
         {
+			std::cout << "checksum er korrekt" <<std::endl;
             if(modtagetNAKFrame.getNAKs()[0] == "1111" && sidsteSending)
             {
                 goto Ending;
             }
             else if (modtagetNAKFrame.getNAKs()[0] == "1111")
             { // S�tter naktabt false og sender 3 n�ste
+				std::cout << "modtaget nak 1111 (l. 114)" << std::endl;
                 nakTabt = false;
                 int index = selecter.getPacketToSendIndex(); //Opdater index, som returnerer n�ste pakke der skal sendes
 
@@ -150,6 +145,7 @@ label:
         }
         else //False Checksum
         {
+			std::cout << "checksum er forkert" << std::endl;
             if (nakTabt) //2 tabte nak i streg, derfor send forrige sending   -   Vi ved ikke om pakken n�r frem, derfor �ndres nakTabt ikke
             {
                 afspiller.playForrigePakker();

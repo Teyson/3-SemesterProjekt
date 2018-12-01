@@ -24,36 +24,36 @@ void Synkronisering::addToMainBuffer(const sf::Int16 *samples, int startPtr, int
 
 void Synkronisering::sync()
 {
-    bool keepSyncing = 1; // Sættes til 0, når tråden skal stoppes.
-    bool startOutputting = 0; //Når den er færdig med selve synkroniseringen, kan tonerne blive dekodet til bit.
+    bool keepSyncing = 1; // Sï¿½ttes til 0, nï¿½r trï¿½den skal stoppes.
+    bool startOutputting = 0; //Nï¿½r den er fï¿½rdig med selve synkroniseringen, kan tonerne blive dekodet til bit.
 
-    int ms = 20;    //Vinduesstørrelse i ms
+    int ms = 20;    //Vinduesstï¿½rrelse i ms
     int fs = 8000;	//Samplefrekvens
-    int windowSz = (fs * ms) / 1000; //Vinduesstørrelse i antal samples.
+    int windowSz = (fs * ms) / 1000; //Vinduesstï¿½rrelse i antal samples.
     int forskydning = windowSz / (ms * 4);	//Minimum forskydning.
 
-    int high1;	//Gemmer Goertzler-værdien for 1209 Hz.
-    int low1;	//Gemmer Goertzler-værdien for 697 Hz.
-    int low2;	//Gemmer Goertzler-værdien for 1633 Hz.
-    int high2;	//Gemmer Goertzler-værdien for 941 Hz.
+    int high1;	//Gemmer Goertzler-vï¿½rdien for 1209 Hz.
+    int low1;	//Gemmer Goertzler-vï¿½rdien for 697 Hz.
+    int low2;	//Gemmer Goertzler-vï¿½rdien for 1633 Hz.
+    int high2;	//Gemmer Goertzler-vï¿½rdien for 941 Hz.
 
     int counter = 0;
 
-    syncPtr = 0; //Til at holde styr på, hvad der er loadet ind fra mainbufferen.
-    int elementNr = 0; //Til at holde styr på antallet af synkroniseringstoner.
+    syncPtr = 0; //Til at holde styr pï¿½, hvad der er loadet ind fra mainbufferen.
+    int elementNr = 0; //Til at holde styr pï¿½ antallet af synkroniseringstoner.
 
     Behandling behandling;
     DTMF2Bit d;
 
-    float gns1;		// Gemmer gennemsnittet af Goertzel-værdier for 1209 Hz og 697 Hz.
-    float gns2;		// Gemmer gennemsnittet af Goertzel-værdier for 1633 Hz og 941 Hz.
-    float forhold;	// Gemmer det nuværende forhold mellem gns1 og gns2.
+    float gns1;		// Gemmer gennemsnittet af Goertzel-vï¿½rdier for 1209 Hz og 697 Hz.
+    float gns2;		// Gemmer gennemsnittet af Goertzel-vï¿½rdier for 1633 Hz og 941 Hz.
+    float forhold;	// Gemmer det nuvï¿½rende forhold mellem gns1 og gns2.
 
-    float forhold1;		// Gemmer værdi for forrrige forhold.
+    float forhold1;		// Gemmer vï¿½rdi for forrrige forhold.
     float forhold2;
     float forhold3;
-    bool doneSync = 0;		// Sættes hvis vi ikke længere ønsker at forskyde vinduet.
-    int revertCounter = 0;	 // Hvor mange gange vi har "revertet" en forskydning i træk.
+    bool doneSync = 0;		// Sï¿½ttes hvis vi ikke lï¿½ngere ï¿½nsker at forskyde vinduet.
+    int revertCounter = 0;	 // Hvor mange gange vi har "revertet" en forskydning i trï¿½k.
 
     int acc = 100;
     int previousAcc = 0;
@@ -69,9 +69,9 @@ void Synkronisering::sync()
                 low1 = behandling.goertzler(fs, 697, &mainBuffer, syncPtr, windowSz);		//Goertzler 697 Hz.
                 high2 = behandling.goertzler(fs, 1633, &mainBuffer, syncPtr, windowSz);		//Goertzler 1633 Hz.
                 low2 = behandling.goertzler(fs, 941, &mainBuffer, syncPtr, windowSz);		//Goertzler 941 Hz.
-                gns1 = ((float)high1 + (float)low1) / 2;		// Gennemsnit af Goertzlel-værdierne for tone 1.
-                gns2 = ((float)high2 + (float)low2) / 2;		// Gennemsnit af Goertzel-værdierne for tone 2.
-                forhold = gns1 / gns2;		// Nuværende forhold mellem tone 1 og tone 2.
+                gns1 = ((float)high1 + (float)low1) / 2;		// Gennemsnit af Goertzlel-vï¿½rdierne for tone 1.
+                gns2 = ((float)high2 + (float)low2) / 2;		// Gennemsnit af Goertzel-vï¿½rdierne for tone 2.
+                forhold = gns1 / gns2;		// Nuvï¿½rende forhold mellem tone 1 og tone 2.
 
                                             /*if (elementNr % 2 == 0) {
                                             std::cout << "1   " << forhold << std::endl;
@@ -79,11 +79,11 @@ void Synkronisering::sync()
                                             else
                                             std::cout << forhold << std::endl;*/
 
-                if (elementNr == 0) //Går ind i dette loop, når den første synkroniseringstone modtages.
+                if (elementNr == 0) //Gï¿½r ind i dette loop, nï¿½r den fï¿½rste synkroniseringstone modtages.
                 {
                     if (forhold < 0.5)
                         syncPtr += 20 * forskydning;
-                    syncPtr += forskydning - (forskydning / 4);		//Vi vil gerne at den forskyder lidt mindre første gang.
+                    syncPtr += forskydning - (forskydning / 4);		//Vi vil gerne at den forskyder lidt mindre fï¿½rste gang.
                     forhold1 = forhold;
                 }
                 else if (elementNr == 2)	//Vi vil gerne vide om forholdet er aftagende eller stigende for synkroniseringstone nr. 3
@@ -140,12 +140,12 @@ void Synkronisering::sync()
                 }
                 else if (elementNr % 2 == 0 && elementNr != 2 && elementNr != 0 && doneSync == false)
                 {
-                    if (forhold < forhold3 && revertCounter < 2)		// Hvis det nuværende forhold er lavere end det forrige forhold, vil vi gerne "reverte" forskydningen.
-                    {													// revertCounteren skal sørge for at vi ikke kan reverte mere end 2 gange i træk.
+                    if (forhold < forhold3 && revertCounter < 2)		// Hvis det nuvï¿½rende forhold er lavere end det forrige forhold, vil vi gerne "reverte" forskydningen.
+                    {													// revertCounteren skal sï¿½rge for at vi ikke kan reverte mere end 2 gange i trï¿½k.
                         syncPtr -= forskydning;
                         revertCounter++;
                         if (forhold > 10)
-                            doneSync = true;		// Hvis forholdet er større end 10, ønsker vi ikke at forskyde vinduet mere.
+                            doneSync = true;		// Hvis forholdet er stï¿½rre end 10, ï¿½nsker vi ikke at forskyde vinduet mere.
                                                     //std::cout << "revert" << std::endl;
                     }
                     else if (forhold < 1) {
@@ -180,17 +180,17 @@ void Synkronisering::sync()
                     forhold3 = forhold;
                 }
 
-                if (elementNr == 38)		// Tjekker om vi har modtaget alle synkroniseringstonerne.
-                {
-                    startOutputting = 1;
-                }
+				if (elementNr == 38)		// Tjekker om vi har modtaget alle synkroniseringstonerne.
+				{
+					startOutputting = 1;
+				}
 
                 elementNr++;
-                syncPtr += windowSz;		// Flytter syncPtr med vinduestørrelsen.
+                syncPtr += windowSz;		// Flytter syncPtr med vinduestï¿½rrelsen.
             }
 
 
-            /////////Færdig med synkronisering//////////////
+            /////////Fï¿½rdig med synkronisering//////////////
             else
             {
                 for (size_t i = syncPtr; i < syncPtr + windowSz; i++)

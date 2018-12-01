@@ -13,7 +13,7 @@ std::vector<int> PacketSelection::selectPackets(std::vector<std::string> stringS
 	int seqNum;
 	int a = 0;
 	std::vector<int> returnVector;
-	int graense = 99999;
+	int graense = -99999;
 	if (stringS.size() == 1) {
 		graense = -1;
 	}
