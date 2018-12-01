@@ -18,6 +18,7 @@ public:
 	sf::Int16* playThis(std::vector<int> resendPackage);
 	sf::Int16* playString(std::string nakString);
 	sf::Int16* playSequence(int start, int antal);
+    sf::Int16* playForrigePakker();
 	
 //	Hjælpefunktioner	//
 	int adddatapakke(int pakke,int abc,int rawµ);
@@ -35,6 +36,7 @@ protected:
 	int samples;
 	int sampleFreq;
 	BitDTMF sekvens;
+    std::vector<int> forrigeSendteDatapakker;
 	std::vector<Protokol>datapakker;
 	std::vector<DTMFToner> dtmfToner;
 	unsigned int arraySize=2240;

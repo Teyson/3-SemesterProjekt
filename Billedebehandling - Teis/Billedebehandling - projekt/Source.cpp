@@ -34,6 +34,7 @@ int protokolOpdelingGlobal = 32;
 
 bool wasLastNakRecieved = true;
 bool end = false;
+bool isResend = false;
 
 std::string finalBitString;
 int framesSend = 3;
@@ -55,6 +56,9 @@ label:
 		Afspilning afspiller(bitstring, samplesGlobal, sampleFreqGlobal);
 
 		PacketSelection selecter(afspiller.getAntalDataPakker());
+
+        bool nakTabt = false; 
+        bool sidsteSending = false;
 
 		int index = selecter.getPacketToSendIndex();		//køres for at initialisere værdien
 
@@ -100,106 +104,86 @@ label:
 		modtagetNAKS = testNak.createNAK();
 		*/
         if (modtagetNAKS.length() < 9) {
-            modtagetNAKS = "0000000000000000000100000";
+            modtagetNAKS = "0000000000000000000100000";     //Hvis den modtagede bitstreng er for kort ift. CRC-check - laves en tilfældig string
         }
 
-
 		Protokol modtagetNAKFrame(modtagetNAKS);
-		
         sf::sleep(sf::seconds(5));
         
-		if (modtagetNAKFrame.checkNAKChecksum()) {
-			wasLastNakRecieved = true;
+        if (modtagetNAKFrame.checkNAKChecksum())
+        {
+            if(modtagetNAKFrame.getNAKs()[0] == "1111" && sidsteSending)
+            {
+                goto Ending;
+            }
+            else if (modtagetNAKFrame.getNAKs()[0] == "1111")
+            { // Sætter naktabt false og sender 3 næste
+                nakTabt = false;
+                int index = selecter.getPacketToSendIndex(); //Opdater index, som returnerer næste pakke der skal sendes
 
-			std::cout << "NakCheckSum true" << std::endl;
+                if (index - 1 >= afspiller.getAntalDataPakker() - framesSend) //I tilfælde af, at det er de sidste pakker der sendes
+                {
+                    framesSend = afspiller.getAntalDataPakker() - index - 1;		
+                    sidsteSending = true;
+                }
 
-			if (end && modtagetNAKFrame.getNAKs()[0] == "1111")
-			{
-				goto Ending;
-			}
+                afspiller.playSequence(index, framesSend);		// Opdaterer getarraySize();
+                Buffer.loadFromSamples(afspiller.playSequence(index, framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
+                Sound.setBuffer(Buffer);
+                Sound.play();
+                while (Sound.getStatus() != 0) {
+                }
+            }
+            else //Sender Nakpakker
+            {
+                nAKS = modtagetNAKFrame.getNAKs(); //Kigger på hvilke frames der ikke er modtaget korrekt
+                nakINT = selecter.selectPackets(nAKS); //Udvælger hvilke frames der skal gensendes ud fra NAKs
+                afspiller.playThis(nakINT); //Frames'ne afspilles
+                Buffer.loadFromSamples(afspiller.playThis(nakINT), afspiller.getarraySize(), 1, sampleFreqGlobal);
+                Sound.setBuffer(Buffer);
+                Sound.play();
+                while (Sound.getStatus() != 0) {
+                }
+            }
 
-			if (modtagetNAKFrame.getNAKs()[0] == "1111") {		// Hvis vi modtager NAK-ingenting spilles de tre næste frames
-				int index = selecter.getPacketToSendIndex();
+
+        }
+        else //False Checksum
+        {
+            if (nakTabt) //2 tabte nak i streg, derfor send forrige sending   -   Vi ved ikke om pakken når frem, derfor ændres nakTabt ikke
+            {
+                afspiller.playForrigePakker();
+                Buffer.loadFromSamples(afspiller.playForrigePakker(), afspiller.getarraySize(), 1, sampleFreqGlobal);
+                Sound.setBuffer(Buffer);
+                Sound.play();
+                while (Sound.getStatus() != 0) {
+                }
+                
+               
+            }
+            else //Sende de 3 næste pakker
+            {
+                nakTabt = true;
+                int index = selecter.getPacketToSendIndex(); //Opdater index, som returnerer næste pakke der skal sendes
+
+                if (index - 1 >= afspiller.getAntalDataPakker() - framesSend) //I tilfælde af, at det er de sidste pakker der sendes
+                {
+                    framesSend = afspiller.getAntalDataPakker() - index - 1;
+                    sidsteSending = true;
+                }
+
+                afspiller.playSequence(index, framesSend);		// Opdaterer getarraySize();
+                Buffer.loadFromSamples(afspiller.playSequence(index, framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
+                Sound.setBuffer(Buffer);
+                Sound.play();
+                while (Sound.getStatus() != 0) {
+                }
+
+            }
+        }
 				
-				if (index - 1 >= afspiller.getAntalDataPakker() - framesSend)
-				{
-					framesSend = afspiller.getAntalDataPakker() - index - 1;		//Bruges kun i slutningen af sendingen
-					end = true;
-					
-				}
-
-				afspiller.playSequence(index, framesSend);		// Opdaterer getarraySize();
-				Buffer.loadFromSamples(afspiller.playSequence(index, framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
-				Sound.setBuffer(Buffer);
-				Sound.play();
-				while (Sound.getStatus() != 0) {
-				}
-			}
-			else {
-				nAKS = modtagetNAKFrame.getNAKs(); //Kigger på hvilke frames der ikke er modtaget korrekt
-				nakINT = selecter.selectPackets(nAKS); //Udvælger hvilke frames der skal gensendes ud fra NAKs
-				afspiller.playThis(nakINT); //Frames'ne afspilles
-				Buffer.loadFromSamples(afspiller.playThis(nakINT), afspiller.getarraySize(), 1, sampleFreqGlobal);
-				Sound.setBuffer(Buffer);
-				Sound.play();
-				while (Sound.getStatus() != 0) {
-				}
-			}
-		}
-
-		else
-		{
-			std::cout << "Fejl i nak" << std::endl;
-
-			if (end)		//KIG PÅ DET HER FUCKING LORT!! PROBLEMATIC AS FUCK!
-			{
-				//her vil vi gensende de allersidste pakker. Det kan være alt fra 1 til antallet af pakker vi sender.
-
-				afspiller.playSequence(selecter.getResendIndexLast(framesSend), framesSend);		// Opdaterer getarraySize();
-				Buffer.loadFromSamples(afspiller.playSequence(selecter.getResendIndexLast(framesSend), framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
-				Sound.setBuffer(Buffer);
-				Sound.play();
-				while (Sound.getStatus() != 0) {
-				}
-			}
-			else if (wasLastNakRecieved==false)
-			{
-                std::cout << "Send 3 forrige" << std::endl;
-				afspiller.playSequence(selecter.getResendIndex(),framesSend); //Frames'ne afspilles
-				Buffer.loadFromSamples(afspiller.playSequence(selecter.getResendIndex(),framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
-				Sound.setBuffer(Buffer);
-				Sound.play();
-				while (Sound.getStatus() != 0) {
-				}
-				// sender 3 forrige
-			}
-			else { //Skal sende de næste 3 pakker
-				int index = selecter.getPacketToSendIndex();
-				std::cout << "Send 3 næste" << std::endl;
-
-				if (index - 1 >= afspiller.getAntalDataPakker() - framesSend)
-				{
-					framesSend = afspiller.getAntalDataPakker() - index - 1;		//Bruges kun i slutningen af sendingen
-					end = true;
-				}
-
-				wasLastNakRecieved = false;
-				afspiller.playSequence(index, framesSend); //Frames'ne afspilles
-				Buffer.loadFromSamples(afspiller.playSequence(index, framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
-				Sound.setBuffer(Buffer);
-				Sound.play();
-				while (Sound.getStatus() != 0) {
-				}
-				// sender 3 nye
-			}
-		}
-		
-		bool test = (index - 1 < afspiller.getAntalDataPakker() - framesSend);
-
-		std::cout << test << std::endl;
-
-		if (index - 1 < afspiller.getAntalDataPakker() - framesSend) {
-			std::cout << "forventet 3" << std::endl;
+	    if (index - 1 < afspiller.getAntalDataPakker() - framesSend) {
+			//std::cout << "forventet 3" << std::endl;
 
 			goto Afspiller;
 		}
@@ -239,9 +223,8 @@ Modtager:
 
 		std::vector<Protokol> modtagetFrame;
 
-		if (antalOpdelinger > 0)
-		{
-			for (int i = 1; i < antalOpdelinger + 1; i++)
+		
+			for (int i = 0; i < antalOpdelinger; i++)
 			{
 				std::string modtagetString = in.opdel(antalOpdelinger)[i];
 
@@ -256,22 +239,41 @@ Modtager:
 				{
 					nak.insertIntoArray(frame.getRecievedSequenceNumber(), frame.getData());
 
-					if (nak.getPointerExpected() == nak.getPointerNotRecieved() && frame.checkLastBit())
-					{
-						lastPackage = true;
-					}
+                    if (frame.checkResendBit())
+                        isResend = true;
+
+					//if (nak.getPointerExpected() == nak.getPointerNotRecieved() && frame.checkLastBit())  //Lastpackage????
+					//{
+					//	lastPackage = true;
+					//}
 				}
 			}
-		}
+		
 
+            
 		
 		if (!lastPackage)
 		{
+            if (nak.getPointerExpected() + framesSend < nak.getPointerMax() && !isResend)
+                nak.updatePointerExpected();
+
+            isResend = false;
+
 			std::string nakToSend = nak.createNAK();
 
 			Afspilning nakAfspilning(nakToSend, samplesGlobal, sampleFreqGlobal);
 
 			nakAfspilning.playString(nakToSend);
+
+            sf::SoundBuffer buffer;
+            buffer.loadFromSamples(nakAfspilning.playString(nakToSend), nakAfspilning.getarraySize(), 1, sampleFreqGlobal);
+            sf::Sound sound;
+            sound.setBuffer(buffer);
+            sound.play();
+            while (sound.getStatus() != 0){
+            }
+
+            goto Modtager;
 
 			//Husk at lave om så Last bit nu betyder allersidste frame
 			if (!modtagetFrame[modtagetFrame.size() - 1].checkLastBit() && !(nak.getPointerExpected() == nak.getPointerNotRecieved()))

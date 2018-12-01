@@ -213,6 +213,14 @@ std::string Protokol::getLastBit()
 
 }
 
+bool Protokol::checkResendBit()
+{
+    bool returnBool = false;
+    if (endString.substr(5, 1) == "1")
+        returnBool = true;
+    return returnBool;
+}
+
 
 
 bool Protokol::checkNAKChecksum()

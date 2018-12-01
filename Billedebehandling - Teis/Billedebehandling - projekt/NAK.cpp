@@ -98,7 +98,7 @@ std::string NAK::createNAK()
 		returnString = createNonEmptyNAK();
 	}
 	
-	updatePointerExpected();
+	
 
 	return trailer(returnString);
 }
@@ -201,35 +201,37 @@ void NAK::updatePointerMax()
 
 void NAK::updatePointerExpected()
 {
-	if (!NAKBoolean)
-	{
-		if (pointerMax - packetsSend < 0)
-		{
-			if (pointerExpected <= (pointerMax + arraySize - packetsSend))
-			{
-				pointerExpected += packetsSend;
-			}
-			else // nakBoolean sættes hvis pointer notExpected ikke kan blive højere
-			{
-				NAKBoolean = true;
-			}
-		}
-		else
-		{
-			if (pointerExpected <= (pointerMax - packetsSend))
-				/*Dette tjek er som det er fordi: Hvis pointerExpected er lig pointerMax må vi være ude i anden udløb af timeren
-				på sender siden. Hvis pointerNotRecieved står på en plads der ikke er delelig med halvdelen af vinduet,
-				vil vi være i en situation hvor der mangler nogle pakker. Derfor skal der ventes på at alle pakker er fremme
-				inden vi går videre.*/
-			{
-				pointerExpected += packetsSend;
-			}
-			else
-			{
-				NAKBoolean = true;
-			}
-		}
-	}
+
+    pointerExpected += packetsSend;
+	//if (!NAKBoolean)
+	//{
+	//	if (pointerMax - packetsSend < 0)
+	//	{
+	//		if (pointerExpected <= (pointerMax + arraySize - packetsSend))
+	//		{
+	//			pointerExpected += packetsSend;
+	//		}
+	//		else // nakBoolean sættes hvis pointer notExpected ikke kan blive højere
+	//		{
+	//			NAKBoolean = true;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		if (pointerExpected <= (pointerMax - packetsSend))
+	//			/*Dette tjek er som det er fordi: Hvis pointerExpected er lig pointerMax må vi være ude i anden udløb af timeren
+	//			på sender siden. Hvis pointerNotRecieved står på en plads der ikke er delelig med halvdelen af vinduet,
+	//			vil vi være i en situation hvor der mangler nogle pakker. Derfor skal der ventes på at alle pakker er fremme
+	//			inden vi går videre.*/
+	//		{
+	//			pointerExpected += packetsSend;
+	//		}
+	//		else
+	//		{
+	//			NAKBoolean = true;
+	//		}
+	//	}
+	//}
 }
 
 void NAK::updateAllPointers()

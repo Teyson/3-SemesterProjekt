@@ -23,6 +23,8 @@ public:
 
 	//Modtagning af almindelige pakker
 
+    bool checkResendBit();
+
 	void unpacking(); //Skal tage en string der repr�senterer en pakke, og dele den op i checksum, lastbit, sekvensnummer og data.
 
 	bool checkChecksum();		//Skal checke at checksummen er rigtig, og returnere true i s� fald.
