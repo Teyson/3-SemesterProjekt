@@ -32,12 +32,12 @@ void Synkronisering::addToMainBuffer(const sf::Int16 *samples, int startPtr, int
 void Synkronisering::sync()
 {
 
-    bool keepSyncing = 1; // skal kunne sættes til 0 et sted for at stoppe tråden!
-    bool startOutputting = 0; //Når den er færdig med selve synkroniseringen, kan tonerne blive dekodet til bit
+    bool keepSyncing = 1; // skal kunne sï¿½ttes til 0 et sted for at stoppe trï¿½den!
+    bool startOutputting = 0; //Nï¿½r den er fï¿½rdig med selve synkroniseringen, kan tonerne blive dekodet til bit
 
-    int ms = 20;    //Vinduesstørrelse i ms
+    int ms = 20;    //Vinduesstï¿½rrelse i ms
     int fs = 8000;
-    int windowSz = (fs * ms) / 1000; //vinduesstørrelse i antal samples
+    int windowSz = (fs * ms) / 1000; //vinduesstï¿½rrelse i antal samples
     int forskydning = windowSz / (ms * 4);
     int low1;
     int high1;
@@ -50,8 +50,8 @@ void Synkronisering::sync()
     int high2Amp = 20000;
     int counter = 0;
 
-    syncPtr = 0; //til at holde styr på, hvad der er syncet i mainBuf
-    int elementNr = 0; //Til at holde styr på nr element der tages fra mainBuf
+    syncPtr = 0; //til at holde styr pï¿½, hvad der er syncet i mainBuf
+    int elementNr = 0; //Til at holde styr pï¿½ nr element der tages fra mainBuf
 
     Behandling behandling;
     DTMF2Bit d;
@@ -81,7 +81,7 @@ void Synkronisering::sync()
             if (startOutputting == 0)
             {
 
-                if (elementNr == 0)
+                if (elementNr == 38)
                 {
                     startOutputting = 1;
                 }
@@ -93,16 +93,16 @@ void Synkronisering::sync()
                 gns2 = ((float)high2 + (float)low2) / 2;
                 forhold = gns1 / gns2;
 
-                //if (elementNr % 2 == 0) {
-                //    forhold1 = forhold;
-                //}
-                //else
-                //    forhold2 = forhold;
-                ////std::cout << forhold << std::endl;
-                ////std::cout << elementNr << std::endl;
+                if (elementNr % 2 == 0) {
+                    std::cout << "1   " << forhold << std::endl;
+                }
+                else
+                    std::cout << forhold << std::endl;
+                //std::cout << forhold << std::endl;
+                //std::cout << elementNr << std::endl;
 
 
-                if (elementNr == 0) //Første gang, er vi interesseret i at første tone er færdig inden tonevinduet slutter
+                if (elementNr == 0) //Fï¿½rste gang, er vi interesseret i at fï¿½rste tone er fï¿½rdig inden tonevinduet slutter
                 {
                     if (forhold < 0.5)
                         syncPtr += 20 * forskydning;
@@ -170,7 +170,7 @@ void Synkronisering::sync()
                         revertCounter++;
                         if (forhold > 10)
                             doneSync = true;
-                        // std::cout << "revert" << std::endl;
+                        std::cout << "revert" << std::endl;
                     }
                     else if (forhold < 1) {
                         syncPtr += 18 * forskydning;
@@ -197,7 +197,7 @@ void Synkronisering::sync()
                             doneSync = true;
                         else {
                             syncPtr += forskydning * 2;
-                            //  std::cout << "forskydning" << std::endl;
+                            std::cout << "forskydning" << std::endl;
                         }
                         revertCounter = 0;
                     }
@@ -222,10 +222,7 @@ void Synkronisering::sync()
                         if (bitstring[i] != check[i])
                             mistake++;
                     }
-                    //std::cout << bitstring << std::endl;
-                    keepSyncing = 0;
-                    //std::cout << forhold1 << ",";
-                    //std::cout << forhold2 << ",";
+                    std::cout << bitstring << std::endl;
                     std::cout << mistake / ((float)64) * 100 << std::endl;
                 }
                 counter++;
