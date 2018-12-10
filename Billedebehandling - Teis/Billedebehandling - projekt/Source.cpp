@@ -9,6 +9,7 @@
 #include <atomic>
 #include <fstream> //Gem til fil
 #include <mutex>
+#include <stdlib.h>
 
 #include "CImg.h"
 #include "PictureProcessing.h"
@@ -40,49 +41,107 @@ std::string finalBitString;
 int framesSend = 3;
 
 int main() {
+
+	PacketSelection selecter(rand());
 	
-	for (int i = 0; i < 2; i++)
+	/* initialize random seed: */
+	srand(time(NULL));
+
+	for (int i = 0; i < 1000; i++)
 	{
-		std::string input = "";
+		std::cout << "============ NEXT ITERATION ============" << std::endl << std::endl;
 
-		std::cout << "Indtast venligst en tekst: ";
+		int length = rand() % 4;
 
-		std::getline(std::cin, input);
+		std::cout << "Antallet af fejl i den simulerede sending: " << length << std::endl;
 
-		std::cout << "Den inputtede streng er: " << input << std::endl << std::endl;
+		std::string NAK = "";
 
-		TextProcessing textprocesser(input);
+		if (length == 0)
+		{
+			NAK = "1111";
 
-		std::string bitinput = textprocesser.stringToBitsString();
+			CRC check(NAK);
 
-		BitDTMF bit(bitinput, samplesGlobal, sampleFreqGlobal, 40);
+			std::string crcCheck = check.crcCheck();
 
-		std::vector<Protokol> protokolVec;
+			NAK = NAK + crcCheck;
+		}
+		else if (length == 1)
+		{
+			NAK = "";
+			for (int j = 0; j < 4; j++)
+			{
+				int random = rand() % 2;
+				NAK.append(std::to_string(random));
+			}
 
-		bit.toProtokol(protokolVec);
+			CRC check(NAK);
 
-		std::cout << "Den inputtede streng opdeles i " << protokolVec.size() << " pakker, af 40 bit hver." << std::endl << std::endl;
+			std::string crcCheck = check.crcCheck();
 
-		std::cout << "Den foerste pakkes data bliver dermed: " << protokolVec[0].getData() << " og laengden af denne bitstreng er: " << protokolVec[0].getData().size() << std::endl << std::endl;
+			NAK = NAK + crcCheck;
+		}
 
-		std::cout << "Den sidste pakkes data bliver dermed: " << protokolVec[protokolVec.size() - 1].getData() << " og laengden af denne bitstreng er: " << protokolVec[protokolVec.size() - 1].getData().size() << std::endl << std::endl;
+		else if (length == 2)
+		{
+			NAK = "";
+			for (int j = 0; j < 8; j++)
+			{
+				int random = rand() % 2;
+				NAK.append(std::to_string(random));
+			}
 
-		PacketSelection selecter(protokolVec.size());
+			CRC check(NAK);
 
-		int index = selecter.getPacketToSendIndex();
+			std::string crcCheck = check.crcCheck();
 
-		std::cout << "Den naeste frame der skal sendes er: " << index << std::endl << std::endl;
+			NAK = NAK + crcCheck;
+		}
 
-		std::cout << "Eftersom der sendes " << framesSend << " frames, vil frame 0, 1 og 2 blive sendt" << std::endl << std::endl;
+		else if (length == 3)
+		{
+			NAK = "";
+			for (int j = 0; j < 12; j++)
+			{
+				int random = rand() % 2;
+				NAK.append(std::to_string(random));
+			}
 
-		index = selecter.getPacketToSendIndex();
+			CRC check(NAK);
 
-		std::cout << "Efter denne sending bliver nextPacketIndex: " << index << "." << std::endl << std::endl;
+			std::string crcCheck = check.crcCheck();
 
-		std::cout << "Hvis der kigges paa den foerste frame vil den faerdige frame efter framing vaere: " << protokolVec[0].getString() << ". Den er " << protokolVec[0].getString().size() << " bits lang" << std::endl << std::endl;
+			NAK = NAK + crcCheck;
+		}
+		else
+		{
+			std::cout << "Noget gik sgu galt.." << std::endl;
+		}
 
-		std::cout << "============ NAESTE ITERATION ============" << std::endl << std::endl;
+		std::cout << "Det autogenerede NAK er: " << NAK << std::endl << std::endl;
 
+		Protokol prot(NAK);
+
+		std::vector<std::string> NAKvec = prot.getNAKs();
+
+		std::vector<int> NAKvecint = selecter.selectPackets(NAKvec);
+
+		std::cout << "De pakker der skal gensendes er: " << std::endl;
+
+		for (int j = 0; j < NAKvec.size(); j++)
+		{
+			if (NAKvecint[j] == 15)
+			{
+				std::cout << "Tomt NAK! Ingen pakker gensendes!" << std::endl;
+			}
+			else
+			{
+				std::cout << NAKvecint[j] << std::endl;
+			}
+		}
+
+		std::cout << std::endl;
 	}
 	
 	int c;
