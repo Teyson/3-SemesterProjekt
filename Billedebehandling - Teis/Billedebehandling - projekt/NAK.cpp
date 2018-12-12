@@ -66,9 +66,6 @@ std::string NAK::createNonEmptyNAK()
 {
 	std::string toSend;
 
-	std::cout << "pointerNotRecieved er: " << pointerNotRecieved << std::endl;
-	std::cout << "pointerExpected er: " << pointerExpected << std::endl;
-
 	for (int i = pointerNotRecieved; i < pointerExpected; i++)
 	{
 		if (recieveArray[i] == "0")
@@ -99,7 +96,6 @@ std::string NAK::createNAK()
 	else
 	{
 		returnString = createNonEmptyNAK();
-		std::cout << "Return string er: " << returnString << std::endl;
 	}
 	
 	
@@ -109,13 +105,9 @@ std::string NAK::createNAK()
 
 std::string NAK::trailer(std::string s)
 {
-	std::cout << "Input til trailer er: " << s << std::endl;
-
 	CRC crc(s);
 
 	std::string returnString = s + crc.crcCheck();
-
-	std::cout << "Returnstring efter trailer er: " << returnString << std::endl;
 
 	return returnString;
 }

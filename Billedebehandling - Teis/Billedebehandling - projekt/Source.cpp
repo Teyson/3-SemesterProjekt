@@ -42,108 +42,58 @@ int framesSend = 3;
 
 int main() {
 
-	PacketSelection selecter(rand());
+	NAK nak;
 	
 	/* initialize random seed: */
 	srand(time(NULL));
 
-	for (int i = 0; i < 1000; i++)
-	{
-		std::cout << "============ NEXT ITERATION ============" << std::endl << std::endl;
+	nak.updatePointerExpected();
 
-		int length = rand() % 4;
+	std::cout << "frame 0, 1 og 2 sendes, og alle modtages" << std::endl;
 
-		std::cout << "Antallet af fejl i den simulerede sending: " << length << std::endl;
+	nak.insertIntoArray("0000", "1010101010111010101010111011010010110001");
+	nak.insertIntoArray("0001", "1010101111101010010010011101100101010100");
+	nak.insertIntoArray("0010", "1010010110001101001010110110100100101101");
 
-		std::string NAK = "";
+	std::string createdNak = nak.createNAK();
 
-		if (length == 0)
-		{
-			NAK = "1111";
+	std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;;
+	std::cout << "Altsaa et tomt NAK. Derfor sendes frame 3, 4, 5. Frame 5 gaar tabt." << std::endl;
 
-			CRC check(NAK);
+	nak.updatePointerExpected();
 
-			std::string crcCheck = check.crcCheck();
-
-			NAK = NAK + crcCheck;
-		}
-		else if (length == 1)
-		{
-			NAK = "";
-			for (int j = 0; j < 4; j++)
-			{
-				int random = rand() % 2;
-				NAK.append(std::to_string(random));
-			}
-
-			CRC check(NAK);
-
-			std::string crcCheck = check.crcCheck();
-
-			NAK = NAK + crcCheck;
-		}
-
-		else if (length == 2)
-		{
-			NAK = "";
-			for (int j = 0; j < 8; j++)
-			{
-				int random = rand() % 2;
-				NAK.append(std::to_string(random));
-			}
-
-			CRC check(NAK);
-
-			std::string crcCheck = check.crcCheck();
-
-			NAK = NAK + crcCheck;
-		}
-
-		else if (length == 3)
-		{
-			NAK = "";
-			for (int j = 0; j < 12; j++)
-			{
-				int random = rand() % 2;
-				NAK.append(std::to_string(random));
-			}
-
-			CRC check(NAK);
-
-			std::string crcCheck = check.crcCheck();
-
-			NAK = NAK + crcCheck;
-		}
-		else
-		{
-			std::cout << "Noget gik sgu galt.." << std::endl;
-		}
-
-		std::cout << "Det autogenerede NAK er: " << NAK << std::endl << std::endl;
-
-		Protokol prot(NAK);
-
-		std::vector<std::string> NAKvec = prot.getNAKs();
-
-		std::vector<int> NAKvecint = selecter.selectPackets(NAKvec);
-
-		std::cout << "De pakker der skal gensendes er: " << std::endl;
-
-		for (int j = 0; j < NAKvec.size(); j++)
-		{
-			if (NAKvecint[j] == 15)
-			{
-				std::cout << "Tomt NAK! Ingen pakker gensendes!" << std::endl;
-			}
-			else
-			{
-				std::cout << NAKvecint[j] << std::endl;
-			}
-		}
-
-		std::cout << std::endl;
-	}
+	nak.insertIntoArray("0011", "0100101000111010110011010100101001011101");
+	nak.insertIntoArray("0100", "0100101001010010010110101010101011010101");
 	
+	createdNak = nak.createNAK();
+
+	std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;
+	std::cout << "Altsaa et NAK paa frame 5. Frame 5 gensendes og modtages." << std::endl;
+
+	nak.insertIntoArray("0101", "0100101001001001000000000000000111111001");
+
+	createdNak = nak.createNAK();
+
+	std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;
+	std::cout << "Altsaa et tomt NAK, derfor sendes frame 6, 7, 8. Frame 6 og 7 gaar tabt" << std::endl;
+
+	nak.updatePointerExpected();
+
+	nak.insertIntoArray("1000", "0111101110111111111111111101010101010001");
+
+	createdNak = nak.createNAK();
+
+	std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;
+	std::cout << "Altsaa et NAK paa frame 6 og 7. Framesne gensendes og modtages" << std::endl;
+	
+	nak.insertIntoArray("0110", "0110011001110100101101101001010101010110");
+	nak.insertIntoArray("0111", "0101001010001010010001100101011101010111");
+	
+	createdNak = nak.createNAK();
+
+	std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;
+	std::cout << "Altsaa et tom NAK." << std::endl;
+
 	int c;
 	std::cin >> c;
 
