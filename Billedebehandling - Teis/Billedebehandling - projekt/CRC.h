@@ -18,7 +18,7 @@ public:
 protected:
 	std::string bitStreng;
 	std::string bSMCheckC;
-	std::string divident = "111010101";
+	std::string divident = "111010101"; //dette CRC-chek er f-ing godt!!!!!!!
 	std::string checkCiffer;
 };
 
