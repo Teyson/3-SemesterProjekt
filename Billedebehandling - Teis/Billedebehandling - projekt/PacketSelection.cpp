@@ -31,7 +31,7 @@ std::vector<int> PacketSelection::selectPackets(std::vector<std::string> stringS
 		else {
 			a = 0;
 		}
-		realSeqNum = 15 * ((lastPackIndex) / 15 + a) + seqNum;
+		realSeqNum = 15 * ((lastPackIndex) / 15 + a) + seqNum; //obs.. Måske fejl
 		returnVector.push_back(realSeqNum);
 	}
 

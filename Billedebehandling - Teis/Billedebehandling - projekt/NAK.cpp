@@ -196,8 +196,6 @@ void NAK::updatePointerNotRecieved()
         }
     }
 
-
-
 	if (recieveArray[pointerNotRecieved] != "0")
 	{
 		pointerNotRecieved = pointerExpected;
@@ -220,7 +218,6 @@ void NAK::updatePointerNotRecieved()
 		}
 	}
 	
-	
     updatePointerMax();
 	//her opdateres pointere
 	initRecieveArray();
@@ -235,7 +232,7 @@ void NAK::updatePointerMax()
 void NAK::updatePointerExpected()
 {
 
-	pointerExpected = (pointerExpected + packetsSend) % 15;
+	pointerExpected = (pointerExpected + packetsSend) % arraySize;
 	//if (!NAKBoolean)
 	//{
 	//	if (pointerMax - packetsSend < 0)
