@@ -43,6 +43,9 @@ void Synkronisering::sync()
     int high1;
     int low2;
     int high2;
+    float fejlCount = 0;
+
+    std::string sammenligning = "001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010";
 
     int low1Amp = 20000;
     int high1Amp = 20000;
@@ -236,10 +239,23 @@ void Synkronisering::sync()
             if (keepSyncing == 0)
             {
                 std::cout << "Modtagerside: Test af playString()  " << std::endl;
-                std::cout << "Den sendte bitstreng er:    1010101011100100111100100100010011110010" << std::endl;
+                std::cout << "Den sendte bitstreng er:    001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010" << std::endl;
                 bitstring.erase(bitstring.end() - 8, bitstring.end());
 
                 std::cout << "Den modtagede bitstreng er: " << bitstring << std::endl;
+                 
+                if (bitstring.size() > 166)
+                {
+                    for (size_t i = 0; i < 168; i++)
+                    {
+                        if (bitstring[i] != sammenligning[i])
+                            fejlCount++;
+                    }
+                    int procentFejl = fejlCount / (float)168 * 100;
+                    std::cout << "Fejlprocenten er: " << procentFejl << std::endl;
+                }
+                else
+                    std::cout << "Der var fejl i afsendingen" << std::endl;
             }
             syncPtr += windowSz;
             }
