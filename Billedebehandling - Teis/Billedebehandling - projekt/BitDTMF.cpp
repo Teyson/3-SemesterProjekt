@@ -78,7 +78,6 @@ void BitDTMF::toDTMF(std::vector<Protokol>& prot, std::vector<DTMFToner>& dtmfVe
 		for (int t = 0; t < antalOpdelinger; t++)		// Giver hver pakke et tone nr. hvorfra man senere kan generere tonen ud fra tone nr.
 		{
 			acc = bitHold.substr(t*bitPrTone, bitPrTone);	// Finder en opdeling
-			std::cout << acc << std::endl;
 			DTMFToner nyTone(acc);
 			nyTone.setToneNumber();
 			dtmfVec.push_back(nyTone);

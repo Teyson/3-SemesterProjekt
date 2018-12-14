@@ -19,7 +19,7 @@
 //#include "DTMFToner.h"
 
 
-int sampelsGlobal = (8000 * 1000)/1000;//16000;//44100
+int sampelsGlobal = (8000 * 20)/1000;//16000;//44100
 int sampelFreqGlobal = 8000;//41000
 int protokolOpdelingGlobal = 32;
 
@@ -58,16 +58,14 @@ label:
 		bla.push_back(2);
 		bla.push_back(0);
 
-		std::cout << bla.size() << std::endl;
+		std::cout << "======= AFSENDERSIDE: TEST AF PLAYSTRING() =======" << std::endl << std::endl;
 
-		start = std::chrono::system_clock::now();
-		std::thread work(countdown);
-		sf::sleep(sf::milliseconds(1600));
-		std::cout << torbenTester << std::endl;
-		work.join();
+		std::vector<Protokol> frames = test.getDatapakkerArray();
+
+		std::cout << "String der sendes: " << "1010101011100100111100100100010011110010" << std::endl;
 
 		sf::SoundBuffer Buffer;
-		if (!Buffer.loadFromSamples(test.playThis(bla), test.getarraySize(), 1, sampelFreqGlobal)) {
+		if (!Buffer.loadFromSamples(test.playString("1010101011100100111100100100010011110010"), test.getarraySize(), 1, sampelFreqGlobal)) {
 			std::cerr << "Loading failed!" << std::endl;
 			return 1;
 		}
@@ -78,7 +76,6 @@ label:
 		while (1) {
 			sf::sleep(sf::milliseconds(100));
 		}
-		work.join();
 	}
 	else if (answer == 'm') {					// Modtager
 		//Custom recorder

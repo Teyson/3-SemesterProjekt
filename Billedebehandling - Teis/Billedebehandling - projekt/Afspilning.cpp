@@ -19,7 +19,7 @@ sf::Int16 * Afspilning::playThis(std::vector<int> resendPackage)
 {
 	int abc = 0;
 
-	abc = makeSyncSequence(0);
+	abc = makeSyncSequence(12);
 	/////	Send begin	///////
 	for (int i = 0; i < resendPackage.size(); i++) {
 		// Opdater datapakke ved datapakker[resendPackage[i]].FUNKTION(); 
@@ -37,9 +37,10 @@ sf::Int16 * Afspilning::playString(std::string nakString)
 	std::vector<float> tone;
 	std::string acc;
 
-	abc = makeSyncSequence(0);
+	abc = makeSyncSequence(12);
 	j = abc * samples;
 		////	Play string	///////
+
 	for (int i = 0; i < nakString.length() / bitPrTone; i++) {
 		acc = nakString.substr(i*bitPrTone, bitPrTone);
 		DTMFToner nakToner(acc);
@@ -61,7 +62,7 @@ sf::Int16* Afspilning::playSequence(int start, int antal)
 	int abc = 0;
 	std::vector<float> tone;
 
-	abc = makeSyncSequence(0);
+	abc = makeSyncSequence(12);
 	j = abc * samples;
 
 	/////	Send begin	///////
@@ -93,7 +94,7 @@ int Afspilning::adddatapakke(int pakke,int abc)
 		for (int t = 0; t < samples; t++, j++) {
 			raw1[j] = toner[t];
 		}
-		abc++;
+		//abc++;
 	}
 	return abc;
 	/////	Send end	///////
@@ -109,21 +110,21 @@ int Afspilning::makeSyncSequence(int perioder)
 	for (int i = 0; i < perioder; i++) {
 		sync.append("00001111");
 	}
-	//sync.append("1001");								// Afslutende sync tone
+	sync.append("0000");								// Afslutende sync tone
 
 	std::string acc;
-	for (int i = 0; i < 2 * perioder; i++) {
+	for (int i = 0; i < 2 * perioder+1; i++) {
 		acc = sync.substr(i * 4, 4);
 		DTMFToner syncToner(acc);
 		syncToner.setToneNumber();
 		dtmfToner.push_back(syncToner);
 	}
-	for (int i = 0; i < 2 * perioder; i++) {
+	for (int i = 0; i < 2 * perioder+1; i++) {
 		tone = dtmfToner[i].createTone(samples, sampleFreq);				// Vector af floats der forløbende beskriver DTMFtonens amplitude
 		for (int k = 0; k < samples; j++, k++) {
 			raw1[j] = tone[k];
 		}
-		abc++;
+		//abc++;
 	}
 	/////	sync end	///////
 	return abc;
@@ -138,6 +139,11 @@ void Afspilning::clearRaw1DTMF()
 unsigned int Afspilning::getarraySize()
 {
 	return arraySize;
+}
+
+std::vector<Protokol> Afspilning::getDatapakkerArray()
+{
+	return datapakker;
 }
 
 

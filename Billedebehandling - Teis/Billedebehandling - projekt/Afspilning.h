@@ -19,6 +19,7 @@ public:
 	int makeSyncSequence(int perioder);
 	void clearRaw1DTMF();
 	unsigned int getarraySize();
+	std::vector<Protokol> getDatapakkerArray();
 	~Afspilning();
 protected:
 	int samples;
