@@ -188,9 +188,10 @@ label:
 	}
 	else if (answer == 'm') {	// Modtager
 		NAK nak;
-		//customRecorder recorder;
+		
 
-Modtager:
+	Modtager:
+		customRecorder recorder;
 		//Variable
         customRecorder recorder;
 		float mistake = 0;
@@ -203,16 +204,10 @@ Modtager:
 		std::cout << "Recording...." << std::endl;
 		modtaget = recorder.startThread();
 		recorder.stop();
+		std::cout << "RECORDER STOPPET!!!!!!!!!" << std::endl;
 
-        std::cout << "Den modtagede bitstreng:  " << modtaget << std::endl;
-        std::cout << "Length p� modtagede bitstreng:  " << modtaget.size() << std::endl;
-		//Check til fors�g 
-		//for (size_t i = 0; i < 64; i++) 
-		//{
-		//    if (modtaget[i] != check[i])
-		//        mistake++;
-		//}
-		//std::cout << mistake / ((float)64) * 100 << std::endl;
+		std::cout << "L�ngden p� det modtagede er: " << modtaget.length() << std::endl;
+		std::cout << "Bitstrengen er: " << modtaget << std::endl;
 
 		Opdeler in(modtaget);
 
@@ -225,18 +220,18 @@ Modtager:
 			for (int i = 1; i < antalOpdelinger + 1; i++)
 			{
 				std::string modtagetString = in.opdel(antalOpdelinger)[i];
-
+                    
 				Protokol frame(modtagetString);
 				modtagetFrame.push_back(frame);
                 std::cout << modtagetString.size() << std::endl;
 			}
-
+            
 			for (int i = 0; i < modtagetFrame.size(); i++)
 			{
 				Protokol frame = modtagetFrame[i];
 				if (frame.checkChecksum())
 				{
-                    std::cout << "Checksum " << i << " er korrekt" << std::endl;
+                    std::cout << "checksummen er korrekt" << std::endl;
 					nak.insertIntoArray(frame.getRecievedSequenceNumber(), frame.getRecievedData());
 
                     if (frame.checkResendBit())
@@ -253,36 +248,43 @@ Modtager:
 		
 		if (!lastPackage)
 		{
-			nak.updatePointerMax();
-			if (nak.getPointerExpected() + framesSend < nak.getPointerMax() && !isResend)
-			{
-				nak.updatePointerExpected();
-				std::cout << "PointerExpected er opdateret!" << std::endl;
-			}
-                
-            isResend = false;
+			sf::sleep(sf::seconds(1));
 
 			std::string nakToSend = nak.createNAK();
+
+			std::cout << nakToSend << std::endl;
+			//std::cout << nak.getDataModtaget() << std::endl;
+			std::cout << "pointerExpected er: " << nak.getPointerExpected() << std::endl;
+			std::cout << "pointerNotRecieved er: " << nak.getPointerNotRecieved() << std::endl;
+			std::cout << "pointerMax er: " << nak.getPointerMax() << std::endl;
+
+			std::string pointerNRString = std::bitset<4>(nak.getPointerNotRecieved()).to_string();
+
+			std::cout << "dataen ved pointerNotRecieved er: " << nak.getDataFromArray(pointerNRString) << std::endl;
 
 			Afspilning nakAfspilning(nakToSend, samplesGlobal, sampleFreqGlobal);
 			nakAfspilning.playString(nakToSend);
 			std::cout << "Arraysize er: " << nakAfspilning.getarraySize() << std::endl;
 
-            std::cout << "Det sendte NAK:  " << nakToSend << std::endl;
-			
-            sf::SoundBuffer buffer;
-            buffer.loadFromSamples(nakAfspilning.playString(nakToSend), nakAfspilning.getarraySize(), 1, sampleFreqGlobal);
-			std::cout << "Arraysize er: " << nakAfspilning.getarraySize() << std::endl;
-            sf::Sound sound;
-            sound.setBuffer(buffer);
-            sound.play();
-            while (sound.getStatus() != 0){
-            }
+			sf::SoundBuffer Buffer;
+			Buffer.loadFromSamples(nakAfspilning.playString(nakToSend), nakAfspilning.getarraySize(), 1, sampleFreqGlobal);
 
-            goto Modtager;
+			sf::Sound Sound;
+			Sound.setBuffer(Buffer);
+			Sound.play();
+			while (Sound.getStatus() != 0) {
+			}
 
 			//Husk at lave om s� Last bit nu betyder allersidste frame
-			if (!modtagetFrame[modtagetFrame.size() - 1].checkLastBit() && !(nak.getPointerExpected() == nak.getPointerNotRecieved()))
+			if (modtagetFrame.size() > 0)
+			{
+				if (!modtagetFrame[modtagetFrame.size() - 1].checkLastBit() && !(nak.getPointerExpected() == nak.getPointerNotRecieved()))
+				{
+					goto Modtager;
+				}
+                std::cout << "Lastbit er sat:  " << modtagetFrame[modtagetFrame.size() - 1].checkLastBit() << std::endl;
+			}
+			else
 			{
 				goto Modtager;
 			}
