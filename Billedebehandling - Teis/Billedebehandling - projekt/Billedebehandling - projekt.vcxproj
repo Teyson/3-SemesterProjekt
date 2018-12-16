@@ -144,6 +144,7 @@
     <ClCompile Include="NAK.cpp" />
     <ClCompile Include="Opdeling.cpp" />
     <ClCompile Include="PacketSelection.cpp" />
+    <ClCompile Include="PictureProcessing.cpp" />
     <ClCompile Include="Protokol.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="NAK.h" />
     <ClInclude Include="Opdeling.h" />
     <ClInclude Include="PacketSelection.h" />
+    <ClInclude Include="PictureProcessing.h" />
     <ClInclude Include="Protokol.h" />
     <ClInclude Include="TextProcessing.h" />
     <ClInclude Include="Synkronisering.h" />

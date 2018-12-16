@@ -23,7 +23,7 @@ public:
 	void updatePointerMax();
 	void updatePointerExpected();
 	void updateAllPointers();
-	void reset(); //Kun til test formï¿½l
+	void reset(); //Kun til test formål
 	//Simple get-funktioner
 	int getPointerNotRecieved();
 	int getPointerExpected();
@@ -35,8 +35,9 @@ public:
 	~NAK();
 
 protected:
+	int pointerMax = pointerNotRecieved + windowSize;
 	int pointerNotRecieved = 0;
-	int packetsSend = 3; //Mï¿½ maks vï¿½re 7 med en arraystï¿½rrelse pï¿½ 15. Udregning: (arraySize - 1) / 2 = maxPacketsSend!
+	int packetsSend = 3; //Må maks være 7 med en arraystørrelse på 15. Udregning: (arraySize - 1) / 2 = maxPacketsSend!
 	int pointerExpected = 0;
 	int arraySize = 14;
 	int windowSize;

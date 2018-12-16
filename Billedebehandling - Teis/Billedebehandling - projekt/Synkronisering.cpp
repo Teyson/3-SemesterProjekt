@@ -203,7 +203,6 @@ void Synkronisering::sync()
                 acc = acc / windowSz; //Tager gns
                                       //std::cout << acc << std::endl;
 
-				std::cout << "acc er: " << acc << " previousAcc er: " << previousAcc << std::endl;
 
                 if (acc < previousAcc && acc < 45 && previousAcc < 45)
                     keepSyncing = 0;
