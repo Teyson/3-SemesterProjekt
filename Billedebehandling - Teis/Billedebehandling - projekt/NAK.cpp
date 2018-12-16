@@ -11,10 +11,7 @@ NAK::NAK()
 		recieveArray[i] = "0";
 	}
 
-
-	windowSize = packetsSend * 2 + 1;
-
-	//laver array der er datastørrelsen * bufferstørrelse skal først initialiseres når der bliver modtaget en pakke der er har data.
+	//laver array der er datastï¿½rrelsen * bufferstï¿½rrelse skal fï¿½rst initialiseres nï¿½r der bliver modtaget en pakke der er har data.
 	for (int i = 0; i < arraySize; i++)
 	{
 		recieveDataArray[i] = "";
@@ -39,7 +36,7 @@ NAK::NAK(int arrayS, int packets)
 	windowSize = packetsSend * 2 + 1;
 
 
-	//laver array der er datastørrelsen * bufferstørrelse skal først initialiseres når der bliver modtaget en pakke der er har data.
+	//laver array der er datastï¿½rrelsen * bufferstï¿½rrelse skal fï¿½rst initialiseres nï¿½r der bliver modtaget en pakke der er har data.
 	for (int i = 0; i < arraySize; i++)
 	{
 		recieveDataArray[i] = "";
@@ -95,6 +92,7 @@ std::string NAK::createNAK()
 	if (pointerExpected == pointerNotRecieved)
 	{
 		returnString = createEmptyNAK();
+		std::cout << "Created Empty NAK" << std::endl;
 	}
 	else
 	{
@@ -120,7 +118,7 @@ std::string NAK::trailer(std::string s)
 	return returnString;
 }
 
-void NAK::insertIntoArray(std::string s,std::string d)
+void NAK::insertIntoArray(std::string s,std::string d) //s -> sekvensnr    d -> data
 {
 	//seq.nr. er en indeksering for vores string-array
 	int index = std::stoi(s, nullptr, 2);
@@ -132,7 +130,7 @@ void NAK::insertIntoArray(std::string s,std::string d)
 
 void NAK::initRecieveArray()
 {
-	//"0" forstås som null
+	//"0" forstï¿½s som null
 
 	//Init recieveArray
 	if (pointerMax < pointerNotRecieved)
@@ -150,7 +148,7 @@ void NAK::initRecieveArray()
 			recieveArray[i] = "0";
 			recieveDataArray[i] = "";
 		}
-		for (int i = pointerMax; i < recieveArray->size(); i++)
+		for (int i = pointerMax; i < arraySize; i++)
 		{
 			recieveArray[i] = "0";
 			recieveDataArray[i] = "";
@@ -201,17 +199,17 @@ void NAK::updatePointerNotRecieved()
 		pointerNotRecieved = pointerExpected;
 	}
 
-	if (pointerNotRecieved == pointerExpected)
+	if (pointerNotRecieved == pointerExpected)  //NAKBoolean er true hvis der er negtative checksumme og false hvis alle checksumme er korrekte
 	{
-		NAKBoolean = false;
+		NAKBoolean = false;    
 	}
 
 	int pointerNewValue = pointerNotRecieved;
 	
-	//her indsættes data i klassens variabel dataModtaget, hvis pointerNotRecived har rykket sig(der er blevet modtaget pakker).
+	//her indsï¿½ttes data i klassens variabel dataModtaget, hvis pointerNotRecived har rykket sig(der er blevet modtaget pakker).
 	if (pointerStartValue != pointerNewValue)
 	{
-		for (int i = pointerStartValue; i < pointerNewValue; i++)
+		for (int i = pointerStartValue; i < pointerNewValue; i++) 
 		{
 			std::string data = recieveDataArray[i];
 			dataModtaget.append(data);
@@ -241,7 +239,7 @@ void NAK::updatePointerExpected()
 	//		{
 	//			pointerExpected += packetsSend;
 	//		}
-	//		else // nakBoolean sættes hvis pointer notExpected ikke kan blive højere
+	//		else // nakBoolean sï¿½ttes hvis pointer notExpected ikke kan blive hï¿½jere
 	//		{
 	//			NAKBoolean = true;
 	//		}
@@ -249,10 +247,10 @@ void NAK::updatePointerExpected()
 	//	else
 	//	{
 	//		if (pointerExpected <= (pointerMax - packetsSend))
-	//			/*Dette tjek er som det er fordi: Hvis pointerExpected er lig pointerMax må vi være ude i anden udløb af timeren
-	//			på sender siden. Hvis pointerNotRecieved står på en plads der ikke er delelig med halvdelen af vinduet,
-	//			vil vi være i en situation hvor der mangler nogle pakker. Derfor skal der ventes på at alle pakker er fremme
-	//			inden vi går videre.*/
+	//			/*Dette tjek er som det er fordi: Hvis pointerExpected er lig pointerMax mï¿½ vi vï¿½re ude i anden udlï¿½b af timeren
+	//			pï¿½ sender siden. Hvis pointerNotRecieved stï¿½r pï¿½ en plads der ikke er delelig med halvdelen af vinduet,
+	//			vil vi vï¿½re i en situation hvor der mangler nogle pakker. Derfor skal der ventes pï¿½ at alle pakker er fremme
+	//			inden vi gï¿½r videre.*/
 	//		{
 	//			pointerExpected += packetsSend;
 	//		}
