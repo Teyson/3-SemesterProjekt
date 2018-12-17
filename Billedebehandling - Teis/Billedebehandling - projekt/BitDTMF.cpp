@@ -14,7 +14,7 @@ BitDTMF::BitDTMF(std::string s,int samples, int samplingFrekvens, int opdelingsZ
 }
 
 
-void BitDTMF::toProtokol(std::vector<Protokol>& p)
+void BitDTMF::toProtokol(std::vector<Framing>& p)
 {
 	int antalOpdelinger;
 	int divisionsRest;
@@ -43,12 +43,12 @@ void BitDTMF::toProtokol(std::vector<Protokol>& p)
 		acc = startString.substr((i * opdelingsSize), opdelingsSize);
 		
 		//Strengen pushes som objekt til klassen protokol 
-		Protokol nyProtokol(acc,i);
+		Framing nyProtokol(acc,i);
 		p.push_back(nyProtokol);
 	}
 }
 
-void BitDTMF::toDTMF(std::vector<Protokol>& prot, std::vector<DTMFToner>& dtmfVec,int begin, int antal)//start slut
+void BitDTMF::toDTMF(std::vector<Framing>& prot, std::vector<DTMFToner>& dtmfVec,int begin, int antal)//start slut
 {
 	int bitPrTone = 4;
 	int antalOpdelinger;

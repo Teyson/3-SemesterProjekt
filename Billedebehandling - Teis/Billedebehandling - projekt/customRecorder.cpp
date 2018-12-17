@@ -3,11 +3,11 @@
 #include <thread>
 
 
-customRecorder::customRecorder()
+CustomRecorder::CustomRecorder()
 {
 }
 
-bool customRecorder::onStart()
+bool CustomRecorder::onStart()
 {
 	// initialize whatever has to be done before the capture starts
 
@@ -17,7 +17,7 @@ bool customRecorder::onStart()
 	return true;
 }
 
-bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t sampleCount)
+bool CustomRecorder::onProcessSamples(const sf::Int16* samples, std::size_t sampleCount)
 {
 	
 
@@ -68,14 +68,14 @@ bool customRecorder::onProcessSamples(const sf::Int16* samples, std::size_t samp
 
 
 
-void customRecorder::onStop()
+void CustomRecorder::onStop()
 {
 	// clean up whatever has to be done after the capture is finished
 	//...
 }
 
 
-std::string customRecorder::startThread()
+std::string CustomRecorder::startThread()
 {
 	
 	std::string str = obj.startThread();
@@ -84,6 +84,6 @@ std::string customRecorder::startThread()
 }
 
 
-customRecorder::~customRecorder()
+CustomRecorder::~CustomRecorder()
 {
 }

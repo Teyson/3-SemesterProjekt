@@ -3,7 +3,7 @@
 #include <string>
 #include <SFML/Audio.hpp>
 
-#include "Protokol.h"
+#include "Framing.h"
 #include "BitDTMF.h"
 #include "DTMFToner.h"
 class Afspilning
@@ -21,8 +21,8 @@ public:
     sf::Int16* playForrigePakker();
 	
 //	Hjælpefunktioner	//
-	int adddatapakke(int pakke,int abc,int rawµ);
-	int makeSyncSequence(int rawµ);
+	int adddatapakke(int pakke,int abc);
+	int makeSyncSequence();
 	void clearRaw1DTMF();
 	void setLastBit();
 
@@ -30,6 +30,7 @@ public:
 	unsigned int getarraySize();
 	int getAntalDataPakker();
 	int getAntalDTMFToner();
+	int getAntalElementerIArray();
 	
 	~Afspilning();
 protected:
@@ -37,19 +38,10 @@ protected:
 	int sampleFreq;
 	BitDTMF sekvens;
     std::vector<int> forrigeSendteDatapakker;
-	std::vector<Protokol>datapakker;
+	std::vector<Framing>datapakker;
 	std::vector<DTMFToner> dtmfToner;
-	unsigned int arraySize=2240;
-	int antalSyncvaerdier = 6560;
+	unsigned int arraySize=224000;
+	unsigned int elementerIArray;
 	sf::Int16* raw1; // en datapakke
-	sf::Int16* raw2;
-	sf::Int16* raw3;
-	sf::Int16* raw4;
-	sf::Int16* raw5;
-	sf::Int16* raw6;
-	sf::Int16* rawNak;
-	int rawNumber=-1;
-
-
 };
 

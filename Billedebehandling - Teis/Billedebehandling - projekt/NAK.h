@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <array>
-#include "Protokol.h"
+#include "Framing.h"
 #include <bitset>
 
 class NAK
@@ -39,7 +39,8 @@ protected:
 	int packetsSend = 3; //M� maks v�re 7 med en arrayst�rrelse p� 15. Udregning: (arraySize - 1) / 2 = maxPacketsSend!
 	int pointerExpected = 0;
 	int arraySize = 14;
-	int windowSize;
+	int windowSize = packetsSend * 2 + 1;;
+	int pointerMax = pointerNotRecieved + windowSize;
 	std::string NAKTone = "1111";
 	bool NAKBoolean = false;
 	std::string dataModtaget;

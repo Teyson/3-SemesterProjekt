@@ -180,43 +180,132 @@ void Synkronisering::sync()
                     forhold3 = forhold;
                 }
 
-				if (elementNr == 38)		// Tjekker om vi har modtaget alle synkroniseringstonerne.
+				if (elementNr == 22)
 				{
 					startOutputting = 1;
 				}
+				high1 = behandling.goertzler(fs, 1209, &mainBuffer, syncPtr, windowSz);
+				low1 = behandling.goertzler(fs, 697, &mainBuffer, syncPtr, windowSz);
+				high2 = behandling.goertzler(fs, 1633, &mainBuffer, syncPtr, windowSz);
+				low2 = behandling.goertzler(fs, 941, &mainBuffer, syncPtr, windowSz);
+				gns1 = ((float)high1 + (float)low1) / 2;
+				gns2 = ((float)high2 + (float)low2) / 2;
+				/*std::cout << "Gns tone 0:   " << gns1 << std::endl;
+				std::cout << "Gns tone 15:   " << gns2 << std::endl;*/
 
-                elementNr++;
-                syncPtr += windowSz;		// Flytter syncPtr med vinduest�rrelsen.
-            }
-
-
-            /////////F�rdig med synkronisering//////////////
-            else
-            {
-                for (size_t i = syncPtr; i < syncPtr + windowSz; i++)
-                {
-                    if (mainBuffer[i] < 0)
-                        acc += mainBuffer[i] * (-1);
-                    else
-                        acc += mainBuffer[i];
-                }
-                acc = acc / windowSz; //Tager gns
-                                      //std::cout << acc << std::endl;
-
-				std::cout << "acc er: " << acc << " previousAcc er: " << previousAcc << std::endl;
-
-                if (acc < previousAcc && acc < 45 && previousAcc < 45)
-                    keepSyncing = 0;
-
-                previousAcc = acc;
-                //std::cout << bitstring << std::endl;
+				if (elementNr % 2 == 0) {
+					forhold = gns1 / gns2;
+				}
+				else
+					forhold = gns2 / gns1;
+				//std::cout << forhold << std::endl;
+				//std::cout << elementNr << std::endl;
 
 
-                counter++;
-                bitstring.append(d.convertDTMF2Nibble(8000, &mainBuffer, syncPtr, windowSz)); //Konverterer DTMF til bits og appender det til en string.
-                if (keepSyncing == 0)
-                    bitstring.erase(bitstring.end() - 8, bitstring.end());
-                syncPtr += windowSz;
+				if (elementNr == 0) //F?rste gang, er vi interesseret i at f?rste tone er f?rdig inden tonevinduet slutter
+				{
+					if (forhold < 0.5)
+						syncPtr += 20 * forskydning;
+					syncPtr += forskydning - (forskydning / 4);
+					forhold1 = forhold;
+
+				}
+				else if (elementNr == 1)
+				{
+					// std::cout << "elementnr2" << std::endl;
+					forhold3 = forhold;
+					forhold2 = forhold - forhold1;
+					if (forhold2 > 0)
+					{
+						//    std::cout << "opadgaaende" << std::endl;
+						if (forhold < 1) {
+							syncPtr += 18 * forskydning;
+							//  std::cout << "forskydning 18" << std::endl;
+						}
+						else if (forhold < 2) {
+							syncPtr += 8 * forskydning;
+							//std::cout << "forskydning 8" << std::endl;
+						}
+						else if (forhold < 4) {
+							syncPtr += 5 * forskydning;
+							// std::cout << "forskydning 5" << std::endl;
+						}
+						else if (forhold < 6) {
+							syncPtr += 3 * forskydning;
+							//std::cout << "forskydning 3" << std::endl;
+						}
+						else {
+							syncPtr += forskydning;
+							//std::cout << "forskydning" << std::endl;
+						}
+					}
+
+					else
+					{
+						//std::cout << "nedadgaaende" << std::endl;
+						if (forhold > 4) {
+							syncPtr += 65 * forskydning;
+							//  std::cout << "forskydning 65 ned" << std::endl;
+						}
+						else if (forhold > 2) {
+							syncPtr += 60 * forskydning;
+							// std::cout << "forskydning 60 ned" << std::endl;
+						}
+						else if (forhold > 1) {
+							syncPtr += 45 * forskydning;
+							// std::cout << "forskydning 45 ned" << std::endl;
+						}
+						else {
+							syncPtr += 40 * forskydning;
+							// std::cout << "forskydning 40 ned" << std::endl;
+						}
+					}
+
+				}
+				else if (elementNr != 1 && elementNr != 0 && doneSync == false)
+				{
+					if (forhold < forhold3 && revertCounter < 2)
+					{
+						syncPtr -= forskydning;
+						revertCounter++;
+						if (forhold > 10)
+							doneSync = true;
+						// std::cout << "revert" << std::endl;
+					}
+					else if (forhold < 1) {
+						syncPtr += 18 * forskydning;
+						revertCounter = 0;
+						//std::cout << "forskydning 18" << std::endl;
+					}
+					else if (forhold < 2) {
+						syncPtr += 8 * forskydning;
+						revertCounter = 0;
+						//std::cout << "forskydning 8" << std::endl;
+					}
+					else if (forhold < 4) {
+						syncPtr += 5 * forskydning;
+						revertCounter = 0;
+						//std::cout << "forskydning 5" << std::endl;
+					}
+					else if (forhold < 6) {
+						syncPtr += 3 * forskydning;
+						revertCounter = 0;
+						//std::cout << "forskydning 3" << std::endl;
+					}
+					else {
+						if (forhold > 10)
+							doneSync = true;
+						else {
+							syncPtr += forskydning * 2;
+							// std::cout << "forskydning" << std::endl;
+						}
+						revertCounter = 0;
+					}
+
+					forhold3 = forhold;
+				}
+				elementNr++;
+				syncPtr += windowSz;
             }
         }
         //sf::sleep(sf::milliseconds(5));

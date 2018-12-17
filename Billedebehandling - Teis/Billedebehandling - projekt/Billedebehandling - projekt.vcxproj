@@ -138,32 +138,31 @@
     <ClCompile Include="Bit2Tekst.cpp" />
     <ClCompile Include="BitDTMF.cpp" />
     <ClCompile Include="CRC.cpp" />
-    <ClCompile Include="customRecorder.cpp" />
+    <ClCompile Include="CustomRecorder.cpp" />
     <ClCompile Include="DTMF2Bit.cpp" />
     <ClCompile Include="DTMFToner.cpp" />
     <ClCompile Include="NAK.cpp" />
     <ClCompile Include="Opdeling.cpp" />
     <ClCompile Include="PacketSelection.cpp" />
-    <ClCompile Include="Protokol.cpp" />
+    <ClCompile Include="Framing.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Synkronisering.cpp" />
     <ClCompile Include="TextProcessing.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\..\..\Desktop\CImg.h" />
     <ClInclude Include="Afspilning.h" />
     <ClInclude Include="Behandling.h" />
     <ClInclude Include="BitDTMF.h" />
     <ClInclude Include="Bit2Tekst.h" />
     <ClInclude Include="CRC.h" />
-    <ClInclude Include="customRecorder.h" />
+    <ClInclude Include="CustomRecorder.h" />
     <ClInclude Include="DTMF2Bit.h" />
     <ClInclude Include="DTMFToner.h" />
     <ClInclude Include="NAK.h" />
     <ClInclude Include="Opdeling.h" />
     <ClInclude Include="PacketSelection.h" />
-    <ClInclude Include="Protokol.h" />
+    <ClInclude Include="Framing.h" />
     <ClInclude Include="TextProcessing.h" />
     <ClInclude Include="Synkronisering.h" />
     <ClInclude Include="Timer.h" />

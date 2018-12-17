@@ -13,7 +13,7 @@
 #include "CImg.h"
 #include "PictureProcessing.h"
 #include "customRecorder.h"
-#include "Protokol.h"
+#include "Framing.h"
 #include "BitDTMF.h"
 #include "NAK.h"
 #include "PacketSelection.h"
@@ -46,8 +46,12 @@ label:
 	std::cin >> answer;
 	if (answer == 'a') {						// Afsender
 
-
-		std::string input = "Hej mit navn er Teis, min ynglingshobby er at fappe meget kraftigt i mens jeg ligger i min seng og ser porno";
+		std::cout << "Indtast noget mere: " << std::endl;
+		std::cin.clear();
+		std::string firstString; std::string secondString;
+		std::cin >> firstString;
+		std::getline(std::cin, secondString);
+		std::string input = firstString + secondString;
 		
 		TextProcessing tekst(input);
 
@@ -64,7 +68,7 @@ label:
 
         afspiller.playSequence(index, framesSend);
 		sf::SoundBuffer Buffer;
-		Buffer.loadFromSamples(afspiller.playSequence(index, framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
+		Buffer.loadFromSamples(afspiller.playSequence(index, framesSend), afspiller.getAntalElementerIArray(), 1, sampleFreqGlobal);
 
 		sf::Sound Sound;
 		Sound.setBuffer(Buffer);
@@ -83,7 +87,7 @@ label:
 
 
 
-		customRecorder recorderAfsender;
+		CustomRecorder recorderAfsender;
 		recorderAfsender.start(8000);
 		std::cout << "Lytter for NAK's...." << std::endl;
 		modtagetNAKS = recorderAfsender.startThread();
@@ -100,7 +104,7 @@ label:
             modtagetNAKS = "0000000000000000000100000";     //Hvis den modtagede bitstreng er for kort ift. CRC-check - laves en tilf�ldig string
         }
 
-		Protokol modtagetNAKFrame(modtagetNAKS);
+		Framing modtagetNAKFrame(modtagetNAKS);
         sf::sleep(sf::seconds(4));
         
         if (modtagetNAKFrame.checkNAKChecksum())
@@ -123,7 +127,7 @@ label:
                 }
 
                 afspiller.playSequence(index, framesSend);		// Opdaterer getarraySize();
-                Buffer.loadFromSamples(afspiller.playSequence(index, framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
+                Buffer.loadFromSamples(afspiller.playSequence(index, framesSend), afspiller.getAntalElementerIArray(), 1, sampleFreqGlobal);
                 Sound.setBuffer(Buffer);
                 Sound.play();
                 while (Sound.getStatus() != 0) {
@@ -134,7 +138,7 @@ label:
                 nAKS = modtagetNAKFrame.getNAKs(); //Kigger p� hvilke frames der ikke er modtaget korrekt
                 nakINT = selecter.selectPackets(nAKS); //Udv�lger hvilke frames der skal gensendes ud fra NAKs
                 afspiller.playThis(nakINT); //Frames'ne afspilles
-                Buffer.loadFromSamples(afspiller.playThis(nakINT), afspiller.getarraySize(), 1, sampleFreqGlobal);
+                Buffer.loadFromSamples(afspiller.playThis(nakINT), afspiller.getAntalElementerIArray(), 1, sampleFreqGlobal);
                 Sound.setBuffer(Buffer);
                 Sound.play();
                 while (Sound.getStatus() != 0) {
@@ -149,7 +153,7 @@ label:
             if (nakTabt) //2 tabte nak i streg, derfor send forrige sending   -   Vi ved ikke om pakken n�r frem, derfor �ndres nakTabt ikke
             {
                 afspiller.playForrigePakker();
-                Buffer.loadFromSamples(afspiller.playForrigePakker(), afspiller.getarraySize(), 1, sampleFreqGlobal);
+                Buffer.loadFromSamples(afspiller.playForrigePakker(), afspiller.getAntalElementerIArray(), 1, sampleFreqGlobal);
                 Sound.setBuffer(Buffer);
                 Sound.play();
                 while (Sound.getStatus() != 0) {
@@ -169,7 +173,7 @@ label:
                 }
 
                 afspiller.playSequence(index, framesSend);		// Opdaterer getarraySize();
-                Buffer.loadFromSamples(afspiller.playSequence(index, framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
+                Buffer.loadFromSamples(afspiller.playSequence(index, framesSend), afspiller.getAntalElementerIArray(), 1, sampleFreqGlobal);
                 Sound.setBuffer(Buffer);
                 Sound.play();
                 while (Sound.getStatus() != 0) {
@@ -191,9 +195,8 @@ label:
 		
 
 	Modtager:
-		customRecorder recorder;
 		//Variable
-        customRecorder recorder;
+        CustomRecorder recorder;
 		float mistake = 0;
 		std::string modtaget;
 		std::string check = "0011011111110010100110000001111010110010101001011101011011000000";
@@ -214,21 +217,21 @@ label:
 		int antalBitPrFrame = 56;
 		int antalOpdelinger = std::stoi(in.opdel(antalBitPrFrame)[0]);
 
-		std::vector<Protokol> modtagetFrame;
+		std::vector<Framing> modtagetFrame;
 
 		
 			for (int i = 1; i < antalOpdelinger + 1; i++)
 			{
 				std::string modtagetString = in.opdel(antalOpdelinger)[i];
                     
-				Protokol frame(modtagetString);
+				Framing frame(modtagetString);
 				modtagetFrame.push_back(frame);
                 std::cout << modtagetString.size() << std::endl;
 			}
             
 			for (int i = 0; i < modtagetFrame.size(); i++)
 			{
-				Protokol frame = modtagetFrame[i];
+				Framing frame = modtagetFrame[i];
 				if (frame.checkChecksum())
 				{
                     std::cout << "checksummen er korrekt" << std::endl;
@@ -267,7 +270,7 @@ label:
 			std::cout << "Arraysize er: " << nakAfspilning.getarraySize() << std::endl;
 
 			sf::SoundBuffer Buffer;
-			Buffer.loadFromSamples(nakAfspilning.playString(nakToSend), nakAfspilning.getarraySize(), 1, sampleFreqGlobal);
+			Buffer.loadFromSamples(nakAfspilning.playString(nakToSend), nakAfspilning.getAntalElementerIArray(), 1, sampleFreqGlobal);
 
 			sf::Sound Sound;
 			Sound.setBuffer(Buffer);

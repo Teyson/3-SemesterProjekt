@@ -1,6 +1,7 @@
 #include "Behandling.h"
 
-
+/*Funktionen goertzler er skrevet paa baggrund af hjemmesiden https://www.embedded.com/design/configurable-systems/4024443/The-Goertzel-Algorithm?fbclid=IwAR2iojkY6ySstLiij3JTEKD9O_assHu-fyZsafGMHEQhBEbFM1ef_1Ju5GU
+Hjemmesiden beskriver geortzels*/
 
 Behandling::Behandling()
 {

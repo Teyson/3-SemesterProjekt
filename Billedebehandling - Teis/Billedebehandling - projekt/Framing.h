@@ -12,14 +12,14 @@
 //#include "BitDTMF.h" SKAL IKKE INKLUDERES
 
 
-class Protokol
+class Framing
 
 {
 
 public:
-	Protokol(std::string sr);
+	Framing(std::string sr);
 
-	Protokol(std::string sr, int plac);
+	Framing(std::string sr, int plac);
 
 	//Modtagning af almindelige pakker
 
@@ -87,7 +87,7 @@ public:
 	std::string getResendBit();
 
 
-	~Protokol();
+	~Framing();
 
 
 protected:

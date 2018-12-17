@@ -10,17 +10,17 @@
 
 
 #pragma once
-class customRecorder : public sf::SoundRecorder
+class CustomRecorder : public sf::SoundRecorder
 {
 public:
-	customRecorder();
+	CustomRecorder();
 	virtual bool onStart();
 	virtual bool onProcessSamples(const sf::Int16* samples, std::size_t sampleCount);
 	virtual void onStop();
 	std::string startThread();
     
     
-	~customRecorder();
+	~CustomRecorder();
 
 protected:
 	std::vector <int> testVector;
