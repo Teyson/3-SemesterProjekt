@@ -17,109 +17,111 @@ class Protokol
 {
 
 public:
-	Protokol(std::string sr);
+    Protokol(std::string sr);
 
-	Protokol(std::string sr, int plac);
+    Protokol(std::string sr, int plac);
 
-	//Modtagning af almindelige pakker
+    //Modtagning af almindelige pakker
 
-	void unpacking(); //Skal tage en string der repr�senterer en pakke, og dele den op i checksum, lastbit, sekvensnummer og data.
+    bool checkResendBit();
 
-	bool checkChecksum();		//Skal checke at checksummen er rigtig, og returnere true i s� fald.
+    void unpacking(); //Skal tage en string der repr�senterer en pakke, og dele den op i checksum, lastbit, sekvensnummer og data.
 
-	std::string writeChecksum();
+    bool checkChecksum();		//Skal checke at checksummen er rigtig, og returnere true i s� fald.
 
-	bool checkLastBit();		//Skal checke om lastBit er sat h�jt, og returnere true hvis den er. Dette er for at vi kan vide hvorn�r der skal sendes NAKs
-	std::string getRecievedChecksum();
+    std::string writeChecksum();
 
-	std::string getRecievedLastBit();
+    bool checkLastBit();		//Skal checke om lastBit er sat h�jt, og returnere true hvis den er. Dette er for at vi kan vide hvorn�r der skal sendes NAKs
+    std::string getRecievedChecksum();
 
-	std::string getRecievedSequenceNumber();
+    std::string getRecievedLastBit();
 
-	std::string getRecievedData();
+    std::string getRecievedSequenceNumber();
 
-	//Afsending af pakker
+    std::string getRecievedData();
 
-	std::string header();		//Skal s�rge for at lave headeren. Alts� finde ud af sekvensnummeret og checkLastBit'et skal s�ttes til 0.
+    //Afsending af pakker
 
-	std::string trailer();		//Skal kalde og lave et CRC-check p� data og header.
+    std::string header();		//Skal s�rge for at lave headeren. Alts� finde ud af sekvensnummeret og checkLastBit'et skal s�ttes til 0.
 
-	std::string packing();		//Skal kalde header() og trailer(), s� de er samlet i et funktions. De skal alligevel altid kaldes sammen
+    std::string trailer();		//Skal kalde og lave et CRC-check p� data og header.
 
-	void setLastBit();			//Skal g� ind i stringen og s�tte det rigtige bit h�jt.
+    std::string packing();		//Skal kalde header() og trailer(), s� de er samlet i et funktions. De skal alligevel altid kaldes sammen
 
-	void clearLastBit();		//skal s�tte LB til 0, hvis LB har v�ret sat. 
+    void setLastBit();			//Skal g� ind i stringen og s�tte det rigtige bit h�jt.
 
-	void setResendBit();		//Skal s�ttes bit som fort�ller om pakken er bllevet sendt f�r.
+    void clearLastBit();		//skal s�tte LB til 0, hvis LB har v�ret sat. 
 
-	std::string getData();
+    void setResendBit();		//Skal s�ttes bit som fort�ller om pakken er bllevet sendt f�r.
 
-	std::string getSequenceNumber();
+    std::string getData();
 
-	std::string getCRCcheck();
+    std::string getSequenceNumber();
 
-	std::string getLastBit();
+    std::string getCRCcheck();
 
-
-	//Modtagning af NAK
-	bool checkNAKChecksum();
-
-	std::vector<std::string> getNAKs();
-
-	//simple get og set metoder
-
-	void setDataSize(int dataS); //skal bruges hvis vi �nsker at �ndre datast�rrelsen p� en protokol. Som default er datast�rrelsen sat til 40.
-
-	void setToneStart(int);
-
-	void setToneSlut(int);
-
-	int getToneStart();
-
-	int getToneSlut();
-
-	std::string getString();
-
-	std::string getRecievedPacket();
-
-	std::string getResendBit();
+    std::string getLastBit();
 
 
-	~Protokol();
+    //Modtagning af NAK
+    bool checkNAKChecksum();
+
+    std::vector<std::string> getNAKs();
+
+    //simple get og set metoder
+
+    void setDataSize(int dataS); //skal bruges hvis vi �nsker at �ndre datast�rrelsen p� en protokol. Som default er datast�rrelsen sat til 40.
+
+    void setToneStart(int);
+
+    void setToneSlut(int);
+
+    int getToneStart();
+
+    int getToneSlut();
+
+    std::string getString();
+
+    std::string getRecievedPacket();
+
+    std::string getResendBit();
+
+
+    ~Protokol();
 
 
 protected:
 
-	std::string startString;
+    std::string startString;
 
-	std::string endString;
+    std::string endString;
 
-	int toneNrStart;
+    int toneNrStart;
 
-	int toneNrSlut;
+    int toneNrSlut;
 
-	int dataSize = 40;
+    int dataSize = 40;
 
-	int placering = 0;
+    int placering = 0;
 
-	std::string beforeTrailer;
+    std::string beforeTrailer;
 
-	//Bruges til n�r data modtages, skabes af funktionen unpacking()
+    //Bruges til n�r data modtages, skabes af funktionen unpacking()
 
-	std::string checksum;
+    std::string checksum;
 
-	std::string lastBit;
+    std::string lastBit;
 
-	std::string sequenceNumber;
+    std::string sequenceNumber;
 
-	std::string data;
+    std::string data;
 
-	std::string recievedPacket;
+    std::string recievedPacket;
 
-	//Bruges n�r NAK modtages
+    //Bruges n�r NAK modtages
 
-	std::string recievedNAK;
-	std::vector<std::string> NAKs;
+    std::string recievedNAK;
+    std::vector<std::string> NAKs;
 
 };
 

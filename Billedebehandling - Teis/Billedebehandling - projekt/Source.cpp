@@ -34,6 +34,8 @@ int samplesGlobal = (sampleFreqGlobal * toneLength)/1000;//16000;//44100
 int protokolOpdelingGlobal = 32;
 
 bool wasLastNakRecieved = true;
+bool end = false;
+bool isResend = false;
 
 std::string finalBitString;
 int framesSend = 3;
@@ -77,14 +79,7 @@ label:
 
 		PacketSelection selecter(afspiller.getAntalDataPakker());
 
-		
-
-		/* // 
-		start = std::chrono::system_clock::now();
-		std::thread work(countdown);
-		sf::sleep(sf::milliseconds(1600));
-		std::cout << torbenTester << std::endl;
-		*/
+	
 		int index = selecter.getPacketToSendIndex();
 
 		afspiller.playSequence(index, framesSend);
@@ -221,10 +216,11 @@ label:
 	}
 	else if (answer == 'm') {	// Modtager
 		NAK nak;
-		customRecorder recorder;
+		
 
 Modtager:
 		//Variable
+        customRecorder recorder;
 		float mistake = 0;
 		std::string modtaget;
 		std::string check = "0011011111110010100110000001111010110010101001011101011011000000";
@@ -236,13 +232,6 @@ Modtager:
 		modtaget = recorder.startThread();
 		recorder.stop();
 
-		//Check til forsøg 
-		//for (size_t i = 0; i < 64; i++) 
-		//{
-		//    if (modtaget[i] != check[i])
-		//        mistake++;
-		//}
-		//std::cout << mistake / ((float)64) * 100 << std::endl;
 
 		Opdeler in(modtaget);
 
@@ -251,39 +240,70 @@ Modtager:
 
 		std::vector<Protokol> modtagetFrame;
 
-		if (antalOpdelinger > 0)
+		
+		for (int i = 1; i < antalOpdelinger + 1; i++)
 		{
-			for (int i = 1; i < antalOpdelinger + 1; i++)
-			{
-				std::string modtagetString = in.opdel(antalOpdelinger)[i];
+			std::string modtagetString = in.opdel(antalOpdelinger)[i];
 
-				Protokol frame(modtagetString);
-				modtagetFrame.push_back(frame);
-			}
+			Protokol frame(modtagetString);
+			modtagetFrame.push_back(frame);
+            std::cout << modtagetString.size() << std::endl;
+		}
 
-			for (int i = 0; i < modtagetFrame.size(); i++)
-			{
+		for (int i = 0; i < modtagetFrame.size(); i++)
+		{
 				Protokol frame = modtagetFrame[i];
 				if (frame.checkChecksum())
 				{
-					nak.insertIntoArray(frame.getRecievedSequenceNumber(), frame.getData());
+                    std::cout << "Checksummen er korrekt" << std::endl;
+					nak.insertIntoArray(frame.getRecievedSequenceNumber(), frame.getRecievedData());
 
-					if (nak.getPointerExpected() == nak.getPointerNotRecieved() && frame.checkLastBit())
+					if (frame.checkResendBit())
 					{
-						lastPackage = true;
+						isResend = true;
 					}
 				}
 			}
-		}
-
 		
-		if (!lastPackage)
-		{
-			std::string nakToSend = nak.createNAK();
 
-			Afspilning nakAfspilning(nakToSend, samplesGlobal, sampleFreqGlobal);
+        sf::sleep(sf::milliseconds(1000));
+		
+        if (!lastPackage)
+        {
+            sf::sleep(sf::milliseconds(1000));
 
-			nakAfspilning.playString(nakToSend);
+            std::string nakToSend = nak.createNAK();
+
+            std::string pointerNRString = std::bitset<4>(nak.getPointerNotRecieved()).to_string();
+
+            Afspilning nakAfspilning(nakToSend, samplesGlobal, sampleFreqGlobal);
+            nakAfspilning.playString(nakToSend);
+
+            sf::SoundBuffer Buffer;
+            Buffer.loadFromSamples(nakAfspilning.playString(nakToSend), nakAfspilning.getAntalElementerIArray(), 1, sampleFreqGlobal);
+
+            sf::Sound Sound;
+            Sound.setBuffer(Buffer);
+            Sound.play();
+            while (Sound.getStatus() != 0){
+            }
+
+
+            if (modtagetFrame.size() > 0)
+            {
+                if (!modtagetFrame[modtagetFrame.size() - 1].checkLastBit() && !(nak.getPointerExpected() == nak.getPointerNotRecieved()))
+                {
+                    goto Modtager;
+                }
+            }
+            else
+            {
+                goto Modtager;
+            }
+
+
+             
+
 
 			//Husk at lave om så Last bit nu betyder allersidste frame
 			if (!modtagetFrame[modtagetFrame.size() - 1].checkLastBit() && !(nak.getPointerExpected() == nak.getPointerNotRecieved()))

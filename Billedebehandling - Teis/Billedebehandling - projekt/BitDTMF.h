@@ -13,30 +13,30 @@
 class BitDTMF
 {
 public:
-	BitDTMF();
-	BitDTMF(std::string, int antalSamples, int samplingFrekvens, int opdelingsSize);
-	
-	void toProtokol(std::vector<Protokol>&);
-	//toProtokol - Del datastringen op i bidder af objekter
+    BitDTMF();
+    BitDTMF(std::string, int antalSamples, int samplingFrekvens, int opdelingsSize);
 
-	void toDTMF(std::vector<Protokol>&, std::vector<DTMFToner>&, int begin, int antal);
-	//toDTMF - Deler protokolstrengen op i tonebidder og laver den om til toner
+    void toProtokol(std::vector<Protokol>&);
+    //toProtokol - Del datastringen op i bidder af objekter
 
-	~BitDTMF();
+    void toDTMF(std::vector<Protokol>&, std::vector<DTMFToner>&, int begin, int antal);
+    //toDTMF - Deler protokolstrengen op i tonebidder og laver den om til toner
+
+    ~BitDTMF();
 
 protected:
-	int antalSamples; //Antal samples
-	int fs; //Sampling frekvens
-	int Ts; //
-	unsigned int stringLength;
-	int opdelingsSize;
-	int toneNr;
-	std::string startString;
-	
+    int antalSamples; //Antal samples
+    int fs; //Sampling frekvens
+    int Ts; //
+    unsigned int stringLength;
+    int opdelingsSize;
+    int toneNr;
+    std::string startString;
+
 
 public:
-	int antalProtokolStrings;
-	
+    int antalProtokolStrings;
+
 };
 
 #endif

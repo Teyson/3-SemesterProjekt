@@ -7,18 +7,18 @@
 class Opdeler
 {
 public:
-	Opdeler();
-	Opdeler(std::string);
+    Opdeler();
+    Opdeler(std::string);
 
-	std::vector<std::string> opdel(int opdelingsS);
+    std::vector<std::string> opdel(int opdelingsS);
 
 
-	~Opdeler();
+    ~Opdeler();
 protected:
-	std::string inputString;
-	int opdelingsSize;
+    std::string inputString;
+    int opdelingsSize;
 
-	std::vector<std::string> stringVector;
+    std::vector<std::string> stringVector;
 
 };
 
