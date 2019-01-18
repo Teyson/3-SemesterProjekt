@@ -119,7 +119,7 @@ label:
 				goto Ending;
 			}
 
-			if (modtagetNAKFrame.getNAKs()[0] == "1111") {		// Hvis vi modtager NAK-ingenting spilles de tre næste frames
+			if (modtagetNAKFrame.getNAKs()[0] == "1111") {		// Hvis vi modtager NAK-ingenting spilles de tre nï¿½ste frames
 				int index = selecter.getPacketToSendIndex();
 				
 				if (index - 1 >= afspiller.getAntalDataPakker() - framesSend)
@@ -137,8 +137,8 @@ label:
 				}
 			}
 			else {
-				nAKS = modtagetNAKFrame.getNAKs(); //Kigger på hvilke frames der ikke er modtaget korrekt
-				nakINT = selecter.selectPackets(nAKS); //Udvælger hvilke frames der skal gensendes ud fra NAKs
+				nAKS = modtagetNAKFrame.getNAKs(); //Kigger pï¿½ hvilke frames der ikke er modtaget korrekt
+				nakINT = selecter.selectPackets(nAKS); //Udvï¿½lger hvilke frames der skal gensendes ud fra NAKs
 				afspiller.playThis(nakINT); //Frames'ne afspilles
 				Buffer.loadFromSamples(afspiller.playThis(nakINT), afspiller.getarraySize(), 1, sampleFreqGlobal);
 				Sound.setBuffer(Buffer);
@@ -152,9 +152,9 @@ label:
 		{
 			std::cout << "Forventet 1" << std::endl;
 
-			if (end)		//KIG PÅ DET HER FUCKING LORT!! PROBLEMATIC AS FUCK!
+			if (end)		//KIG Pï¿½ DET HER FUCKING LORT!! PROBLEMATIC AS FUCK!
 			{
-				//her vil vi gensende de allersidste pakker. Det kan være alt fra 1 til antallet af pakker vi sender.
+				//her vil vi gensende de allersidste pakker. Det kan vï¿½re alt fra 1 til antallet af pakker vi sender.
 
 				afspiller.playSequence(selecter.getResendIndexLast(framesSend), framesSend);		// Opdaterer getarraySize();
 				Buffer.loadFromSamples(afspiller.playSequence(selecter.getResendIndexLast(framesSend), framesSend), afspiller.getarraySize(), 1, sampleFreqGlobal);
@@ -225,7 +225,7 @@ label:
 		recorder.stop();
 		std::cout << "RECORDER STOPPET!!!!!!!!!" << std::endl;
 
-		std::cout << "Længden på det modtagede er: " << modtaget.length() << std::endl;
+		std::cout << "Lï¿½ngden pï¿½ det modtagede er: " << modtaget.length() << std::endl;
 		std::cout << "Bitstrengen er: " << modtaget << std::endl;
 
 		Opdeler in(modtaget);
@@ -291,7 +291,7 @@ label:
 			while (Sound.getStatus() != 0) {
 			}
 
-			//Husk at lave om så Last bit nu betyder allersidste frame
+			//Husk at lave om sï¿½ Last bit nu betyder allersidste frame
 			if (modtagetFrame.size() > 0)
 			{
 				if (!modtagetFrame[modtagetFrame.size() - 1].checkLastBit() && !(nak.getPointerExpected() == nak.getPointerNotRecieved()))
