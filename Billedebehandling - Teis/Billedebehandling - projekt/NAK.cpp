@@ -223,37 +223,30 @@ void NAK::updatePointerMax()
 
 void NAK::updatePointerExpected()
 {
-
-
-
-
-
-
 	if (!NAKBoolean)
 	{
 		if (pointerExpected + packetsSend > arraySize - 1)
 		{
 			pointerExpected = (pointerExpected + packetsSend) % 15;
-			
-			else // nakBoolean s�ttes hvis pointer notExpected ikke kan blive h�jere
-			{
-				NAKBoolean = true;
-			}
+		}
+		else // nakBoolean s�ttes hvis pointer notExpected ikke kan blive h�jere
+		{
+			NAKBoolean = true;
+		}
+	}
+	else
+	{
+		if (pointerExpected <= (pointerMax - packetsSend))
+			/*Dette tjek er som det er fordi: Hvis pointerExpected er lig pointerMax m� vi v�re ude i anden udl�b af timeren
+			p� sender siden. Hvis pointerNotRecieved st�r p� en plads der ikke er delelig med halvdelen af vinduet,
+			vil vi v�re i en situation hvor der mangler nogle pakker. Derfor skal der ventes p� at alle pakker er fremme
+			inden vi g�r videre.*/
+		{
+			pointerExpected += packetsSend;
 		}
 		else
 		{
-			if (pointerExpected <= (pointerMax - packetsSend))
-				/*Dette tjek er som det er fordi: Hvis pointerExpected er lig pointerMax m� vi v�re ude i anden udl�b af timeren
-				p� sender siden. Hvis pointerNotRecieved st�r p� en plads der ikke er delelig med halvdelen af vinduet,
-				vil vi v�re i en situation hvor der mangler nogle pakker. Derfor skal der ventes p� at alle pakker er fremme
-				inden vi g�r videre.*/
-			{
-				pointerExpected += packetsSend;
-			}
-			else
-			{
-				NAKBoolean = true;
-			}
+			NAKBoolean = true;
 		}
 	}
 }
