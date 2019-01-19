@@ -65,7 +65,7 @@ label:
 		std::cout << std::endl << "Hvilken del af koden oenskes vist?" << std::endl << "Tast 1 for TextProcessing." << std::endl << "Tast 2 for ToProtokol, som indeholder opdeling, Framing og CRC." << std::endl << "Tast 4 for Afspilning og Synkronisering." << std::endl << "Tast 5 for NAK." << std::endl;
 		std::cin >> answer;
 		if (answer == '1') {						// TextProcessing
-			system("CLS");							// Tømmer kommandoprompten
+			system("CLS");							// Tï¿½mmer kommandoprompten
 			TextProcessing processer2(userInput);
 			std::cout << "Du har valgt TextProcessing." << std::endl;
 
@@ -76,19 +76,19 @@ label:
 			system("pause");
 		}
 		else if (answer == '2') {	// ToProtokol
-			system("CLS");							// Tømmer kommandoprompten
+			system("CLS");							// Tï¿½mmer kommandoprompten
 
 			std::cout << std::endl;
 			system("pause");
 		}
 		else if (answer == '3') { // ToDTMF
-			system("CLS");							// Tømmer kommandoprompten
+			system("CLS");							// Tï¿½mmer kommandoprompten
 
 			std::cout << std::endl;
 			system("pause");
 		}
 		else if (answer == '4') { // Play + Sync
-			system("CLS");							// Tømmer kommandoprompten
+			system("CLS");							// Tï¿½mmer kommandoprompten
             std::cout << "Afsender eller modtager?" << std::endl;
             std::cin >> answer;
 
@@ -137,7 +137,7 @@ label:
             }
 		}
 		else if (answer == '5') { // NAK
-			system("CLS");							// Tømmer kommandoprompten
+			system("CLS");							// Tï¿½mmer kommandoprompten
 
 			std::cout << "NAK er valgt." << std::endl << std::endl;
 
