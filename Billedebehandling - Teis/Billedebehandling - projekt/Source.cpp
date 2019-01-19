@@ -46,58 +46,65 @@ int framesSend = 3;
 
 int main() {
 	char answer;
+	std::string userInput;
+	std::string bitString;
+
+	std::cout << "Indtast den tekststreng du vil arbejde med." << std::endl;
+	std::getline(std::cin, userInput);
+
+	TextProcessing processer(userInput);
+	bitString = processer.stringToBitsString();
+
+
 label:
-	std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
-	std::cin >> answer;
-	if (answer == '1') {						// TekstProcessing
 
-		std::cout << "Indtast noget mere: " << std::endl;
-		std::cin.clear();
-		std::string firstString; std::string secondString;
-		std::cin >> firstString;
-		std::getline(std::cin, secondString);
-		std::string input = firstString + secondString;
-		
-		TextProcessing tekst(input);
+	while (true)
+	{
 
-	}
-	else if (answer == '2') {	// ToProtokol
-		
-	}
-	else if (answer == '3') { // ToDTMF
+		std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
+		std::cin >> answer;
+		if (answer == '1') {						// TextProcessing
 
-	}
-	else if (answer == '4') { // Play + Sync
-		Afspilning test("0110110010101001", samplesGlobal, sampleFreqGlobal);
-		//	0110 1100 1010 1001
-
-
-		std::vector<int>bla;
-		bla.push_back(0);
-		bla.push_back(2);
-		bla.push_back(0);
-
-		sf::SoundBuffer Buffer;
-		if (!Buffer.loadFromSamples(test.playThis(bla), test.getarraySize(), 1, sampleFreqGlobal)) {
-			std::cerr << "Loading failed!" << std::endl;
-			return 1;
 		}
+		else if (answer == '2') {	// ToProtokol
 
-		sf::Sound Sound;
-		Sound.setBuffer(Buffer);
-		Sound.play();
-		while (1) {
-			sf::sleep(sf::milliseconds(100));
+		}
+		else if (answer == '3') { // ToDTMF
+
+		}
+		else if (answer == '4') { // Play + Sync
+			Afspilning test("0110110010101001", samplesGlobal, sampleFreqGlobal);
+			//	0110 1100 1010 1001
+
+
+			std::vector<int>bla;
+			bla.push_back(0);
+			bla.push_back(2);
+			bla.push_back(0);
+
+			sf::SoundBuffer Buffer;
+			if (!Buffer.loadFromSamples(test.playThis(bla), test.getarraySize(), 1, sampleFreqGlobal)) {
+				std::cerr << "Loading failed!" << std::endl;
+				return 1;
+			}
+
+			sf::Sound Sound;
+			Sound.setBuffer(Buffer);
+			Sound.play();
+			while (1) {
+				sf::sleep(sf::milliseconds(100));
+			}
+		}
+		else if (answer == '5') { // NAK
+
+		}
+		else {
+			char answer;
+			goto label;
+
 		}
 	}
-	else if (answer == '5') { // NAK
 
-	}
-	else {
-		char answer;
-		goto label;
-		
-	}
 
 Ending:
 
