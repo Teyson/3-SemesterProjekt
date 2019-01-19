@@ -28,7 +28,7 @@
 
 
 ////  Gamlekonstanter  ////
-int toneLength = 500;
+int toneLength = 20;
 int sampleFreqGlobal = 8000;//41000
 int samplesGlobal = (sampleFreqGlobal * toneLength)/1000;//16000;//44100
 int protokolOpdelingGlobal = 32;
@@ -77,7 +77,13 @@ label:
 		}
 		else if (answer == '2') {	// ToProtokol
 			system("CLS");							// T�mmer kommandoprompten
-
+			std::cout << "Vi er i nummer 2" << std::endl;
+			Afspilning toprotokolTest(bitString, samplesGlobal, sampleFreqGlobal);
+			std::cout << "Input: \n" << bitString<< "\n" << std::endl;
+			/*std::cout << "0. Frame: \n" << toprotokolTest.getDatapakkerArray()[0].getString() << std::endl;
+			std::cout << " Header  " << "                   Data                   " << "  Trailer " << std::endl;
+			std::cout << toprotokolTest.getDatapakkerArray()[0].getString().substr(0, 8) << "  " << toprotokolTest.getDatapakkerArray()[0].getData() << "  " << toprotokolTest.getDatapakkerArray()[0].getCRCcheck() << std::endl;
+			*/
 			std::cout << std::endl;
 			system("pause");
 		}
@@ -92,19 +98,15 @@ label:
             std::cout << "Afsender eller modtager?" << std::endl;
             std::cin >> answer;
 
-            if (answer == 'a' && answer == 'A')
+            if (answer == 'a' || answer == 'A')
             {
-                Afspilning test(bitString, samplesGlobal, sampleFreqGlobal);
+				std::string testbitstreng = "001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010";
+                Afspilning test(testbitstreng, samplesGlobal, sampleFreqGlobal);
                 
 
 
-                std::vector<int>bla;
-                bla.push_back(0);
-                bla.push_back(2);
-                bla.push_back(0);
-
                 sf::SoundBuffer Buffer;
-                if (!Buffer.loadFromSamples(test.playThis(bla), test.getarraySize(), 1, sampleFreqGlobal)) {
+                if (!Buffer.loadFromSamples(test.playString(testbitstreng), test.getarraySize(), 1, sampleFreqGlobal)) {
                     std::cerr << "Loading failed!" << std::endl;
                     return 1;
                 }
@@ -112,8 +114,8 @@ label:
                 sf::Sound Sound;
                 Sound.setBuffer(Buffer);
                 Sound.play();
-                while (1) {
-                    sf::sleep(sf::milliseconds(100));
+                while (Sound.getStatus()!=0) {
+                    //sf::sleep(sf::milliseconds(100));
                 }
 
                 std::cout << std::endl;
