@@ -10,7 +10,7 @@ Afspilning::Afspilning(std::string datainput, int sampleInput, int sampleRateInp
 {
 	samples = sampleInput;
 	sampleFreq = sampleRateInput;
-	BitDTMF sekven(datainput, samples, sampleFreq, 4);
+	BitDTMF sekven(datainput, samples, sampleFreq, 40);
 	sekvens = sekven;
 	sekvens.toProtokol(datapakker);
 }

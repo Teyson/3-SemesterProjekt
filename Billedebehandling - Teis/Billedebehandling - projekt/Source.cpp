@@ -68,7 +68,27 @@ label:
 
 	}
 	else if (answer == '4') { // Play + Sync
+		Afspilning test("0110110010101001", samplesGlobal, sampleFreqGlobal);
+		//	0110 1100 1010 1001
 
+
+		std::vector<int>bla;
+		bla.push_back(0);
+		bla.push_back(2);
+		bla.push_back(0);
+
+		sf::SoundBuffer Buffer;
+		if (!Buffer.loadFromSamples(test.playThis(bla), test.getarraySize(), 1, sampleFreqGlobal)) {
+			std::cerr << "Loading failed!" << std::endl;
+			return 1;
+		}
+
+		sf::Sound Sound;
+		Sound.setBuffer(Buffer);
+		Sound.play();
+		while (1) {
+			sf::sleep(sf::milliseconds(100));
+		}
 	}
 	else if (answer == '5') { // NAK
 
