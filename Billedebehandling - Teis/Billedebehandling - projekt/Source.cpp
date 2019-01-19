@@ -9,6 +9,7 @@
 #include <atomic>
 #include <fstream> //Gem til fil
 #include <mutex>
+#include <stdlib.h>
 
 #include "CImg.h"
 #include "PictureProcessing.h"
@@ -61,18 +62,24 @@ label:
 	while (true)
 	{
 
-		std::cout << "Afsender eller Modtager? (a/m): " << std::endl;
+		std::cout << std::endl << "Hvilken del af koden oenskes vist?" << std::endl << "Tast 1 for TextProcessing." << std::endl << "Tast 2 for ToProtokol, som indeholder opdeling, Framing og CRC." << std::endl << "Tast 3 for Afspilning og Synkronisering." << std::endl << "Tast 5 for NAK." << std::endl;
 		std::cin >> answer;
 		if (answer == '1') {						// TextProcessing
+			system("CLS");
+			TextProcessing processer2(userInput);
+			std::cout << "Du har valgt TextProcessing." << std::endl;
 
+			std::cout << std::endl << "Den string der arbejdes med er: " << "\"" << userInput << "\"" << std::endl;
+			std::cout << "Naar teksten er omsat til bits gennem TextProcessing bliver den: " << processer2.stringToBitsString() << std::endl;
 		}
 		else if (answer == '2') {	// ToProtokol
-
+			system("CLS");
 		}
 		else if (answer == '3') { // ToDTMF
-
+			system("CLS");
 		}
 		else if (answer == '4') { // Play + Sync
+			system("CLS");
 			Afspilning test("0110110010101001", samplesGlobal, sampleFreqGlobal);
 			//	0110 1100 1010 1001
 
@@ -96,6 +103,8 @@ label:
 			}
 		}
 		else if (answer == '5') { // NAK
+			system("CLS");
+
 
 		}
 		else {
