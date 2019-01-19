@@ -61,26 +61,35 @@ label:
 
 	while (true)
 	{
-
+		
 		std::cout << std::endl << "Hvilken del af koden oenskes vist?" << std::endl << "Tast 1 for TextProcessing." << std::endl << "Tast 2 for ToProtokol, som indeholder opdeling, Framing og CRC." << std::endl << "Tast 3 for Afspilning og Synkronisering." << std::endl << "Tast 5 for NAK." << std::endl;
 		std::cin >> answer;
 		if (answer == '1') {						// TextProcessing
-			system("CLS");
+			system("CLS");							// Tømmer kommandoprompten
 			TextProcessing processer2(userInput);
 			std::cout << "Du har valgt TextProcessing." << std::endl;
 
 			std::cout << std::endl << "Den string der arbejdes med er: " << "\"" << userInput << "\"" << std::endl;
-			std::cout << "Naar teksten er omsat til bits gennem TextProcessing bliver den: " << processer2.stringToBitsString() << std::endl;
+			std::cout << "Naar teksten er omsat til bits gennem TextProcessing bliver den: " << processer2.stringToBitsString()<< std::endl;
+			
+			std::cout << std::endl;
+			system("pause");
 		}
 		else if (answer == '2') {	// ToProtokol
-			system("CLS");
+			system("CLS");							// Tømmer kommandoprompten
+
+			std::cout << std::endl;
+			system("pause");
 		}
 		else if (answer == '3') { // ToDTMF
-			system("CLS");
+			system("CLS");							// Tømmer kommandoprompten
+
+			std::cout << std::endl;
+			system("pause");
 		}
 		else if (answer == '4') { // Play + Sync
-			system("CLS");
-			Afspilning test("0110110010101001", samplesGlobal, sampleFreqGlobal);
+			system("CLS");							// Tømmer kommandoprompten
+			Afspilning test(bitString, samplesGlobal, sampleFreqGlobal);
 			//	0110 1100 1010 1001
 
 
@@ -101,17 +110,83 @@ label:
 			while (1) {
 				sf::sleep(sf::milliseconds(100));
 			}
+
+			std::cout << std::endl;
+			system("pause");
 		}
 		else if (answer == '5') { // NAK
-			system("CLS");
+			system("CLS");							// Tømmer kommandoprompten
 
+			std::cout << "NAK er valgt." << std::endl << std::endl;
 
+			NAK nak;
+
+			nak.updatePointerExpected();
+
+			std::cout << "frame 0, 1 og 2 sendes, og alle modtages korrekt" << std::endl;
+
+			nak.insertIntoArray("0000", "1010101010111010101010111011010010110001");
+			nak.insertIntoArray("0001", "1010101111101010010010011101100101010100");
+			nak.insertIntoArray("0010", "1010010110001101001010110110100100101101");
+
+			std::string createdNak = nak.createNAK();
+
+			std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;;
+			std::cout << "Altsaa et tomt NAK. Derfor sendes frame 3, 4, 5. Frame 5 gaar tabt." << std::endl;
+
+			sf::sleep(sf::Time(sf::seconds(4)));
+
+			nak.updatePointerExpected();
+
+			nak.insertIntoArray("0011", "0100101000111010110011010100101001011101");
+			nak.insertIntoArray("0100", "0100101001010010010110101010101011010101");
+
+			createdNak = nak.createNAK();
+
+			std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;
+			std::cout << "Altsaa et NAK paa frame 5. Frame 5 gensendes og modtages." << std::endl;
+
+			sf::sleep(sf::Time(sf::seconds(4)));
+
+			nak.insertIntoArray("0101", "0100101001001001000000000000000111111001");
+
+			createdNak = nak.createNAK();
+
+			std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;
+			std::cout << "Altsaa et tomt NAK, derfor sendes frame 6, 7, 8. Frame 6 og 7 gaar tabt" << std::endl;
+
+			sf::sleep(sf::Time(sf::seconds(4)));
+
+			nak.updatePointerExpected();
+
+			nak.insertIntoArray("1000", "0111101110111111111111111101010101010001");
+
+			createdNak = nak.createNAK();
+
+			sf::sleep(sf::Time(sf::seconds(4)));
+
+			std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;
+			std::cout << "Altsaa et NAK paa frame 6 og 7. Framesne gensendes og modtages" << std::endl;
+
+			nak.insertIntoArray("0110", "0110011001110100101101101001010101010110");
+			nak.insertIntoArray("0111", "0101001010001010010001100101011101010111");
+
+			createdNak = nak.createNAK();
+
+			sf::sleep(sf::Time(sf::seconds(4)));
+
+			std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;
+			std::cout << "Altsaa et tom NAK." << std::endl;
+
+			std::cout << std::endl;
+			system("pause");
 		}
 		else {
 			char answer;
 			goto label;
 
 		}
+		system("CLS");
 	}
 
 
