@@ -27,7 +27,7 @@ protected:
 	BitDTMF sekvens;
 	std::vector<Framing>datapakker;
 	std::vector<DTMFToner> dtmfToner;
-	unsigned int arraySize = 256000;
+	unsigned int arraySize = 11200;
 	sf::Int16 raw1[500000]; // [arraySize]
 
 

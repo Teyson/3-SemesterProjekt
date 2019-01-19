@@ -28,7 +28,7 @@
 
 
 ////  Gamlekonstanter  ////
-int toneLength = 500;
+int toneLength = 20;
 int sampleFreqGlobal = 8000;//41000
 int samplesGlobal = (sampleFreqGlobal * toneLength)/1000;//16000;//44100
 int protokolOpdelingGlobal = 32;
@@ -92,19 +92,15 @@ label:
             std::cout << "Afsender eller modtager?" << std::endl;
             std::cin >> answer;
 
-            if (answer == 'a' && answer == 'A')
+            if (answer == 'a' || answer == 'A')
             {
-                Afspilning test(bitString, samplesGlobal, sampleFreqGlobal);
+				std::string testbitstreng = "001101111111001010011000000111101011001010100101110101101100000000110111111100101001100000011110101100101010010111010110110000000011011111110010100110000001111010110010";
+                Afspilning test(testbitstreng, samplesGlobal, sampleFreqGlobal);
                 
 
 
-                std::vector<int>bla;
-                bla.push_back(0);
-                bla.push_back(2);
-                bla.push_back(0);
-
                 sf::SoundBuffer Buffer;
-                if (!Buffer.loadFromSamples(test.playThis(bla), test.getarraySize(), 1, sampleFreqGlobal)) {
+                if (!Buffer.loadFromSamples(test.playString(testbitstreng), test.getarraySize(), 1, sampleFreqGlobal)) {
                     std::cerr << "Loading failed!" << std::endl;
                     return 1;
                 }
@@ -112,8 +108,8 @@ label:
                 sf::Sound Sound;
                 Sound.setBuffer(Buffer);
                 Sound.play();
-                while (1) {
-                    sf::sleep(sf::milliseconds(100));
+                while (Sound.getStatus()!=0) {
+                    //sf::sleep(sf::milliseconds(100));
                 }
 
                 std::cout << std::endl;
