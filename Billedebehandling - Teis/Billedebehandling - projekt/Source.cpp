@@ -95,7 +95,7 @@ label:
             if (answer == 'a' && answer == 'A')
             {
                 Afspilning test(bitString, samplesGlobal, sampleFreqGlobal);
-                //	0110 1100 1010 1001
+                
 
 
                 std::vector<int>bla;
@@ -119,22 +119,17 @@ label:
                 std::cout << std::endl;
                 system("pause");
             }
-            else
-            {
-                for (size_t i = 0; i < 5; i++)
-                {
-                    CustomRecorder recorder;
-                    recorder.start(8000);					//Start recording  
-                    std::cout << "Recording...." << std::endl;
-
-                    sf::sleep(sf::milliseconds(300));
-                    recorder.startThread();
-
-                    recorder.stop();						//Stop recording
-                    sf::sleep(sf::milliseconds(800));
-                }
-                //std::cout << "end recording" << std::endl;
-            }
+			else
+			{
+				CustomRecorder recorder;
+				recorder.start(8000);					//Start recording  
+				std::cout << "Recording...." << std::endl;
+				sf::sleep(sf::milliseconds(300));
+				recorder.startThread();
+				recorder.stop();						//Stop recording
+				sf::sleep(sf::milliseconds(800));
+				//std::cout << "end recording" << std::endl;
+			}
 		}
 		else if (answer == '5') { // NAK
 			system("CLS");							// T�mmer kommandoprompten
