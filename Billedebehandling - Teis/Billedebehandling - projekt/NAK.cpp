@@ -89,12 +89,12 @@ std::string NAK::createNAK()
 	if (pointerExpected == pointerNotRecieved)
 	{
 		returnString = createEmptyNAK();
-		std::cout << "Created Empty NAK" << std::endl;
+		//std::cout << "Created Empty NAK" << std::endl;
 	}
 	else
 	{
 		returnString = createNonEmptyNAK();
-		std::cout << "Created non-empty NAK" << std::endl;
+		//std::cout << "Created non-empty NAK" << std::endl;
 	}
 	
 	

@@ -55,22 +55,20 @@ int main() {
 
 	TextProcessing processer(userInput);
 	bitString = processer.stringToBitsString();
-	std::cout << bitString << std::endl;
-
+	
 label:
 
 	while (true)
 	{
 		
-		std::cout << std::endl << "Hvilken del af koden oenskes vist?" << std::endl << "Tast 1 for TextProcessing." << std::endl << "Tast 2 for ToProtokol, som indeholder opdeling, Framing og CRC." << std::endl << "Tast 3 for toDTMF, som konverterer framene til DTMF-toner" << std::endl << "Tast 4 for Afspilning og Synkronisering." << std::endl << "Tast 5 for NAK." << std::endl;
+		std::cout << std::endl << "Hvilken del af koden oenskes vist?" << std::endl << "Tast 1 for TextProcessing." << std::endl << "Tast 2 for ToProtokol, som indeholder opdeling, Framing og CRC." << std::endl << "Tast 3 for Afspilning og Synkronisering." << std::endl << "Tast 4 for NAK." << std::endl;
 		std::cin >> answer;
 		if (answer == '1') {						// TextProcessing
 			system("CLS");							// T�mmer kommandoprompten
 			TextProcessing processer2(userInput);
-			std::cout << "Du har valgt TextProcessing." << std::endl;
 
-			std::cout << std::endl << "Den string der arbejdes med er: " << "\"" << userInput << "\"" << std::endl;
-			std::cout << "Naar teksten er omsat til bits gennem TextProcessing bliver den: " << processer2.stringToBitsString()<< std::endl;
+			std::cout << std::endl << "Den string der arbejdes med er:\n" << userInput << "\n" << std::endl;
+			std::cout << "Naar teksten er omsat til bits gennem TextProcessing bliver den: \n" << processer2.stringToBitsString()<< std::endl;
 			
 			std::cout << std::endl;
 			system("pause");
@@ -86,7 +84,7 @@ label:
 
 			Framing CRCtest(toprotokolTest.getDatapakkerArray()[0].getString());
 
-			std::cout << "\nCRC-checksummen testes: " << std::endl;
+			std::cout << "\nCRC-checksummen testes paa: " << toprotokolTest.getDatapakkerArray()[0].getString().substr(0, 8) << "  " << toprotokolTest.getDatapakkerArray()[0].getData() << "  " << toprotokolTest.getDatapakkerArray()[0].getCRCcheck()<<std::endl;
 
 			if (CRCtest.checkChecksum())
 			{
@@ -108,7 +106,7 @@ label:
 				newstring = toprotokolTest.getDatapakkerArray()[0].getString().replace(5, 1, "0");
 			}
 
-			std::cout << "\nCRC checksummen testes med fejlbit:" << std::endl;
+			std::cout << "\nCRC checksummen testes med fejlbit: " << newstring.substr(0, 8) << "  " << newstring.substr(8, newstring.size() - 16) << "  " << newstring.substr(newstring.size() - 8, 8) << std::endl;
 
 			Framing CRCtest2(newstring);
 			if (CRCtest2.checkChecksum())
@@ -124,13 +122,7 @@ label:
 			std::cout << std::endl;
 			system("pause");
 		}
-		else if (answer == '3') { // ToDTMF
-			system("CLS");							// T�mmer kommandoprompten
-
-			std::cout << std::endl;
-			system("pause");
-		}
-		else if (answer == '4') { // Play + Sync
+		else if (answer == '3') { // Play + Sync
 			system("CLS");							// T�mmer kommandoprompten
             std::cout << "Afsender eller modtager?" << std::endl;
             std::cin >> answer;
@@ -168,12 +160,11 @@ label:
 				recorder.stop();						//Stop recording
 				sf::sleep(sf::milliseconds(800));
 				//std::cout << "end recording" << std::endl;
+				system("pause");
 			}
 		}
-		else if (answer == '5') { // NAK
+		else if (answer == '4') { // NAK
 			system("CLS");							// T�mmer kommandoprompten
-
-			std::cout << "NAK er valgt." << std::endl << std::endl;
 
 			NAK nak;
 
@@ -187,12 +178,10 @@ label:
 
 			std::string createdNak = nak.createNAK();
 
-			std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;;
+			std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;
 			std::cout << "Altsaa et tomt NAK. Derfor sendes frame 3, 4, 5. Frame 5 gaar tabt." << std::endl;
 
-			sf::sleep(sf::Time(sf::seconds(4)));
-
-			nak.updatePointerExpected();
+						nak.updatePointerExpected();
 
 			nak.insertIntoArray("0011", "0100101000111010110011010100101001011101");
 			nak.insertIntoArray("0100", "0100101001010010010110101010101011010101");
@@ -202,8 +191,6 @@ label:
 			std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;
 			std::cout << "Altsaa et NAK paa frame 5. Frame 5 gensendes og modtages." << std::endl;
 
-			sf::sleep(sf::Time(sf::seconds(4)));
-
 			nak.insertIntoArray("0101", "0100101001001001000000000000000111111001");
 
 			createdNak = nak.createNAK();
@@ -211,15 +198,11 @@ label:
 			std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;
 			std::cout << "Altsaa et tomt NAK, derfor sendes frame 6, 7, 8. Frame 6 og 7 gaar tabt" << std::endl;
 
-			sf::sleep(sf::Time(sf::seconds(4)));
-
 			nak.updatePointerExpected();
 
 			nak.insertIntoArray("1000", "0111101110111111111111111101010101010001");
 
 			createdNak = nak.createNAK();
-
-			sf::sleep(sf::Time(sf::seconds(4)));
 
 			std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;
 			std::cout << "Altsaa et NAK paa frame 6 og 7. Framesne gensendes og modtages" << std::endl;
@@ -228,8 +211,6 @@ label:
 			nak.insertIntoArray("0111", "0101001010001010010001100101011101010111");
 
 			createdNak = nak.createNAK();
-
-			sf::sleep(sf::Time(sf::seconds(4)));
 
 			std::cout << "Det NAK der bliver lavet er saa: " << createdNak << std::endl << std::endl;
 			std::cout << "Altsaa et tom NAK." << std::endl;
