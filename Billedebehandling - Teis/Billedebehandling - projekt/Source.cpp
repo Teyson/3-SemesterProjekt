@@ -55,7 +55,7 @@ int main() {
 
 	TextProcessing processer(userInput);
 	bitString = processer.stringToBitsString();
-
+	std::cout << bitString << std::endl;
 
 label:
 
@@ -78,6 +78,12 @@ label:
 		else if (answer == '2') {	// ToProtokol
 			system("CLS");							// T�mmer kommandoprompten
 
+			Afspilning toprotokolTest(bitString, samplesGlobal, sampleFreqGlobal);
+			std::cout << "Input: \n" << bitString<< "\n" << std::endl;
+			/*std::cout << "0. Frame: \n" << toprotokolTest.getDatapakkerArray()[0].getString() << std::endl;
+			std::cout << " Header  " << "                   Data                   " << "  Trailer " << std::endl;
+			std::cout << toprotokolTest.getDatapakkerArray()[0].getString().substr(0, 8) << "  " << toprotokolTest.getDatapakkerArray()[0].getData() << "  " << toprotokolTest.getDatapakkerArray()[0].getCRCcheck() << std::endl;
+			*/
 			std::cout << std::endl;
 			system("pause");
 		}
