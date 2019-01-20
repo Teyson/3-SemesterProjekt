@@ -82,6 +82,8 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(SolutionDir)\lib\sfml-graphics.lib;$(SolutionDir)\lib\sfml-graphics-d.lib;$(SolutionDir)\lib\sfml-window.lib;$(SolutionDir)\lib\sfml-window-d.lib;$(SolutionDir)\lib\sfml-audio.lib;$(SolutionDir)\lib\sfml-audio-d.lib;$(SolutionDir)\lib\sfml-network-d.lib;$(SolutionDir)\lib\sfml-network.lib;$(SolutionDir)\lib\sfml-system.lib;$(SolutionDir)\lib\sfml-system-d.lib;$(SolutionDir)\lib\openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
+      <StackReserveSize>
+      </StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -113,6 +115,8 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(SolutionDir)\lib\sfml-graphics.lib;$(SolutionDir)\lib\sfml-graphics-d.lib;$(SolutionDir)\lib\sfml-window.lib;$(SolutionDir)\lib\sfml-window-d.lib;$(SolutionDir)\lib\sfml-audio.lib;$(SolutionDir)\lib\sfml-audio-d.lib;$(SolutionDir)\lib\sfml-network-d.lib;$(SolutionDir)\lib\sfml-network.lib;$(SolutionDir)\lib\sfml-system.lib;$(SolutionDir)\lib\sfml-system-d.lib;$(SolutionDir)\lib\openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
+      <StackReserveSize>
+      </StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
