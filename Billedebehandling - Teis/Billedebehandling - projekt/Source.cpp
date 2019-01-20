@@ -62,7 +62,7 @@ label:
 	while (true)
 	{
 		
-		std::cout << std::endl << "Hvilken del af koden oenskes vist?" << std::endl << "Tast 1 for TextProcessing." << std::endl << "Tast 2 for ToProtokol, som indeholder opdeling, Framing og CRC." << std::endl << "Tast 4 for Afspilning og Synkronisering." << std::endl << "Tast 5 for NAK." << std::endl;
+		std::cout << std::endl << "Hvilken del af koden oenskes vist?" << std::endl << "Tast 1 for TextProcessing." << std::endl << "Tast 2 for ToProtokol, som indeholder opdeling, Framing og CRC." << std::endl << "Tast 3 for toDTMF, som konverterer framene til DTMF-toner" << std::endl << "Tast 4 for Afspilning og Synkronisering." << std::endl << "Tast 5 for NAK." << std::endl;
 		std::cin >> answer;
 		if (answer == '1') {						// TextProcessing
 			system("CLS");							// T�mmer kommandoprompten
@@ -80,10 +80,47 @@ label:
 
 			Afspilning toprotokolTest(bitString, samplesGlobal, sampleFreqGlobal);
 			std::cout << "Input: \n" << bitString << "\n" << std::endl;
-			std::cout << "0. Frame: \n" << toprotokolTest.getDatapakkerArray()[0].getString() << std::endl;
+			std::cout << "0. Frame: \n" << toprotokolTest.getDatapakkerArray()[0].getString() << std::endl << std::endl;
 			std::cout << " Header  " << "                   Data                   " << " Trailer " << std::endl;
 			std::cout << toprotokolTest.getDatapakkerArray()[0].getString().substr(0, 8) << "  " << toprotokolTest.getDatapakkerArray()[0].getData() << "  " << toprotokolTest.getDatapakkerArray()[0].getCRCcheck() << std::endl;
-			
+
+			Framing CRCtest(toprotokolTest.getDatapakkerArray()[0].getString());
+
+			std::cout << "\nCRC-checksummen testes: " << std::endl;
+
+			if (CRCtest.checkChecksum())
+			{
+				std::cout << "Checksummen er korrekt" << std::endl;
+			}
+			else
+			{
+				std::cout << "Checksummen er forkert, framen bliver afvist" << std::endl;
+			}
+
+			std::string newstring;
+
+			if (toprotokolTest.getDatapakkerArray()[0].getString().substr(5, 1) == "0")
+			{
+				newstring = toprotokolTest.getDatapakkerArray()[0].getString().replace(5, 1, "1");
+			}
+			else
+			{
+				newstring = toprotokolTest.getDatapakkerArray()[0].getString().replace(5, 1, "0");
+			}
+
+			std::cout << "\nCRC checksummen testes med fejlbit:" << std::endl;
+
+			Framing CRCtest2(newstring);
+			if (CRCtest2.checkChecksum())
+			{
+				std::cout << "Checksummen er korrekt" << std::endl;
+			}
+			else
+			{
+				std::cout << "Checksummen er forkert, framen bliver afvist" << std::endl;
+			}
+
+
 			std::cout << std::endl;
 			system("pause");
 		}
